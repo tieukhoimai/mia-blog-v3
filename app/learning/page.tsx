@@ -13,7 +13,7 @@ export default function Learning() {
             Study with me
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            My belief that "Everyone Can Data" and mathematical theories and methods that make up the backbone of modern data analytics and data sciences. Let's learn it, write it and bring it all together for continous improvement
+            Let's learn it, write it and bring it all together for continous improvement
           </p>
         </div>
         <div className="container py-12">
