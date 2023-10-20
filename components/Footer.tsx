@@ -5,24 +5,21 @@ import SocialIcon from '@/components/social-icons'
 export default function Footer() {
   return (
     <footer>
-      <div className="mt-16 flex flex-col items-center">
-        <div className="mb-3 flex space-x-4">
-          <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={6} />
-          <SocialIcon kind="github" href={siteMetadata.github} size={6} />
-          <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
+      <div className="mb-0 flex flex-col justify-start space-y-1.5 space-x-0 py-10 text-gray-500 dark:text-gray-400">
+        <div className="flex flex-col items-center space-y-2 text-sm sm:flex-row sm:justify-between sm:text-base">
+          <ul className="flex space-x-2">
+            <li>{`© ${new Date().getFullYear()}`}</li>
+            <li>{` • `}</li>
+            <li>
+              <Link href="/">{siteMetadata.title}</Link>
+            </li>
+          </ul>
+          <ul className="flex cursor-pointer items-center space-x-5">
+            <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={6} />
+            <SocialIcon kind="github" href={siteMetadata.github} size={6} />
+            <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
+          </ul>
         </div>
-        <div className="mb-2 flex space-x-2 text-sm text-gray-500 dark:text-gray-400">
-          <div>{siteMetadata.author}</div>
-          <div>{` • `}</div>
-          <div>{`© ${new Date().getFullYear()}`}</div>
-          <div>{` • `}</div>
-          <Link href="/">{siteMetadata.title}</Link>
-        </div>
-        {/* <div className="mb-8 text-sm text-gray-500 dark:text-gray-400">
-          <Link href="https://github.com/timlrx/tailwind-nextjs-starter-blog">
-            Resume
-          </Link>
-        </div> */}
       </div>
     </footer>
   )
