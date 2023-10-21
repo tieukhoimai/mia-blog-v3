@@ -45,3 +45,6 @@ yarn-error.log*
 
 # Contentlayer
 .contentlayer
+
+# React Component Preview
+previewConfig.json
