@@ -61,7 +61,7 @@ export async function generateMetadata({
       publishedTime: publishedAt,
       modifiedTime: modifiedAt,
       url: './',
-      image: post.image,
+      images: post.image,
       authors: authors.length > 0 ? authors : [siteMetadata.author],
     },
   }
