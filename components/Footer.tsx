@@ -13,6 +13,10 @@ export default function Footer() {
             <li>
               <Link href="/">{siteMetadata.title}</Link>
             </li>
+            <li>{` • `}</li>
+            <li>
+              <Link href="/resume.pdf">resume</Link>
+            </li>
           </ul>
           <ul className="flex cursor-pointer items-center space-x-5">
             <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={6} />
