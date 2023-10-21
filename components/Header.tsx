@@ -1,12 +1,32 @@
+'use client'
+
 import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks from '@/data/headerNavLinks'
+import { useEffect, useState } from 'react'
 import Logo from '@/data/logo.svg'
 import Link from './Link'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
 import SearchButton from './SearchButton'
 
+function useIsScrollTop() {
+  const [isTop, setIsTop] = useState(true)
+  useEffect(() => {
+    function onScroll() {
+      setIsTop(window.scrollY <= 0)
+    }
+    window.addEventListener('scroll', onScroll)
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [])
+
+  return isTop
+}
+
 const Header = () => {
+  const isTop = useIsScrollTop()
   return (
     <header className="flex items-center justify-between py-10">
       <div>
