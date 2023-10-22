@@ -84,11 +84,12 @@ export default function ListLayoutWithTags({
             {title}
           </h1>
         </div>
-        <div className="flex sm:space-x-24">
-          <div className="hidden max-h-screen h-full sm:flex flex-wrap bg-gray-50 dark:bg-gray-900/70 shadow-md pt-5 dark:shadow-gray-800/40 rounded min-w-[280px] max-w-[280px] overflow-auto">
-            <div className="py-4 px-6">
+        <div className="flex flex-col">
+          {/* All Posts */}
+          <div className="hidden h-full sm:flex flex-wrap bg-gray-50 dark:bg-gray-900/70 shadow-md dark:shadow-gray-800/40 rounded min-w-[280px] max-h-[280px]">
+            <div className="py-4 px-4">
               {pathname.startsWith('/blog') ? (
-                <h3 className="text-primary-500 font-bold uppercase">All Posts</h3>
+                <h3 className="text-primary-500 font-bold uppercase mb-3 ml-4">All Posts</h3>
               ) : (
                 <Link
                   href={`/blog`}
@@ -97,10 +98,10 @@ export default function ListLayoutWithTags({
                   All Posts
                 </Link>
               )}
-              <ul>
+              <div className="flex flex-wrap">
                 {sortedTags.map((t) => {
                   return (
-                    <li key={t} className="my-3">
+                    <div key={t} className="p-2 pt-0">
                       {pathname.split('/tags/')[1] === slug(t) ? (
                         <h3 className="inline py-2 px-3 uppercase text-sm font-bold text-primary-500">
                           {`${t} (${tagCounts[t]})`}
@@ -114,18 +115,20 @@ export default function ListLayoutWithTags({
                           {`${t} (${tagCounts[t]})`}
                         </Link>
                       )}
-                    </li>
+                    </div>
                   )
                 })}
-              </ul>
+              </div>
             </div>
           </div>
+
+          {/* Body */}
           <div>
             <ul>
               {displayPosts.map((post) => {
                 const { path, date, title, summary, tags, image } = post
                 return (
-                  <li key={path} className="py-5">
+                  <li key={path} className="py-10">
                     <article className="space-y-2 flex flex-col xl:space-y-0">
                       <dl>
                         <dt className="sr-only">Published on</dt>
