@@ -8,14 +8,14 @@ const projectsData = [
   {
     title: 'Programming and Database',
     description: `Placeholder`,
-    imgSrc: '',
-    href: '',
+    imgSrc: '/static/learning/programming.jpg',
+    href: 'https://tieukhoimai.notion.site/',
   },
   {
     title: 'Machine Learning',
     description: `Placeholder`,
-    imgSrc: '',
-    href: '/blog/color-and-data',
+    imgSrc: '/static/learning/machine_learning.jpg',
+    href: 'https://tieukhoimai.notion.site/',
   },
 ]
 

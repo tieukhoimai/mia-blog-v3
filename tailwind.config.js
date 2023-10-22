@@ -25,7 +25,7 @@ module.exports = {
         sans: ['var(--font-ibm-plex-sans)', ...fontFamily.sans],
       },
       colors: {
-        primary: colors.pink,
+        primary: colors.teal,
         gray: colors.gray,
       },
       typography: ({ theme }) => ({

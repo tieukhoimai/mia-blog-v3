@@ -1,12 +1,12 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'mai',
+  title: 'm a i',
   author: 'Tieu Khoi Mai (Mia)',
-  headerTitle: 'mai',
+  headerTitle: "m a i",
   description:
     'this is my /maɪ/ blog. The world is a messy place but at least now I have a way of structuring queries about it. And let me share with you my own story or all I known about my career - technical and non-technical in the most naive way.',
   language: 'en-us',
-  theme: 'light', // system, dark or light
+  theme: 'system', // system, dark or light
   siteUrl: 'https://mia-blog-v3.vercel.app/',
   siteRepo: 'https://github.com/tieukhoimai/mia-blog-v3',
   siteLogo: '/static/images/logo.png',
