@@ -39,15 +39,15 @@ export async function generateMetadata({
   const publishedAt = new Date(post.date).toISOString()
   const modifiedAt = new Date(post.lastmod || post.date).toISOString()
   const authors = authorDetails.map((author) => author.name)
-  // let imageList = [siteMetadata.socialBanner]
-  // if (post.images) {
-  //   imageList = typeof post.images === 'string' ? [post.images] : post.images
-  // }
-  // const ogImages = imageList.map((img) => {
-  //   return {
-  //     url: img.includes('http') ? img : siteMetadata.siteUrl + img,
-  //   }
-  // })
+  let imageList = [post.image]
+  if (post.image) {
+    imageList = typeof post.image === 'string' ? [post.image] : post.image
+  }
+  const ogImages = imageList.map((img) => {
+    return {
+      url: img.includes('http') ? img : siteMetadata.siteUrl + img,
+    }
+  })
 
   return {
     title: post.title,
@@ -61,7 +61,7 @@ export async function generateMetadata({
       publishedTime: publishedAt,
       modifiedTime: modifiedAt,
       url: './',
-      images: post.image,
+      images: ogImages,
       authors: authors.length > 0 ? authors : [siteMetadata.author],
     },
   }
