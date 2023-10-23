@@ -7,7 +7,7 @@ const siteMetadata = {
     'this is my /maɪ/ blog. The world is a messy place but at least now I have a way of structuring queries about it. And let me share with you my own story or all I known about my career - technical and non-technical in the most naive way.',
   language: 'en-us',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://mia-blog-v3.vercel.app/',
+  siteUrl: 'https://tieukhoimai.me/',
   siteRepo: 'https://github.com/tieukhoimai/mia-blog-v3',
   siteLogo: '/static/images/logo.png',
   socialBanner: '/static/images/banner-card.png',
@@ -31,7 +31,7 @@ const siteMetadata = {
     //   posthogProjectApiKey: '', // e.g. 123e4567-e89b-12d3-a456-426614174000
     // },
     googleAnalytics: {
-      googleAnalyticsId: 'G-V03MRX9P1N', // e.g. G-XXXXXXX
+      googleAnalyticsId: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS, // e.g. G-XXXXXXX
     },
   },
   newsletter: {
