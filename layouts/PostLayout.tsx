@@ -94,7 +94,9 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 </ul>
               </dd>
             </dl>
-            <Image src={image} width={2548} height={1296} alt="Article Cover" />
+            <div className="xl:col-span-4 xl:row-spans-1 xl:pb-0">
+              <Image src={image} width={2548} height={1296} alt="Article Cover" />
+            </div>
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
               <div className="prose max-w-none pb-8 pt-10 dark:prose-invert">{children}</div>
               {/* <div className="pb-6 pt-6 text-sm text-gray-700 dark:text-gray-300">
