@@ -138,7 +138,13 @@ export default function ListLayout({
                     <div className="prose max-w-none text-gray-500 dark:text-gray-400">
                       {summary}
                     </div>
-                    <Image src={image} width={2548} height={1296} alt="Blog Cover" />
+                    <Image
+                      src={image}
+                      width={2548}
+                      height={1296}
+                      alt="Blog Cover"
+                      style={{ opacity: '0.8' }}
+                    />
                   </div>
                 </article>
               </li>
