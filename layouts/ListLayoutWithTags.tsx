@@ -79,17 +79,17 @@ export default function ListLayoutWithTags({
   return (
     <>
       <div>
-        <div className="pb-6 pt-6">
+        {/* <div className="pb-4 pt-4">
           <h1 className="sm:hidden text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             {title}
           </h1>
-        </div>
-        <div className="flex flex-col">
+        </div> */}
+        <div className="flex flex-col pb-2 pt-2">
           {/* All Posts */}
-          <div className="hidden h-full sm:flex flex-wrap bg-gray-50 dark:bg-gray-900/70 shadow-md dark:shadow-gray-800/40 rounded min-w-[280px] max-h-[280px]">
+          <div className="sm:flex flex-wrap bg-gray-50 dark:bg-gray-900/70 dark:shadow-gray-800/40 rounded min-w-[280px] max-h-[280px]">
             <div className="py-4 px-4">
               {pathname.startsWith('/blog') ? (
-                <h3 className="text-primary-500 font-bold uppercase mb-3 ml-4">All Posts</h3>
+                <h3 className="text-primary-500 font-bold uppercase mb-3">All Posts</h3>
               ) : (
                 <Link
                   href={`/blog`}
@@ -98,18 +98,18 @@ export default function ListLayoutWithTags({
                   All Posts
                 </Link>
               )}
-              <div className="flex flex-wrap">
+              <div className="flex max-w-lg flex-wrap mt-3">
                 {sortedTags.map((t) => {
                   return (
                     <div key={t} className="p-2 pt-0">
                       {pathname.split('/tags/')[1] === slug(t) ? (
-                        <h3 className="inline py-2 px-3 uppercase text-sm font-bold text-primary-500">
+                        <h3 className="inline py-2 uppercase text-sm font-bold text-primary-500">
                           {`${t} (${tagCounts[t]})`}
                         </h3>
                       ) : (
                         <Link
                           href={`/tags/${slug(t)}`}
-                          className="py-2 px-3 uppercase text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-500"
+                          className="py-2 uppercase text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-500"
                           aria-label={`View posts tagged ${t}`}
                         >
                           {`${t} (${tagCounts[t]})`}
@@ -128,7 +128,7 @@ export default function ListLayoutWithTags({
               {displayPosts.map((post) => {
                 const { path, date, title, summary, tags, image } = post
                 return (
-                  <li key={path} className="py-10">
+                  <li key={path} className="py-6">
                     <article className="space-y-2 flex flex-col xl:space-y-0">
                       <dl>
                         <dt className="sr-only">Published on</dt>

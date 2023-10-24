@@ -1,7 +1,7 @@
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 
-import { Space_Grotesk, IBM_Plex_Sans } from 'next/font/google'
+import { IBM_Plex_Sans } from 'next/font/google'
 import { AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
 import Header from '@/components/Header'
@@ -13,12 +13,6 @@ import { Metadata } from 'next'
 import Script from 'next/script'
 import { Analytics } from '@vercel/analytics/react'
 import * as gtag from 'gtag'
-
-const space_grotesk = Space_Grotesk({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-space-grotesk',
-})
 
 const plex_sans = IBM_Plex_Sans({
   weight: ['400'],
