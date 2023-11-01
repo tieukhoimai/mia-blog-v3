@@ -12,8 +12,8 @@ const projectsData = [
     href: 'https://tieukhoimai.notion.site/Programming-and-Database-9739069cf4ee490cb2560807a25dca90?pvs=4',
   },
   {
-    title: 'Machine Learning',
-    description: `Under Construction 🚧`,
+    title: 'Machine learning',
+    description: `My personal lecture notes from my studies at University of Verona (2023/2024) to reflects my understanding and interpretation of the course material`,
     imgSrc: '/static/learning/machine_learning.jpg',
     href: 'https://tieukhoimai.notion.site/Machine-Learning-59b0bd636e8a481b9d2f151e14aa3c13?pvs=4',
   },
