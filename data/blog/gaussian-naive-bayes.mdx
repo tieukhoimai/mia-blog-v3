@@ -46,7 +46,7 @@ $$
 
 where
 
-- $x$ is $j$ features
+- $x$ consists $x_{ij}$ with $i=\overline{1,n}$ with $n$ = observation and $j=\overline{1,n}$ with $k$ is the number of features
 - $P(c|x)$is **Posterior** Probability
 - $p(x|c)$ is **Likelihood** of feature $x_j$ given that their class is T
 - $P(c)$ is **Prior** Probability
@@ -203,7 +203,7 @@ P_c3 = np.size(cl3)/np.size(x) # 1/3
 We compute $p(x)$ in this case of 3 classes
 
 $$
-{p(x)} = {\sum_{c=1}^{3}p(x|c)p(c)} \\ = p(x|c_1)p(c_1) \times p(x|c_2)p(c_2) \times p(x|c_3)p(c_3)
+{p(x)} = {\sum_{c=1}^{3}p(x|c)p(c)} = p(x|c_1)p(c_1) + p(x|c_2)p(c_2) + p(x|c_3)p(c_3)
 $$
 
 ```python
@@ -260,7 +260,7 @@ cm_display = ConfusionMatrixDisplay(cm).plot()
 
 ## Reference
 
-1. Duda, R. O., Hart, P. E., & Stork, D. G. (2001). Chapter 2: Bayesian decision theory. In *Pattern Classification* (pp. Page Numbers). Wiley.
+1. Duda, R. O., Hart, P. E., & Stork, D. G. (2001). Chapter 2: Bayesian decision theory. In *Pattern Classification*. Wiley.
 2. Naive Bayes Classifier Implementation. *[GitHub](https://github.com/vamc-stash/Naive-Bayes/blob/master/src/GaussianNB.py)*. 
 3. Chapter 11: Naive Bayes Classifier. *[Github](https://github.com/tiepvupsu/ebookMLCB/blob/master/book_ML.pdf)*
 4. [Understanding by Implementing: Gaussian Naive Bayes](https://towardsdatascience.com/learning-by-implementing-gaussian-naive-bayes-3f0e3d2c01b2). *Towards Data Science*.
