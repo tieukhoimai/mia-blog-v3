@@ -2,7 +2,6 @@ import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 
 import { IBM_Plex_Sans } from 'next/font/google'
-import { AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
 import Header from '@/components/Header'
 import SectionContainer from '@/components/SectionContainer'
@@ -11,7 +10,6 @@ import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import Script from 'next/script'
-import { Analytics } from '@vercel/analytics/react'
 import * as gtag from 'gtag'
 
 const plex_sans = IBM_Plex_Sans({
@@ -74,7 +72,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-white text-black antialiased dark:bg-gray-950 dark:text-white">
         <ThemeProviders>
           <div className="container">
-            <Analytics />
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_MEASUREMENT_ID}`}
               strategy="afterInteractive"
