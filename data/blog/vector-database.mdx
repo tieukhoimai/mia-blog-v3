@@ -212,16 +212,6 @@ ids = [str(i) for i in range(8)]
 
 ```python
 index.fetch(ids=['1','2'])
-```
-
-```json
-
-```
-
-If we fetch a vector that does not exist, it will return an empty vector.
-
-```python
-index.fetch(ids=['x'])
 
 # Returns:
 # {'namespace': '',
@@ -255,6 +245,15 @@ index.fetch(ids=['x'])
 #                               0.904230714,
 #                               0.637860656,
 #                               0.573778749]}}}
+```
+
+If we fetch a vector that does not exist, it will return an empty vector.
+
+```python
+index.fetch(ids=['x'])
+
+# Returns:
+# {'namespace': '', 'usage': {'read_units': 1}, 'vectors': {}}
 ```
 
 **6.3. delete - deleting vector by ids**
@@ -329,21 +328,18 @@ index.upsert(vectors=zip(ids, vectors),
 # {'upserted_count': 2}
 ```
 
-Then, utilize the `describe_index_stats` method to check.
+Then, utilize the `describe_index_stats` method to check. It returns statistics specific to each namespace regarding the contents of all namespaces within an index.
 
 ```python
 index.describe_index_stats()
-```
 
-It provides statistics specific to each namespace regarding the contents of all namespaces within an index.
-
-```python
-{'dimension': 1536,
- 'index_fullness': 0.00011,
- 'namespaces': {'': {'vector_count': 6},
-                'my-first-namespace': {'vector_count': 3},
-                'my-second-namespace': {'vector_count': 2}},
- 'total_vector_count': 11}
+# Returns:
+# {'dimension': 1536,
+#  'index_fullness': 0.00011,
+#  'namespaces': {'': {'vector_count': 6},
+#                 'my-first-namespace': {'vector_count': 3},
+#                 'my-second-namespace': {'vector_count': 2}},
+#  'total_vector_count': 11}
 ```
 
 When fetching the vector `x` using `index.fetch(ids=['x'])`, it will return an empty vector because it queries the default namespace. Therefore, we have to specify that namespace as a parameter, and this applies to any other operation as well.
