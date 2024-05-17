@@ -56,7 +56,7 @@ The easiest way to deploy the template is to deploy on [Vercel](https://vercel.c
 
 ## Previous Version
 
-This is the second version of my website. Prevoius version:
+This is the second version of my website. Previous version:
 
 - https://mia-blog.vercel.app
 
