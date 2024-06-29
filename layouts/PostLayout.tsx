@@ -83,7 +83,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                             >
                               {author.linkedin.replace(
                                 'https://www.linkedin.com/in/tieukhoimai/',
-                                '@linkedin'
+                                '@tieukhoimai'
                               )}
                             </Link>
                           )}
