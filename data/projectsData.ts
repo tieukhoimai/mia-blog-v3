@@ -1,4 +1,11 @@
-const projectsData = [
+interface Project {
+  title: string,
+  description: string,
+  href?: string,
+  imgSrc?: string,
+}
+
+const projectsData: Project[] = [
   {
     title: 'Probability for DS',
     description: `My personal lecture notes from class Probability for data science (2023/2024) at University of Verona`,
