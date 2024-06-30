@@ -143,7 +143,7 @@ export default function ListLayout({
                       width={2548}
                       height={1296}
                       alt="Blog Cover"
-                      style={{ opacity: '0.8' }}
+                      style={{ opacity: '0.9' }}
                     />
                   </div>
                 </article>

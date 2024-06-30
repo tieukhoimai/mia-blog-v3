@@ -101,7 +101,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   width={2548}
                   height={1296}
                   alt="Article Cover"
-                  style={{ opacity: '0.8' }}
+                  // style={{ opacity: '0.9' }}
                 />
               </div>
               <div className="prose max-w-none pb-8 pt-10 dark:prose-invert">{children}</div>
