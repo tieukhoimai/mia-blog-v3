@@ -47,7 +47,7 @@ LLMs are simply an intermediate that allows one to connect to all popular LLMs a
     # Create a PromptTemplate object from the template
     prompt_template = PromptTemplate.from_template(template=template)
     
-    # Fill in the variable: virus and language
+    # Fill in the variable
     prompt = prompt_template.format(concept='prompt templates', fields='LLMs')
     
     # Returns the generated prompt
@@ -81,7 +81,8 @@ LLMs are simply an intermediate that allows one to connect to all popular LLMs a
     messages = chat_template.format_messages(n='5', area='World')
     print(messages)  # Outputs the formatted chat messages
     
-    ### [SystemMessage(content='You respond only in the JSON format.'), HumanMessage(content='Top 5 countries in World by population.')]
+    # Output: 
+    # [SystemMessage(content='You respond only in the JSON format.'), HumanMessage(content='Top 5 countries in World by population.')]
     ```
     
     ```python
@@ -89,38 +90,34 @@ LLMs are simply an intermediate that allows one to connect to all popular LLMs a
     llm = ChatOpenAI()
     output = llm.invoke(messages)
     print(output.content)
-    ```
-    
-    *Output*
-    
-    ```json
-    {
-      "data": [
-        {
-          "country": "China",
-          "population": 1444216107
-        },
-        {
-          "country": "India",
-          "population": 1393409038
-        },
-        {
-          "country": "United States",
-          "population": 332915073
-        },
-        {
-          "country": "Indonesia",
-          "population": 276361783
-        },
-        {
-          "country": "Pakistan",
-          "population": 225199937
-        }
-      ]
-    }
-    ```
-    
 
+    # Output:    
+    # {
+    #     "data": [
+    #     {
+    #         "country": "China",
+    #         "population": 1444216107
+    #     },
+    #     {
+    #         "country": "India",
+    #         "population": 1393409038
+    #     },
+    #     {
+    #         "country": "United States",
+    #         "population": 332915073
+    #     },
+    #     {
+    #         "country": "Indonesia",
+    #         "population": 276361783
+    #     },
+    #     {
+    #         "country": "Pakistan",
+    #         "population": 225199937
+    #     }
+    #     ]
+    # }
+    ```
+    
 ### 3. Indexing
 
 **Indexing** involves structuring documents and texts to enable LLMs to extract useful information efficiently. In LangChain, indexing is designed to optimize how documents are stored and retrieved within vector stores. These vector stores are specialized databases that excel in handling high-dimensional data points represented in vector embeddings.
@@ -131,7 +128,19 @@ For more detail, the indexing process in vector database [[3]](https://www.pinec
 
 **Memories** can be used to save conversation history and feed it along with new questions to LLM so multi-turn natural conversation chat can be implemented. 
 
-![Memory](/static/images/resource/llms/memory.png)
+```python
+from langchain.chains import ConversationChain
+from langchain.chains.conversation.memory import ConversationBufferMemory
+
+llm = ChatOpenAI(model='gpt-3.5-turbo', temperature=0)
+
+conversation = ConversationChain(llm=llm)
+
+conversation_buf = ConversationChain(
+    llm=llm,
+    memory=ConversationBufferMemory()
+)
+```
 
 Several types of conversational memory can be used with the **`ConversationChain`**, modifying the text passed to the **`{history}`** parameter [4].
 
@@ -161,7 +170,7 @@ chain = LLMChain(
 
 country = input('Enter Country: ')
 
-# Invoke the chain with specific virus and language values
+# Invoke the chain with specific country
 output = chain.invoke(country)
 print(output['text'])
 ```
