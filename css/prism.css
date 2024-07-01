@@ -24,7 +24,7 @@
 }
 
 .code-line.inserted {
-  @apply bg-green-500 bg-opacity-20;
+  @apply bg-green-600 bg-opacity-20;
 }
 
 .code-line.deleted {
