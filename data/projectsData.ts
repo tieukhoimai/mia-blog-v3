@@ -30,6 +30,18 @@ const projectsData: Project[] = [
     imgSrc: '/static/learning/statistical_learning.jpg',
     href: 'https://tieukhoimai.notion.site/Statistical-Learning-927bd5d75bce4999b8f78db0944e1b1d?pvs=4',
   },
+  {
+    title: 'Natural Language Processing',
+    description: `My personal lecture notes from course IN4080 - Natural Language Processing (2024/2025) at University of Oslo`,
+    imgSrc: '/static/learning/nlp.jpeg',
+    href: 'https://tieukhoimai.notion.site/IN4080-Natural-Language-Processing-4bc5ec594cec4e8c869a5d7164560b23?pvs=4',
+  },
+  {
+    title: 'Ethical Hacking',
+    description: `My personal lecture notes from course IN5290 - Ethical Hacking (2024/2025) at University of Oslo`,
+    imgSrc: '/static/learning/ethical_hacking.jpeg',
+    href: 'https://tieukhoimai.notion.site/All-in-one-IN5290-Ethical-Hacking-131e9d26b70080d1936ecbaeda66c25d?pvs=4',
+  },
 ]
 
 export default projectsData
