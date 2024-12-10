@@ -1,0 +1,179 @@
+---
+title: From Transformer to LLM - Part 2. LLMs and popular methods
+date: '2024-12-19'
+tags: ['LLMs','Language Models','Transformer', 'Fine-tuning', 'RAG', ]
+draft: true
+summary: 'TBD'
+image: '/static/images/resource/from-transformer-to-llm/prompting_viz_10.png'
+---
+
+<TOCInline toc={props.toc} asDisclosure toHeading={3} />
+
+# II. Large Language Models (LLMs)
+
+## 1. Definition
+
+> LLMs = **Machine learning models** optimized to **predict the next word** in text
+> - **Machine learning models** -> Deep Neural net (Transformer architecture) with many billions of parameters
+> - **predict the next word** -> trained on huge collections of texts crawled from the web
+
+- Key mechanism: **self-attention**
+- Input: sequence of tokens
+- Output: probabilities for the next token
+
+## 2. Training Process
+
+- The LLM is trained through **self-supervision**:
+
+  1. Given a text made of tokens $[w_1, w_2, \dots, w_n]$, we take partial sequences $[w_1, w_2, \dots, w_i]$ and seek to predict the next token $w_{i+1}$.
+  2. The LLM will take as input $[w_1, w_2, \dots, w_i]$ and output a **probability distribution** $\hat{y}_i$ over possible next tokens.
+  3. The loss for this token is then defined as the cross-entropy:
+     $$
+     L_{CE} = -\log \hat{y}_i[w_{i+1}]
+     $$
+
+     - **Explanation:** Probability of the actual token $w_{i+1}$ in the output distribution $\hat{y}_i$.
+  4. We then make (at batch level) a small update on the model weights $\theta$ to reduce the loss.
+
+- **Basic model update** through stochastic gradient descent (SGD):
+  $$
+  \theta^{t+1} = \theta^t - \eta \nabla_\theta L_{CE}
+  $$
+  - **Explanation:**
+    - $\theta^t$: Current model weights.
+    - $\nabla_\theta L_{CE}$: Gradient of the cross-entropy loss as a function of the model weights.
+    - $\eta$: Learning rate (controls the step size of each update).
+
+- **LLM training relies on optimizers** that are variants of SGD:
+  - Such as Adam (Adaptive Moment Estimation).
+  - **Distributed training** setup using many GPUs.
+
+
+## 3. Types of LLMs
+
+Encoder-only:
+
+- Masked language modelling
+- Smaller & older models, but still very good for IE tasks
+
+Decoder-only:
+
+- Now the dominant approach to LLMs
+
+Encoder-decoder:
+
+- Both self-attention and cross-attention
+- Employed for tasks such as MT
+
+## 4. Model Alignment
+
+### 4.1. Fine-tuning
+
+Once a model has been (pre)-trained, it can be fine-tuned for a particular task
+
+- Basically “further” training with smaller amounts of in-domain data, taking the pretrained model as starting point
+- Much more data-efficient than learning a model from scratch!
+    
+    → WHY? because the initial model has internalized “semantic representations” that can be transferred to the task to solve
+    
+- Only OPTIMIZE a small fraction of paramenters → **Parameter-efficient Fine-tuning (PEFT)**
+  - *Adapters:* Insert small trainable modules between layers
+  - *LoRA (Low-Rank Adaptation):* Modifies the model weights using lowrank matrices
+  - *Soft Prompting:* Appends trainable vectors to the input prompt
+  - *IA3 (Intrinsic Attention-guided Adaptation):* Adjusts attention mechanism in transformer layers
+
+![PEFT](/static/images/resource/from-transformer-to-llm/PEFT_viz_9.png)
+
+
+### 4.2. Two Alignment Strategies
+
+- **Instruction Tuning:** `*<instruction, correct response>*`
+    - Manually, by asking humans to write a question/problem and a correct answer to that problem
+    - By converting existing datasets for supervised NLP tasks (for text classification, sentiment analysis, NER, machine translation, etc.) to prompts → answers
+    - By using LLMs to generate instructions-> responses, based on external databases, general guidelines, etc.
+- **Preference Alignment:** using **preference data**, such as ratings of answers to prompts
+    - Several formats are possible, but a common one is to use triples `*<prompt, chosen response, reject response>*`
+    - The ratings can be collected by paying crowdworkers (based on guidelines that define what constitutes a “good” response), or by asking users to rate the responses they get
+
+## 5. Prompting
+
+A **prompt** = **input** to the LLM, which can be a question or instructions on the task to perform
+
+- System prompt: Generic instructions, defined by the system provider, on how the system should respond (be helpful, avoid offensive language, etc.) and how it should present itself to the user (“You are ChatGPT, a large language model trained by OpenAI…”)
+- User prompt: Specific instructions provided by the user
+
+![prompting](/static/images/resource/from-transformer-to-llm/prompting_viz_10.png)
+
+### 5.1. In-context learning
+
+For complex tasks, inserting in the prompt a few examples / demonstrations can help the model understand what kind of output is expected
+→ Called **“in-context learning”** or **“fewshots prompting”**
+
+### 5.2. Chain-of-Thought
+
+But those “reasoning” capabilities can be improved by forcing the LLM to generate longer, step-by-step responses
+
+- “Let’s think step by step”
+- In-context demonstrations of reasoning steps involved in solving similar problems
+- Can also ask the model to criticize or debate its own responses
+
+## 6. Generation
+
+Assume we have a trained a generative LLM that takes as input a list of $[w_1, w_2, …, w_n]$ and return a probability distribution over the next token $w_{i+1}$
+
+### 6.1. Greedy Decoding
+
+- At each step, just select the token with highest probability
+- And continue until a special `<eos>` token, or the maximum output length
+
+But greedy decoding is **short-sighted** ↔ Can get trapped in local minima (good “local” choice of token, but poor text at the end, with no way to backtrack)
+
+### 6.2 Beam search decoding
+
+- We keep at each step a «beam» of K hypotheses representing the best partial outputs so far
+- Those K hypotheses are gradually expanded, token by token
+- Until we reach `<eos>` or the maximum output length
+- Finally, we take the hypothesis with max probability among the K alternatives
+
+### 6.3. Top-K sampling
+
+- At each step, we select the K tokens with highest probability
+- We sample the next token only among those `K` possibilities (after renormalising the distribution)
+- And continue until `<eo>` or max sentence length
+
+### 6.4. Top-p sampling
+
+- Same principle, but instead of a fixed K, we select tokens among those making up the top **`p%`** of the probability mass
+
+### 6.5. Temperature
+
+The `creativity` of the generation can be controlled by the temperature
+- Temperatures < 1 will make the decoder more “conservative”, increasing its focus on high-probability tokens
+- Temperatures > 1 will make the decoder more “creative” and sometimes select less-likely tokens
+
+## 7. Retrieval-augmented generation
+
+Shortcoming of LLMs
+- Cannot add, remove or update fatual knowledge without retraining the model
+- Lack of transparency difficult to inspect the model knowledge or determine which source in the training data may have influenced the model when answering a given question
+- How can we connect LLM to internal databases or to ***specialized knowledge*** sources ?
+
+-> **Retrieval-augmented generation (RAG)**
+
+- Basic idea
+
+  1. Given a user prompt, we first search for relevant documents in a text database
+      -> **RETRIEVER** = **Information Retrieval Task**
+  2. The most relevant texts are then retrieved and added to the prompt to generate the response
+      -> **READER**
+    
+- Advantages of RAG
+  - Easier to **edit** the LLM’s factual knowledge: simply update the underlying database, without needing to retrain the LLM!
+  - Cleaner distinction between «linguistic» and «factual» knowledge
+  - Better **transparency**: if a model produces a wrong answer, we can check whether the error stems from the retrieved documents
+  - Better **attribution**: the LLM can indicate the sources that have been used to generate its response
+
+# Reference
+- Large Language Models, IN4080, Autumn 2024, lecture 8 https://www.uio.no/studier/emner/matnat/ifi/IN4080/h24/slides/in4080---2024---llms.pdf
+
+

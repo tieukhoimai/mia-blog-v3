@@ -1,0 +1,125 @@
+---
+title: From Transformer to LLM - Part 1. Quick recap on the Transformer
+date: '2024-12-19'
+tags: ['LLMs','Language Models','Transformer', 'Fine-tuning', 'RAG']
+draft: true
+summary: 'TBD'
+image: '/static/images/resource/from-transformer-to-llm/prompting_viz_10.png'
+---
+
+<TOCInline toc={props.toc} asDisclosure toHeading={3} />
+
+# I. The Transformer
+
+## 1. Mechanism
+
+### 1.1. Self-attention
+
+Create $g$ vectors in 3 places and roles
+
+- $g_t$: role is query → $q_i=W^Q \cdot g_i$
+- $g_c$: role is key → $k_i=W^K \cdot g_i$
+- $g_i$: role is value -> $v_i= V \cdot g_i$
+
+How to calculate $\alpha$
+
+$$
+\alpha_{t,c} = \text{softmax}(q_t \cdot k_c)
+$$
+
+**BUT** it can produce large value so scale
+
+Puttings everything together again
+
+$$
+h_t = \sigma \left( \sum_{i=1}^n \text{softmax}\left( \frac{\mathbf{q}_t \cdot \mathbf{k}_i}{\sqrt{d_k}} \right) \cdot \mathbf{v}_i \right)
+$$
+
+### 1.2. Multi-head attention
+
+With an extra index $h$ (head)
+
+- Query vector: $q_i^h=W^{Q,h} \cdot g_i$
+- Key vector: $k_i^h=W^{K,h}\cdot g_i$
+- Value vector: $v_i^h= V^h \cdot g_i$
+  
+We may want to have several $\alpha$ matrices to represent different types of attention:
+
+- One for syntactic relatedness
+- One for semantic relatedness
+- One for coreference, etc.
+
+![multi-head-attention](/static/images/resource/from-transformer-to-llm/transformer_self-attention_viz_1.png)
+
+<p style={{ textAlign: "center" }}>*Source: http://jalammar.github.io/illustrated-transformer/*</p>
+
+Compute the vector for one head 
+
+$$
+\text{head}_t^h = \sum_{i=1}^n \text{softmax} \left( \frac{\mathbf{q}_t^h \cdot \mathbf{k}_i^h}{\sqrt{d_k}} \right) \cdot \mathbf{v}_i^h
+$$
+
+Concatenate all head vectors and project then
+
+$$
+h_t = \left( \text{head}_t^1 \oplus \cdots \oplus \text{head}_t^m \right) \cdot W^O
+$$
+
+### 1.3. Position embeddings
+
+Self-attention does not have any notion of word ordering
+
+→ **Simple solution:** Concatenate semantic word embedding with absolute position embedding
+
+![position_embedding](/static/images/resource/from-transformer-to-llm/position_embedding_viz_2.png)
+
+Multi-head self-attention isn’t quite sufficient. We need a few extra things and package everything up into so-called Transformer blocks
+
+## 2. Types of Transformer models
+
+### 2.1. Sequence Encoders with self-attention
+
+Encoder self-attention covers the entire sequence, i.e. both the words to the left of the current position and the words to the right of the current position.
+
+- Text classification (one label per sentence)
+  - Train a model on the MLM task, adding a `[CLS]` token in front of every sentence
+  - Throw away the output layer, create a new one
+  - Fine-tune the model to predict the label at the `[CLS]` position
+
+![encoder_text_classification](/static/images/resource/from-transformer-to-llm/encoder_text_classification_viz_3.png)
+
+- Sequence labeling
+  - Train a model on the MLM task
+  - Throw away the output layer, create a new one
+  - Fine-tune the model on POS-annotated data
+
+![encoder_sequence_labeling](/static/images/resource/from-transformer-to-llm/encoder_sequence_labeling_viz_4.png)
+
+### 2.2. Sequence Decoders with self-attention
+
+- Attention can only access tokens to the left.
+- But typically, far-way tokens get less attention.
+- Decoder self-attention only covers the words to the left of the current position (because the words to the right are not yet known at test time).
+
+![decoder](/static/images/resource/from-transformer-to-llm/decoder_viz_5.png)
+
+### 2.3. Encoder-Decoder model with cross-attention
+
+Main idea in Machine Translation
+
+- Train an encoder for the source language
+- Train a decoder for the target language
+- Connecting
+    - First Idea: it can be work if we have the same word order of source and target language
+        
+        ![mt_first_idea](/static/images/resource/from-transformer-to-llm/mt_first_idea_viz_6.png)
+     
+    - So that’s why we need **cross-attention**
+        
+        ![mt_cross_attention](/static/images/resource/from-transformer-to-llm/mt_cross_attention_viz_7.png)
+        
+
+![full_transformer](/static/images/resource/from-transformer-to-llm/full_transformer_viz_8.png)
+
+# Reference
+- NN2 , IN4080, Autumn 2024, lecture 7, https://www.uio.no/studier/emner/matnat/ifi/IN4080/h24/slides/07-nn2.pdf
