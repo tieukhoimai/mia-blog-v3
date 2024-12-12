@@ -1,59 +1,86 @@
 ---
 title: From Transformer to LLM - Part 1. Quick recap on the Transformer
-date: '2024-12-19'
+date: '2024-12-12'
 tags: ['LLMs','Language Models','Transformer', 'Fine-tuning', 'RAG']
 draft: true
-summary: 'TBD'
-image: '/static/images/resource/from-transformer-to-llm/prompting_viz_10.png'
+summary: 'The transformer is a neural network with a specific structure that includes a mechanism called self-attention or more specifically, multi-head attention.'
+image: '/static/images/resource/from-transformer-to-llm/thumbnail-board-room-attention.png'
 ---
+
+<p className="note">
+  *The thumbnail is sourced from [A Deep Dive into Transformers with TensorFlow and Keras: Part 1](https://pyimagesearch.com/2022/09/05/a-deep-dive-into-transformers-with-tensorflow-and-keras-part-1/).*
+</p>
 
 <TOCInline toc={props.toc} asDisclosure toHeading={3} />
 
-# I. The Transformer
+The transformer is a neural network with a specific structure that includes a mechanism called **self-attention** or more specifically, **multi-head attention**.  This allows the model to build rich contextual representations of a token’s meaning by attending to and integrating information from surrounding tokens, effectively capturing how tokens relate to each other over long spans.
 
 ## 1. Mechanism
 
 ### 1.1. Self-attention
 
-Create $g$ vectors in 3 places and roles
+Attention is a mechanism used in transformers to help a model focus on relevant parts of the input sequence when creating representations for each token. Instead of processing each token independently, attention allows the model to weigh and combine information from other tokens in the sequence. This process helps the model capture relationships between tokens and build better context-aware representations.
 
-- $g_t$: role is query → $q_i=W^Q \cdot g_i$
-- $g_c$: role is key → $k_i=W^K \cdot g_i$
-- $g_i$: role is value -> $v_i= V \cdot g_i$
+In a transformer, attention works by taking the representation of a token at layer $k-1$ and computing how much each of the other tokens should contribute to the token’s new representation at layer $k$. This is done by calculating attention scores, which reflect the relevance of each token to the one being processed.
 
-How to calculate $\alpha$
+Self-attention is a type of attention mechanism where each token in the sequence attends to (or "pays attention to") every other token, including itself. This allows the model to capture dependencies between tokens, regardless of their position in the sequence.
+
+In self-attention, each token in the sequence is represented by three different types of vectors that capture distinct roles during the attention process. These roles are query, key, and value, and each token plays one of these roles at any given time.
+
+To compute self-attention, transformers introduce three sets of weight matrices: $W^Q$, $W^K$, and $W^V$. These weight matrices are used to transform the input token representation $g_i$ into the query, key, and value vectors.
+
+- Query vector $g_t$ is used to compute the attention scores with other tokens to determine which ones are most relevant to the current token.
+  $$
+  q_i=W^Q \cdot g_i
+  $$
+- The key vector $g_c$ helps to measure the similarity between tokens, allowing the model to decide how much attention to give each token based on the query-key comparison.
+  $$
+  k_i=W^K \cdot g_i
+  $$
+- The value vector $g_i$ contains the information (or "value") that will be aggregated and passed to the next layer
+  $$
+  v_i= V \cdot g_i
+  $$
+
+The self-attention mechanism computes attention scores by comparing the query vector of the current token with the key vectors of the previous tokens, then using these scores to weight the value vectors of those tokens. The weighted sum of the value vectors becomes the output for the current token.
+
+To calculate the attention scores $\alpha$, which determine how much focus one token should have on another, we first compute the dot product between the query vector $q_t$ of the current token $t$ and the key vector $k_c$ of the other token $c$:
 
 $$
-\alpha_{t,c} = \text{softmax}(q_t \cdot k_c)
+\alpha_{t,c} = \text{softmax}\left(q_t \cdot k_c\right)
 $$
 
-**BUT** it can produce large value so scale
+However, the raw dot product can result in large values, especially as the model dimensionality increases, which could lead to gradient instability during training. To mitigate this, we scale the dot product by the square root of the dimensionality of the key vectors, $d_k$, which helps maintain stable gradients:
 
-Puttings everything together again
+$$
+\alpha_{t,c} = \text{softmax}\left(\frac{q_t \cdot k_c}{\sqrt{d_k}}\right)
+$$
+
+After computing the attention scores, we use them to weight the value vectors $v_i$ of all tokens. The final output for a token $t$, denoted as $h_t$, is the weighted sum of the value vectors, where the weights are the attention scores:
 
 $$
 h_t = \sigma \left( \sum_{i=1}^n \text{softmax}\left( \frac{\mathbf{q}_t \cdot \mathbf{k}_i}{\sqrt{d_k}} \right) \cdot \mathbf{v}_i \right)
 $$
 
+This output, $h_t$, represents the context-aware embedding of token $t$, combining information from other tokens in the sequence, weighted by how relevant each token is to $t$.
+
 ### 1.2. Multi-head attention
 
-With an extra index $h$ (head)
+Multi-head attention is a mechanism within transformers that extends self-attention by allowing the model to attend to different aspects of the input simultaneously. This is achieved by using multiple attention heads, each operating independently but in parallel. Each head can focus on different linguistic relationships or patterns within the context, such as syntactic dependencies, semantic relatedness, or coreference resolution.
+
+<p align="center">
+  <img src="/static/images/resource/from-transformer-to-llm/transformer_self-attention_viz_1.png" alt="multi-head-attention" />
+</p>
+
+<p style={{ textAlign: "center" }}>*Source: http://jalammar.github.io/illustrated-transformer/*</p>
+
+In multi-head attention, the attention mechanism is applied multiple times in parallel, with each attention "head" using its own set of learned parameters. Each head independently computes attention using its own query, key, and value matrices:
 
 - Query vector: $q_i^h=W^{Q,h} \cdot g_i$
 - Key vector: $k_i^h=W^{K,h}\cdot g_i$
 - Value vector: $v_i^h= V^h \cdot g_i$
   
-We may want to have several $\alpha$ matrices to represent different types of attention:
-
-- One for syntactic relatedness
-- One for semantic relatedness
-- One for coreference, etc.
-
-![multi-head-attention](/static/images/resource/from-transformer-to-llm/transformer_self-attention_viz_1.png)
-
-<p style={{ textAlign: "center" }}>*Source: http://jalammar.github.io/illustrated-transformer/*</p>
-
-Compute the vector for one head 
+For each head $h$, the attention scores are computed as:
 
 $$
 \text{head}_t^h = \sum_{i=1}^n \text{softmax} \left( \frac{\mathbf{q}_t^h \cdot \mathbf{k}_i^h}{\sqrt{d_k}} \right) \cdot \mathbf{v}_i^h
@@ -122,4 +149,7 @@ Main idea in Machine Translation
 ![full_transformer](/static/images/resource/from-transformer-to-llm/full_transformer_viz_8.png)
 
 # Reference
-- NN2 , IN4080, Autumn 2024, lecture 7, https://www.uio.no/studier/emner/matnat/ifi/IN4080/h24/slides/07-nn2.pdf
+
+- [Lecture 7 - NN2](https://www.uio.no/studier/emner/matnat/ifi/IN4080/h24/slides/07-nn2.pdf), IN4080, Autumn 2024, University of Oslo
+- Speech and Language Processing. Daniel Jurafsky & James H. Martin. Copyright © 2024. Draft of August 20, 2024. CHAPTER
+9, The Transformer
