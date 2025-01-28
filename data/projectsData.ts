@@ -26,7 +26,7 @@ const projectsData: Project[] = [
   },
   {
     title: 'Statistical learning',
-    description: `My personal lecture notes from course Statistical learning (2023/2024) at University of Verona`,
+    description: `My personal lecture notes from course Statistical learning (2023/2024) at University of Verona and course STK-IN4300 - Statistical Learning Methods in Data Science (2024/2025) at University of Oslo`,
     imgSrc: '/static/learning/statistical_learning.jpg',
     href: 'https://tieukhoimai.notion.site/Statistical-Learning-927bd5d75bce4999b8f78db0944e1b1d?pvs=4',
   },
