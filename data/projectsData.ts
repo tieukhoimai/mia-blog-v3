@@ -42,6 +42,12 @@ const projectsData: Project[] = [
     imgSrc: '/static/learning/ethical_hacking.jpeg',
     href: 'https://tieukhoimai.notion.site/All-in-one-IN5290-Ethical-Hacking-131e9d26b70080d1936ecbaeda66c25d?pvs=4',
   },
+  {
+    title: 'Data Visualization',
+    description: `My personal lecture notes from course Data Visualization (2024/2025) at University of Verona`,
+    imgSrc: '/static/learning/data_viz.jpeg',
+    href: 'https://tieukhoimai.notion.site/Data-Visualization-187e9d26b7008093a7c9c186e002c082?pvs=4',
+  },
 ]
 
 export default projectsData
