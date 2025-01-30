@@ -46,7 +46,7 @@ const projectsData: Project[] = [
     title: 'Data Visualization',
     description: `My personal lecture notes from course Data Visualization (2024/2025) at University of Verona`,
     imgSrc: '/static/learning/data_viz.jpeg',
-    href: 'https://tieukhoimai.notion.site/Data-Visualization-187e9d26b7008093a7c9c186e002c082?pvs=4',
+    href: 'https://tieukhoimai.notion.site/Data-Visualization-04740f5e06a34588be315bfae414cddf?pvs=4',
   },
 ]
 
