@@ -146,7 +146,7 @@ export default function ListLayoutWithTags({
                             <Image src={image} width={2548} height={1296} alt="Blog Cover" />
                           </div>
                           <Link
-                            href={`/blog/${slug}`}
+                            href={`/${path}`}
                             className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                             aria-label={`Read more: "${title}"`}
                           >
