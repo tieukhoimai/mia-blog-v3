@@ -48,6 +48,12 @@ const projectsData: Project[] = [
     imgSrc: '/static/learning/data_viz.jpeg',
     href: 'https://tieukhoimai.notion.site/Data-Visualization-04740f5e06a34588be315bfae414cddf?pvs=4',
   },
+  {
+    title: 'Business Organization and Management ',
+    description: `My personal lecture notes from course Business Organization and Management (2023/2024) at University of Verona`,
+    imgSrc: '/static/learning/business_org.jpeg',
+    href: 'https://tieukhoimai.notion.site/Business-Organization-and-Management-2eb7b4f5423a44f68da0b71fb0a57d58?pvs=4',
+  },
 ]
 
 export default projectsData
