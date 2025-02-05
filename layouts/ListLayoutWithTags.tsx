@@ -78,94 +78,94 @@ export default function ListLayoutWithTags({
 
   return (
     <>
-      <div>
-        {/* <div className="pb-4 pt-4">
-          <h1 className="sm:hidden text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            {title}
-          </h1>
-        </div> */}
-        <div className="flex flex-col pb-2 pt-2">
-          {/* All Posts */}
-          <div className="sm:flex flex-wrap bg-gray-50 dark:bg-gray-900/70 dark:shadow-gray-800/40 rounded min-w-[280px] max-h-[280px]">
-            <div className="py-4 px-4">
-              {pathname.startsWith('/blog') ? (
-                <h3 className="text-primary-500 font-bold uppercase mb-3">All Posts</h3>
-              ) : (
-                <Link
-                  href={`/blog`}
-                  className="font-bold uppercase text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-500"
-                >
-                  All Posts
-                </Link>
-              )}
-              <div className="flex max-w-lg flex-wrap mt-3">
-                {sortedTags.map((t) => {
-                  return (
-                    <div key={t} className="p-2 pt-0">
-                      {pathname.split('/tags/')[1] === slug(t) ? (
-                        <h3 className="inline py-2 uppercase text-sm font-bold text-primary-500">
-                          {`${t} (${tagCounts[t]})`}
-                        </h3>
-                      ) : (
-                        <Link
-                          href={`/tags/${slug(t)}`}
-                          className="py-2 uppercase text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-500"
-                          aria-label={`View posts tagged ${t}`}
-                        >
-                          {`${t} (${tagCounts[t]})`}
-                        </Link>
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 xl:px-0">
+        <div className="space-y-8 pb-12 pt-16">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 sm:text-4xl">
+              {title}
+            </h1>
           </div>
 
-          {/* Body */}
-          <div>
-            <ul>
-              {displayPosts.map((post) => {
-                const { path, date, title, summary, tags, image } = post
-                return (
-                  <li key={path} className="py-6">
-                    <article className="space-y-2 flex flex-col xl:space-y-0">
-                      <dl>
-                        <dt className="sr-only">Published on</dt>
-                        <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                          <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
-                        </dd>
-                      </dl>
-                      <div className="space-y-3">
-                        <div>
-                          <h2 className="text-2xl font-bold leading-8 tracking-tight">
-                            <Link href={`/${path}`} className="text-gray-900 dark:text-gray-100">
-                              {title}
-                            </Link>
-                          </h2>
-                          <div className="flex flex-wrap">
-                            {tags?.map((tag) => <Tag key={tag} text={tag} />)}
-                          </div>
-                        </div>
-                        <div className="prose max-w-none text-gray-500 dark:text-gray-400">
-                          {summary}
-                        </div>
-                        <Image
-                          src={image}
-                          width={2548}
-                          height={1296}
-                          alt="Blog Cover"
-                          // style={{ opacity: '0.9' }}
-                        />
-                      </div>
-                    </article>
+          <div className="flex flex-col gap-8 md:flex-row">
+            {/* Tags Sidebar */}
+            <aside className="hidden md:block md:w-64">
+              <div className="sticky top-24 space-y-8">
+                <div className="space-y-4">
+                  <h2 className="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-300">
+                    Filter by tag
+                  </h2>
+                  <nav className="flex flex-col space-y-3">
+                    {sortedTags.map((tag) => (
+                      <Link
+                        key={tag}
+                        href={`/tags/${slug(tag)}`}
+                        className={`text-sm uppercase ${
+                          pathname === `/tags/${slug(tag)}`
+                            ? 'font-extrabold text-primary-600 dark:text-primary-400'
+                            : 'text-gray-600 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400'
+                        }`}
+                        aria-label={`View posts tagged ${tag}`}
+                      >
+                        {tag}
+                        <span className="ml-2 text-gray-400 dark:text-gray-400">
+                          ({tagCounts[tag]})
+                        </span>
+                      </Link>
+                    ))}
+                  </nav>
+                </div>
+              </div>
+            </aside>
+
+            {/* Posts List */}
+            <div className="min-w-0 flex-1">
+              <ul className="divide-y divide-gray-200 dark:divide-gray-800">
+                {!displayPosts.length && (
+                  <li className="py-4">
+                    <p className="text-gray-600 dark:text-gray-300">No posts found.</p>
                   </li>
-                )
-              })}
-            </ul>
-            {pagination && pagination.totalPages > 1 && (
-              <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
-            )}
+                )}
+
+                {displayPosts.map((post) => {
+                  const { path, date, title, summary, tags, image } = post
+                  return (
+                    <li key={path} className="py-12 first:pt-0">
+                      <article>
+                        <div className="space-y-8">
+                          <div className="space-y-4">
+                            <div className="flex flex-col gap-4 text-sm text-gray-500 dark:text-gray-300">
+                              <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                                <Link href={`/${path}`}>{title}</Link>
+                              </h2>
+                              <div className="flex flex-wrap gap-2">
+                                {tags?.map((tag) => <Tag key={tag} text={tag} />)}
+                              </div>
+                            </div>
+                            <p className="text-gray-600 dark:text-gray-300">{summary}</p>
+                            <Image src={image} width={2548} height={1296} alt="Blog Cover" />
+                          </div>
+                          <Link
+                            href={`/blog/${slug}`}
+                            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                            aria-label={`Read more: "${title}"`}
+                          >
+                            Read more &rarr;
+                          </Link>
+                        </div>
+                      </article>
+                    </li>
+                  )
+                })}
+              </ul>
+
+              {pagination && pagination.totalPages > 1 && (
+                <Pagination
+                  currentPage={pagination.currentPage}
+                  totalPages={pagination.totalPages}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
