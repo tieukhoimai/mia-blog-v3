@@ -13,24 +13,29 @@ export default function Page() {
         aria-label="Resume Content"
       >
         <header className="flex flex-col gap-3">
-            <h1 className="mb-2 inline-flex gap-2 text-4xl font-bold">
+          <h1 className="mb-2 inline-flex gap-2 text-4xl font-bold">
             <span className="text-teal-500"> Mai TIEU Khoi</span>
-            </h1>
+          </h1>
           <p className="text-gray-600 dark:text-gray-300">
-            1998 |{' '}
-            <Link href="mailto:tieukhoimai@gmail.com" className="text-blue-500 dark:text-blue-400">
+            <Link href="mailto:tieukhoimai@gmail.com" className="text-teal-500 dark:text-teal-400">
               tieukhoimai@gmail.com
             </Link>{' '}
             |{' '}
-            <Link href="https://tieukhoimai.me" className="text-blue-500 dark:text-blue-400">
+            <Link href="https://tieukhoimai.me" className="text-teal-500 dark:text-teal-400">
               Website
             </Link>{' '}
             |{' '}
-            <Link href="https://www.linkedin.com/in/tieukhoimai" className="text-blue-500 dark:text-blue-400">
+            <Link
+              href="https://www.linkedin.com/in/tieukhoimai"
+              className="text-teal-500 dark:text-teal-400"
+            >
               LinkedIn
             </Link>{' '}
             |{' '}
-            <Link href="https://github.com/tieukhoimai" className="text-blue-500 dark:text-blue-400">
+            <Link
+              href="https://github.com/tieukhoimai"
+              className="text-teal-500 dark:text-teal-400"
+            >
               GitHub
             </Link>
           </p>
@@ -39,7 +44,9 @@ export default function Page() {
         <section>
           <h2 className="text-xl font-semibold">Experience</h2>
           <div>
-            <h3 className="font-bold">Analytics Project Manager & Data Analyst / Fossil Group Inc</h3>
+            <h3 className="font-bold">
+              Analytics Project Manager & Data Analyst / Fossil Group Inc
+            </h3>
             <p className="text-gray-500 dark:text-gray-400">Apr 2022 - Sep 2023, Vietnam</p>
             <ul className="list-disc list-inside">
               <li>Led cross-functional teams for A/B testing and IoT analytics.</li>
