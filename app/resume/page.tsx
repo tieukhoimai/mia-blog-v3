@@ -150,7 +150,8 @@ export default function Page() {
             <li>Programming: Python, Google Apps Script, VBA, NextJS </li>
             <li>Data Visualization: Tableau, Microsoft Power BI, Redash, Metabase</li>
             <li>
-              Cloud and Databases: AWS (S3, Redshift, Athena), GCP (Firebase, BigQuery, Data Studio, GA4)
+              Cloud and Databases: AWS (S3, Redshift, Athena), GCP (Firebase, BigQuery, Data Studio,
+              GA4)
             </li>
           </ul>
         </section>
