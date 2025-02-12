@@ -44,34 +44,77 @@ export default function Page() {
         <section>
           <h2 className="text-xl font-semibold">Experience</h2>
           <div>
-            <h3 className="font-bold">
-              Analytics Project Manager & Data Analyst / Fossil Group Inc
-            </h3>
+            <h3>Analytics Project Manager & Data Analyst / Fossil Group Inc</h3>
             <p className="text-gray-500 dark:text-gray-400">Apr 2022 - Sep 2023, Vietnam</p>
-            <ul className="list-disc list-inside">
-              <li>Led cross-functional teams for A/B testing and IoT analytics.</li>
-              <li>Implemented dynamic dashboards with Tableau & Looker Studio.</li>
-              <li>Developed internal tracking systems and automated quality checks.</li>
+            <ul className="list-disc list-inside ml-2 mt-2 pl-5 text-sm text-justify">
+              <li>
+                Promoted and held a dual role as Analytics Project Manager and Data Analyst in the
+                2nd year.
+              </li>
+              <li>
+                Led and coordinated cross-functional teams to establish an A/B testing workflow,
+                framework, wireframes, and testing mechanisms on IoT device and application
+                platforms.
+              </li>
+              <li>
+                Planned sprint resources (2 Data Analysts), timelines, and schedules for the
+                analytics section in each internal program release.
+              </li>
+              <li>
+                Implemented metrics frameworks and dynamic dashboards to track KPIs and gain
+                valuable insights into user behavior, device performance monitoring, user
+                segmentation, and wellness data from wearable devices using Tableau and Looker
+                Studio.
+              </li>
+              <li>
+                Managed data pipelines, ETL processes, and ensured data accuracy on Redshift and
+                BigQuery.
+              </li>
+              <li>
+                Designed and developed an internal Tracking Event Management system, including Data
+                Quality Monitoring and Self-service Analytics, which automates the generation of
+                daily SQL queries on BigQuery and implements result alerts for quality assurance
+                using Google Apps Script and BigQuery.
+              </li>
+              <li>
+                Managed and published quarterly newsletters on internal Fossil Insights - a
+                self-hosted website using NextJS and Ghost by Data Team and co-organized Fossil-re
+                Invent sharing session series to raise data-driven awareness throughout the
+                organization.
+              </li>
             </ul>
           </div>
           <div>
             <h3 className="font-bold">Data Analyst / Amanotes</h3>
-            <p className="text-gray-500 dark:text-gray-400">Jan 2021 - Mar 2022, Vietnam</p>
-            <ul className="list-disc list-inside">
-              <li>Analyzed user data to improve app engagement and retention.</li>
-              <li>Created reports and visualizations to support decision-making.</li>
-              <li>Collaborated with product teams to define and track KPIs.</li>
+            <p className="text-gray-500 dark:text-gray-400">Aug 2021 – Feb 2022, Vietnam</p>
+            <ul className="list-disc list-inside ml-2 mt-2 pl-5 text-sm text-justify">
+              <li>
+                Integrated ETL data pipeline (including working with APIs, setting up data pipeline
+                on BigQuery) and ensured data integrity by implementing automated data tests using
+                dbt and Airflow.
+              </li>
+              <li>Developed dashboards in Looker Studio and Metabase.</li>
+              <li>
+                Analyzed user behaviors, app events, aha-moment identification, and song
+                performances in the music game with the application of user segmentation,
+                correlation, and cohort analysis techniques.
+              </li>
+              <li>
+                Designed & analyzed hypothesis tests (A/B) using statistical methods for product
+                experiments and carried out ad-hoc requests from business.
+              </li>
             </ul>
           </div>
           <div>
-            <h3 className="font-bold">
-              Software Engineer Intern / Bosch Global Software Technologies
-            </h3>
-            <p className="text-gray-500 dark:text-gray-400">Jun 2020 - Dec 2020, Vietnam</p>
-            <ul className="list-disc list-inside">
-              <li>Developed and maintained internal tools for data processing.</li>
-              <li>Assisted in the development of software solutions for clients.</li>
-              <li>Participated in code reviews and team meetings.</li>
+            <h3 className="font-bold">Software Engineer / Bosch Global Software Technologies</h3>
+            <p className="text-gray-500 dark:text-gray-400">Mar 2020 – Aug 2021, Vietnam</p>
+            <ul className="list-disc list-inside ml-2 mt-2 pl-5 text-sm text-justify">
+              <li>
+                Worked closely with Bosch Automotive Products Suzhou in automated driving domains.
+              </li>
+              <li>Analyzed data in the software development process and automotive radar data.</li>
+              <li>Configured and maintained a data analytics tool pipeline on Jenkins.</li>
+              <li>Implemented an automated database, data pipeline, and dashboard on PowerBI.</li>
             </ul>
           </div>
         </section>
@@ -79,43 +122,36 @@ export default function Page() {
         <section>
           <h2 className="text-xl font-semibold">Education</h2>
           <div>
+            <h3 className="font-bold">Erasmus+ / University of Oslo</h3>
+            <p className="text-gray-500 dark:text-gray-400">Aug 2024 – Dec 2024, Norway</p>
+          </div>
+          <div>
             <h3 className="font-bold">Master of Science in Data Science / University of Verona</h3>
             <p className="text-gray-500 dark:text-gray-400">Oct 2023 – Present, Italy</p>
           </div>
           <div>
             <h3 className="font-bold">
-              Bachelor of Science in Computer Science / University of Oslo
+              Bachelor of Science in Mathematics and Computer Science / Vietnam National University
+              - University of Science
             </h3>
-            <p className="text-gray-500 dark:text-gray-400">Sep 2019 – Jun 2023, Norway</p>
-          </div>
-          <div>
-            <h3 className="font-bold">Exchange Program / University of Verona</h3>
-            <p className="text-gray-500 dark:text-gray-400">Jan 2022 – Jun 2022, Italy</p>
+            <p className="text-gray-500 dark:text-gray-400">2017 – 2021, Vietnam</p>
           </div>
           <div>
             <h3 className="font-bold">
-              Bachelor of Science in Information Technology / Ho Chi Minh City University of Science
+              Bachelor in Business Administration / Ho Chi Minh City Open University
             </h3>
-            <p className="text-gray-500 dark:text-gray-400">Sep 2016 – Jun 2019, Vietnam</p>
+            <p className="text-gray-500 dark:text-gray-400">2016 – 2020, Vietnam</p>
           </div>
         </section>
 
         <section>
           <h2 className="text-xl font-semibold">Skills</h2>
           <ul className="list-disc list-inside">
-            <li>Data Analysis: Python, R, SQL, Excel</li>
-            <li>Data Visualization: Tableau, Looker Studio, Matplotlib, Seaborn</li>
-            <li>Programming: Python, JavaScript, TypeScript, Java</li>
-            <li>Web Development: React, Next.js, Node.js</li>
-            <li>Tools: Git, Docker, Jenkins</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold">Languages</h2>
-          <ul className="list-disc list-inside">
-            <li>English: Fluent</li>
-            <li>Vietnamese: Native</li>
+            <li>Programming: Python, Google Apps Script, VBA, NextJS </li>
+            <li>Data Visualization: Tableau, Microsoft Power BI, Redash, Metabase</li>
+            <li>
+              Cloud and Databases: AWS (S3, Redshift, Athena), GCP (Firebase, BigQuery, Data Studio, GA4)
+            </li>
           </ul>
         </section>
       </section>
