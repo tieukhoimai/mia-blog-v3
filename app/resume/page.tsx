@@ -179,7 +179,7 @@ export default function Page() {
               >
                 <div className="relative">
                   <Image
-                    src="/static/cv/uio.png"
+                    src="/static/cv/UiO.png"
                     alt="UiO"
                     width={600}
                     height={600}
