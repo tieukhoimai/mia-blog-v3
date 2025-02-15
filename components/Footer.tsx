@@ -15,7 +15,7 @@ export default function Footer() {
             </li>
             <li>{` • `}</li>
             <li>
-              <Link href="/resume.pdf">resume</Link>
+              <Link href="/resume">resume</Link>
             </li>
           </ul>
           <ul className="flex cursor-pointer items-center space-x-5">
