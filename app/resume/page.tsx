@@ -6,7 +6,7 @@ export const dynamic = 'force-static'
 export default function Page() {
   return (
     <main
-      className="container relative mx-auto scroll-my-12 overflow-auto p-4 print:p-11 md:p-16 dark:bg-gray-900 dark:text-white"
+      className="container relative mx-auto scroll-my-12 overflow-auto p-4 print:p-10 md:p-14 dark:bg-gray-900 dark:text-white"
       id="main-content"
     >
       <section
@@ -179,11 +179,11 @@ export default function Page() {
               >
                 <div className="relative">
                   <Image
-                    src="/static/cv/UiO.png"
+                    src="/static/cv/UiO.jpeg"
                     alt="UiO"
                     width={600}
                     height={600}
-                    className="h-6 w-auto grayscale group-hover:grayscale-0"
+                    className="h-4 w-auto grayscale group-hover:grayscale-0 "
                   />
                 </div>
                 <span>{'University of Oslo'}</span>
@@ -208,7 +208,7 @@ export default function Page() {
                     alt="Univr"
                     width={1000}
                     height={400}
-                    className="h-6 w-auto grayscale group-hover:grayscale-0 "
+                    className="h-6 w-auto grayscale group-hover:grayscale-0 dark:bg-white"
                   />
                 </div>
                 <span>{'University of Verona'}</span>
@@ -233,7 +233,7 @@ export default function Page() {
                     alt="HCMUS"
                     width={600}
                     height={600}
-                    className="h-8 w-auto grayscale group-hover:grayscale-0 "
+                    className="h-8 w-auto grayscale group-hover:grayscale-0 dark:bg-white"
                   />
                 </div>
                 <span>{'VNUHCM - University of Science'}</span>
