@@ -140,7 +140,7 @@ export default function Page() {
                     alt="Bosch"
                     width={600}
                     height={600}
-                    className="h-3 w-auto grayscale group-hover:grayscale-0"
+                    className="h-4 w-auto grayscale group-hover:grayscale-0"
                   />
                 </div>
                 <span>{'Bosch Global Software Technologie'}</span>
@@ -179,11 +179,11 @@ export default function Page() {
               >
                 <div className="relative">
                   <Image
-                    src="/static/cv/UiO.jpeg"
+                    src="/static/cv/UiO.png"
                     alt="UiO"
                     width={600}
                     height={600}
-                    className="h-4 w-auto grayscale group-hover:grayscale-0 "
+                    className="h-6 w-auto grayscale group-hover:grayscale-0 "
                   />
                 </div>
                 <span>{'University of Oslo'}</span>
@@ -233,7 +233,7 @@ export default function Page() {
                     alt="HCMUS"
                     width={600}
                     height={600}
-                    className="h-8 w-auto grayscale group-hover:grayscale-0 dark:bg-white"
+                    className="h-6 w-auto grayscale group-hover:grayscale-0 dark:bg-white"
                   />
                 </div>
                 <span>{'VNUHCM - University of Science'}</span>
@@ -253,11 +253,11 @@ export default function Page() {
               >
                 <div className="relative">
                   <Image
-                    src="/static/cv/hcmou.png"
+                    src="/static/cv/hcmou.jpeg"
                     alt="HCMOU"
-                    width={300}
-                    height={300}
-                    className="h-5 w-auto grayscale group-hover:grayscale-0 "
+                    width={600}
+                    height={600}
+                    className="h-6 w-auto grayscale group-hover:grayscale-0 "
                   />
                 </div>
                 <span>{'Ho Chi Minh City Open University'}</span>
