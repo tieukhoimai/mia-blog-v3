@@ -1,9 +1,9 @@
 ---
 title: From Transformer to LLMs
 date: '2024-12-12'
-tags: ['LLMs','Language Models','Transformer', 'Fine-tuning', 'RAG']
-draft: true
-summary: 'The transformer is a neural network with a specific structure that includes a mechanism called self-attention or more specifically, multi-head attention.'
+tags: ['LLMs','Language Models', 'Transformer', 'Fine-tuning', 'RAG']
+draft: false
+summary: 'This article explores the evolution from Transformers to Large Language Models (LLMs), detailing the mechanisms of self-attention and multi-head attention, the role of position embeddings, various types of transformer models, and the training and fine-tuning processes of LLMs.'
 image: '/static/images/resource/from-transformer-to-llm/thumbnail-board-room-attention.png'
 ---
 
@@ -73,11 +73,11 @@ Multi-head attention is a mechanism within transformers that extends self-attent
 - One for semantic relatedness
 - One for coreference, etc
 
-<p align="center">
-  <img src="/static/images/resource/from-transformer-to-llm/transformer_self-attention_viz_1.png" alt="multi-head-attention" />
-</p>
+{/* <img src="/static/images/resource/from-transformer-to-llm/transformer_self-attention_viz_1.png" alt="multi-head-attention"/> 
 
 <p style={{ textAlign: "center" }}>*Source: http://jalammar.github.io/illustrated-transformer*</p>
+
+*/}
 
 In multi-head attention, the attention mechanism is applied multiple times in parallel, with each attention "head" using its own set of learned parameters. Each head independently computes attention using its own query, key, and value matrices:
 
@@ -99,21 +99,21 @@ $$
 
 ## 2. Position embeddings
 
-TBD
+### 2.1. Position Embeddings
 
-Self-attention does not have any notion of word ordering
+Self-attention mechanisms in transformers do not inherently capture the order of words in a sequence. This lack of positional information can be problematic because the meaning of a sentence often depends on the order of its words.
 
-→ **Simple solution:** Concatenate semantic word embedding with absolute position embedding
+To address this, transformers use position embeddings to encode the position of each token in the sequence. These embeddings are then added to the token embeddings, allowing the model to incorporate both the semantic meaning of the words and their positions in the sequence.
 
+**Simple solution:** Concatenate the semantic word embedding with an absolute position embedding. This combined embedding is then used as the input to the transformer model, enabling it to understand the order of words in addition to their meanings.
+
+{/*
 ![position_embedding](/static/images/resource/from-transformer-to-llm/position_embedding_viz_2.png)
+*/}
 
-Multi-head self-attention isn’t quite sufficient. We need a few extra things and package everything up into so-called Transformer blocks
+Multi-head self-attention isn’t quite sufficient. We need a few extra things and package everything up into so-called Transformer blocks.
 
-## 3. Transformer blocks
-
-TBD
-
-## 4. Types of Transformer models
+## 3. Types of Transformer models
 
 ### 4.1. Sequence Encoders with self-attention
 
@@ -124,14 +124,18 @@ Encoder self-attention covers the entire sequence, i.e. both the words to the le
   - Throw away the output layer, create a new one
   - Fine-tune the model to predict the label at the `[CLS]` position
 
+{/*
 ![encoder_text_classification](/static/images/resource/from-transformer-to-llm/encoder_text_classification_viz_3.png)
+*/}
 
 - Sequence labeling
   - Train a model on the MLM task
   - Throw away the output layer, create a new one
   - Fine-tune the model on POS-annotated data
 
+{/*
 ![encoder_sequence_labeling](/static/images/resource/from-transformer-to-llm/encoder_sequence_labeling_viz_4.png)
+*/}
 
 ### 4.2. Sequence Decoders with self-attention
 
@@ -139,38 +143,35 @@ Encoder self-attention covers the entire sequence, i.e. both the words to the le
 - But typically, far-way tokens get less attention.
 - Decoder self-attention only covers the words to the left of the current position (because the words to the right are not yet known at test time).
 
+{/*
 ![decoder](/static/images/resource/from-transformer-to-llm/decoder_viz_5.png)
+*/}
 
-### 4.3. Encoder-Decoder model with cross-attention
+### 4.3. Encoder-Decoder model with cross-attention (Machine Translation)
 
-Main idea in Machine Translation
-
-- Train an encoder for the source language
-- Train a decoder for the target language
-- Connecting
-    - First Idea: it can be work if we have the same word order of source and target language
-        
-        ![mt_first_idea](/static/images/resource/from-transformer-to-llm/mt_first_idea_viz_6.png)
-     
-    - So that’s why we need **cross-attention**
-        
-        ![mt_cross_attention](/static/images/resource/from-transformer-to-llm/mt_cross_attention_viz_7.png)
-        
-
-![full_transformer](/static/images/resource/from-transformer-to-llm/full_transformer_viz_8.png)
-
+- **Train an Encoder for the Source Language:** The encoder processes the input sequence in the source language and generates a set of context-aware representations for each token.
+- **Train a Decoder for the Target Language:** The decoder generates the output sequence in the target language, using the context provided by the encoder.
+- **Connecting Encoder and Decoder:**
+  - **First Idea:** Directly connecting the encoder and decoder can work if the source and target languages have the same word order.
+    {/*
+    ![mt_first_idea](/static/images/resource/from-transformer-to-llm/mt_first_idea_viz_6.png)
+    */}
+  - **Cross-Attention:** To handle different word orders and improve translation quality, we use cross-attention. Cross-attention allows the decoder to focus on relevant parts of the source sequence by attending to the encoder's output representations.
+    {/*
+    ![mt_cross_attention](/static/images/resource/from-transformer-to-llm/mt_cross_attention_viz_7.png)
+    */}
 
 # II. Large Language Models (LLMs)
 
 ## 1. Definition
 
-> LLMs = **Machine learning models** optimized to **predict the next word** in text
-> - **Machine learning models** -> Deep Neural net (Transformer architecture) with many billions of parameters
-> - **predict the next word** -> trained on huge collections of texts crawled from the web
+LLMs are advanced **machine learning models** designed to **predict the next word** in a text sequence. These models leverage deep neural networks based on the Transformer architecture and contain billions of parameters. They are trained on vast amounts of text data collected from the web.
 
-- Key mechanism: **self-attention**
-- Input: sequence of tokens
-- Output: probabilities for the next token
+- **Key Mechanism**: Self-Attention
+- **Input**: A sequence of tokens.
+- **Output**: Probabilities for the next token.
+
+Self-attention allows the model to weigh the importance of different tokens in the sequence, enabling it to capture contextual relationships and dependencies between words, regardless of their distance from each other in the text.
 
 ## 2. Training Process
 
@@ -202,63 +203,58 @@ Main idea in Machine Translation
 
 ## 3. Types of LLMs
 
-Encoder-only:
-
-- Masked language modelling
-- Smaller & older models, but still very good for IE tasks
-
-Decoder-only:
-
-- Now the dominant approach to LLMs
-
-Encoder-decoder:
-
-- Both self-attention and cross-attention
-- Employed for tasks such as MT
+- Encoder-only
+  - **Masked language modeling**: These models predict missing words in a sentence.
+  - **Smaller & older models**: Despite being less complex, they are still effective for information extraction (IE) tasks.
+- Decoder-only: 
+  - **Dominant approach to LLMs**: These models generate text by predicting the next word in a sequence.
+- Encoder-decoder
+  - **Self-attention and cross-attention**: These models use both mechanisms to process input and output sequences.
+  - **Employed for tasks such as machine translation (MT)**: They are effective for tasks that require understanding and generating text in different languages.
 
 ## 4. Model Alignment
 
 ### 4.1. Fine-tuning
 
-Once a model has been (pre)-trained, it can be fine-tuned for a particular task
+Once a model has been pre-trained, it can be fine-tuned for a specific task. Fine-tuning involves additional training with smaller amounts of in-domain data, using the pre-trained model as a starting point. This process is much more data-efficient than training a model from scratch because the pre-trained model has already learned useful semantic representations that can be transferred to the new task.
 
-- Basically “further” training with smaller amounts of in-domain data, taking the pretrained model as starting point
-- Much more data-efficient than learning a model from scratch!
-    
-    → WHY? because the initial model has internalized “semantic representations” that can be transferred to the task to solve
-    
-- Only OPTIMIZE a small fraction of paramenters → **Parameter-efficient Fine-tuning (PEFT)**
-  - *Adapters:* Insert small trainable modules between layers
-  - *LoRA (Low-Rank Adaptation):* Modifies the model weights using lowrank matrices
-  - *Soft Prompting:* Appends trainable vectors to the input prompt
-  - *IA3 (Intrinsic Attention-guided Adaptation):* Adjusts attention mechanism in transformer layers
+During fine-tuning, only a small fraction of the parameters are optimized, a technique known as **Parameter-efficient Fine-tuning (PEFT)**. PEFT techniques include:
+
+- **Adapters:** These are small trainable modules inserted between layers of the pre-trained model. Adapters allow the model to learn task-specific adjustments without modifying the original model parameters extensively.
+- **LoRA (Low-Rank Adaptation):** This technique modifies the model weights using low-rank matrices. By decomposing the weight updates into low-rank matrices, LoRA reduces the number of parameters that need to be trained, making the fine-tuning process more efficient.
+- **Soft Prompting:** In this approach, trainable vectors are appended to the input prompt. These vectors are optimized during fine-tuning to guide the model's responses towards the desired task-specific outputs.
+- **IA3 (Intrinsic Attention-guided Adaptation):** This method adjusts the attention mechanism in transformer layers. By fine-tuning the attention weights, IA3 allows the model to focus on task-relevant parts of the input sequence, improving performance on the specific task.
+
+These PEFT techniques enable efficient adaptation of large pre-trained models to new tasks with minimal computational resources and data requirements.
 
 ![PEFT](/static/images/resource/from-transformer-to-llm/PEFT_viz_9.png)
 
 
 ### 4.2. Two Alignment Strategies
 
-- **Instruction Tuning:** `*<instruction, correct response>*`
-    - Manually, by asking humans to write a question/problem and a correct answer to that problem
-    - By converting existing datasets for supervised NLP tasks (for text classification, sentiment analysis, NER, machine translation, etc.) to prompts → answers
-    - By using LLMs to generate instructions-> responses, based on external databases, general guidelines, etc.
-- **Preference Alignment:** using **preference data**, such as ratings of answers to prompts
-    - Several formats are possible, but a common one is to use triples `*<prompt, chosen response, reject response>*`
-    - The ratings can be collected by paying crowdworkers (based on guidelines that define what constitutes a “good” response), or by asking users to rate the responses they get
+- **Instruction Tuning:** This involves training the model to follow specific instructions by providing it with pairs of instructions and correct responses.
+  - Manually: Humans write questions or problems and their correct answers.
+  - Dataset Conversion: Existing datasets for supervised NLP tasks (e.g., text classification, sentiment analysis, NER, machine translation) are converted into instruction-response pairs.
+  - LLM Generation: Large language models generate instruction-response pairs based on external databases and general guidelines.
+
+- **Preference Alignment:** This involves aligning the model's responses with human preferences using preference data, such as ratings of answers to prompts.
+  - Common Format: Triples of the form `<prompt, chosen response, reject response>`.
+  - Data Collection: Ratings can be collected by paying crowdworkers (following guidelines on what constitutes a “good” response) or by asking users to rate the responses they receive.
 
 ## 5. Prompting
 
-A **prompt** = **input** to the LLM, which can be a question or instructions on the task to perform
+A **prompt** = **input** to the LLM, which can be a question or instructions on the task to perform.
 
 - System prompt: Generic instructions, defined by the system provider, on how the system should respond (be helpful, avoid offensive language, etc.) and how it should present itself to the user (“You are ChatGPT, a large language model trained by OpenAI…”)
-- User prompt: Specific instructions provided by the user
+- User prompt: Specific instructions provided by the user.
 
 ![prompting](/static/images/resource/from-transformer-to-llm/prompting_viz_10.png)
 
-### 5.1. In-context learning
+### 5.1. In-context Learning
 
-For complex tasks, inserting in the prompt a few examples / demonstrations can help the model understand what kind of output is expected
-→ Called **“in-context learning”** or **“fewshots prompting”**
+**In-context learning**, also known as **few-shot prompting**, involves providing the model with a few examples or demonstrations within the prompt to help it understand the desired output for a given task. This technique is particularly useful for complex tasks where the model might need additional context to generate accurate and relevant responses.
+
+By including examples in the prompt, the model can learn from these instances and apply the learned patterns to produce the expected output.
 
 ### 5.2. Chain-of-Thought
 
@@ -304,25 +300,23 @@ The `creativity` of the generation can be controlled by the temperature
 
 ## 7. Retrieval-augmented generation
 
-Shortcoming of LLMs
-- Cannot add, remove or update fatual knowledge without retraining the model
-- Lack of transparency difficult to inspect the model knowledge or determine which source in the training data may have influenced the model when answering a given question
-- How can we connect LLM to internal databases or to ***specialized knowledge*** sources ?
+**Retrieval-augmented generation (RAG)** is a method to enhance LLMs by connecting them to external databases or specialized knowledge sources.
 
--> **Retrieval-augmented generation (RAG)**
+### 7.1. Shortcomings of LLMs
 
-- Basic idea
+- **Static Knowledge**: Cannot add, remove, or update factual knowledge without retraining the model.
+- **Lack of Transparency**: Difficult to inspect the model's knowledge or determine which source in the training data influenced the model's answers.
 
-  1. Given a user prompt, we first search for relevant documents in a text database
-      -> **RETRIEVER** = **Information Retrieval Task**
-  2. The most relevant texts are then retrieved and added to the prompt to generate the response
-      -> **READER**
-    
-- Advantages of RAG
-  - Easier to **edit** the LLM’s factual knowledge: simply update the underlying database, without needing to retrain the LLM!
-  - Cleaner distinction between «linguistic» and «factual» knowledge
-  - Better **transparency**: if a model produces a wrong answer, we can check whether the error stems from the retrieved documents
-  - Better **attribution**: the LLM can indicate the sources that have been used to generate its response
+### 7.2. Basic Idea
+
+1. **Retriever**: Given a user prompt, search for relevant documents in a text database (Information Retrieval Task).
+2. **Reader**: Retrieve the most relevant texts and add them to the prompt to generate the response.
+
+### 7.3. Advantages of RAG
+- Easier to **edit** the LLM’s factual knowledge: simply update the underlying database, without needing to retrain the LLM!
+- Cleaner distinction between «linguistic» and «factual» knowledge
+- Better **transparency**: if a model produces a wrong answer, we can check whether the error stems from the retrieved documents
+- Better **attribution**: the LLM can indicate the sources that have been used to generate its response
 
 # Reference
 
