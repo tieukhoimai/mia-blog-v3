@@ -49,6 +49,12 @@ const projectsData: Project[] = [
     href: 'https://tieukhoimai.notion.site/Data-Visualization-04740f5e06a34588be315bfae414cddf?pvs=4',
   },
   {
+    title: 'Business Analytics',
+    description: `My personal lecture notes from course Business Analytics (2024/2025) at University of Verona`,
+    imgSrc: '/static/learning/business-analytics.jpg',
+    href: 'https://tieukhoimai.notion.site/Business-Analytics-1f0e9d26b700802587d5e159fcdcab99?pvs=73',
+  },
+  {
     title: 'Business Organization and Management ',
     description: `My personal lecture notes from course Business Organization and Management (2023/2024) at University of Verona`,
     imgSrc: '/static/learning/business_org.jpeg',
