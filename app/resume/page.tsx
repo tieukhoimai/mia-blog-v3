@@ -147,7 +147,7 @@ export default function Page() {
               </Link>
             </h3>
             <div className="group inline-flex gap-2 text-xs uppercase text-gray-500 dark:text-gray-400">
-              Aug 2021 – Feb 2022, Vietnam
+              Mar 2020 – Aug 2021, Vietnam
             </div>
             <ul className="ml-2 mt-2 list-disc pl-5 text-sm">
               <li className="mt-1">
