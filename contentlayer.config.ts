@@ -63,6 +63,47 @@ function createTagCount(allBlogs) {
   writeFileSync('./app/tag-data.json', JSON.stringify(tagCount))
 }
 
+/**
+ * Create series data with articles grouped by series name
+ */
+function createSeriesData(allBlogs) {
+  interface SeriesArticle {
+    title: string
+    date: string
+    summary: string
+    slug: string
+    image: string
+    series: string
+    path: string
+  }
+  
+  const seriesData: Record<string, SeriesArticle[]> = {}
+  allBlogs.forEach((file) => {
+    if (file.series && (!isProduction || file.draft !== true)) {
+      const seriesSlug = slug(file.series)
+      if (!seriesData[seriesSlug]) {
+        seriesData[seriesSlug] = []
+      }
+      seriesData[seriesSlug].push({
+        title: file.title,
+        date: file.date,
+        summary: file.summary,
+        slug: file.slug,
+        image: file.image,
+        series: file.series,
+        path: file.path,
+      })
+    }
+  })
+
+  // Sort articles within each series by date
+  Object.keys(seriesData).forEach((seriesSlug) => {
+    seriesData[seriesSlug].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+  })
+
+  writeFileSync('./app/series-data.json', JSON.stringify(seriesData))
+}
+
 function createSearchIndex(allBlogs) {
   if (
     siteMetadata?.search?.provider === 'kbar' &&
@@ -92,6 +133,7 @@ export const Blog = defineDocumentType(() => ({
     layout: { type: 'string' },
     bibliography: { type: 'string' },
     canonicalUrl: { type: 'string' },
+    series: { type: 'string' },
   },
   computedFields: {
     ...computedFields,
@@ -151,9 +193,10 @@ export default makeSource({
       rehypePresetMinify,
     ],
   },
-  onSuccess: async (importData) => {
-    const { allBlogs } = await importData()
-    createTagCount(allBlogs)
-    createSearchIndex(allBlogs)
-  },
+  // onSuccess: async (importData) => {
+  //   const { allBlogs } = await importData()
+  //   createTagCount(allBlogs)
+  //   createSeriesData(allBlogs)
+  //   createSearchIndex(allBlogs)
+  // },
 })

@@ -1,14 +1,14 @@
 ---
-title: Relational Database Management System
+title: 'Relational Database Management System'
 date: '2025-06-29'
 tags: ['Database', 'Data Science', 'Data Management']
 draft: false
 summary: 'This article provides an overview of Relational Database Management Systems (RDBMS), covering key features such as data representation through tables, transaction principles (Atomicity, Consistency, Isolation, Durability), and concepts like primary and foreign keys. It highlights the importance of data integrity, security, normalization, and referential integrity in maintaining valid relationships between tables for effective data management.'
 image: '/static/images/resource/relational-database-management-system/thumbnail.png'
+series: 'Database & Data Engineering'
 ---
-<p className="note">
-  *The thumbnail is sourced from [Modeling: relational to graph](https://neo4j.com/docs/getting-started/data-modeling/relational-to-graph-modeling/)*
-</p>
+
+*The thumbnail is sourced from [Modeling: relational to graph](https://neo4j.com/docs/getting-started/data-modeling/relational-to-graph-modeling/)*
 
 <TOCInline toc={props.toc} asDisclosure toHeading={3} />
 
@@ -177,29 +177,23 @@ A **foreign key** is a column (or set of columns) in one table that connects to 
 
 ![Foreign Key and Primary Key Example](/static/images/resource/relational-database-management-system/primary-foreign-key-example.png)
 
-### 8.2. Foreign Key Benefits
+### 7.2. Foreign Key Benefits
 
 - Establishes and enforces links between tables
 - Maintains data consistency across related tables
 - Prevents orphaned records
 - Supports referential integrity
 
-## 9. Referential Integrity
+## 8. Referential Integrity
 
-### 9.1. Definition and Importance
+### 8.1. Definition and Importance
 
 **Referential Integrity** is a property of a database in which all values of all foreign keys are valid.
 
 ![Referential Integrity](/static/images/resource/relational-database-management-system/referential-integrity.png)
 
-### 9.2. Referential Constraints
+### 8.2. Referential Constraints
 
 A **referential constraint** is the rule by which, given a child table, the values of the foreign key are valid only if:
 - They appear as values of a parent key
 - Null values are usually allowed (depending on business rules)
-
-## 12. Conclusion
-
-Relational Database Management Systems form the backbone of modern data management, providing robust, reliable, and scalable solutions for storing and managing structured data. Understanding the principles of RDBMS - from ACID properties to referential integrity - is crucial for anyone working with data.
-
-The concepts covered in this article, including relations, functional dependencies, primary and foreign keys, and referential integrity, are fundamental to designing efficient and reliable database systems. As data continues to grow in importance across all industries, mastering these RDBMS concepts becomes increasingly valuable.

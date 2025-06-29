@@ -1,0 +1,51 @@
+{
+  "database--data-engineering": [
+    {
+      "title": "Dimensional Modeling - Part 1: Basic Fact Table Techniques",
+      "date": "2023-04-02",
+      "summary": "In this article, I will introduce the concept of the Basic Fact table in Dimensional data modeling. To understand this technique, we will explore the different types of data modeling and recap some fundamental knowledge, including the star and snowflake schemas, and the concepts of normalization.",
+      "slug": "dimensional-part-1",
+      "image": "/static/images/resource/dimensional-part-1/thumbnail.jpg",
+      "series": "Database & Data Engineering",
+      "path": "blog/dimensional-part-1"
+    },
+    {
+      "title": "Dimensional Modeling - Part 2: Basic Dimension Table Techniques",
+      "date": "2023-08-08",
+      "summary": "The topics covered include Degenerate Dimension, Conformed Dimension, Role-Playing Dimension, Junk Dimension, Outrigger Dimension, and Slowly Changing Dimensions (SCD). The SCD category further delves into different types, such as Type 0 to Type 7, each with its unique approach to handling historical and changing data.",
+      "slug": "dimensional-part-2",
+      "image": "/static/images/resource/dimensional-part-2/thumbnail.jpg",
+      "series": "Database & Data Engineering",
+      "path": "blog/dimensional-part-2"
+    },
+    {
+      "title": "Relational Database Management System",
+      "date": "2025-06-29",
+      "summary": "This article provides an overview of Relational Database Management Systems (RDBMS), covering key features such as data representation through tables, transaction principles (Atomicity, Consistency, Isolation, Durability), and concepts like primary and foreign keys. It highlights the importance of data integrity, security, normalization, and referential integrity in maintaining valid relationships between tables for effective data management.",
+      "slug": "relational-database-management-system",
+      "image": "/static/images/resource/relational-database-management-system/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/relational-database-management-system"
+    }
+  ],
+  "llms": [
+    {
+      "title": "LLMs in LangChain - Part 1. Conceptual",
+      "date": "2024-06-30",
+      "summary": "This article provides an overview of Large Language Models (LLMs), LLMs evolution and the core concepts of LangChain - an open source framework for building applications based on LLMs.",
+      "slug": "llms-part-1",
+      "image": "/static/images/resource/llms/part-1.png",
+      "series": "LLMs",
+      "path": "blog/llms-part-1"
+    },
+    {
+      "title": "LLMs in LangChain - Part 2. LLMs Core Concepts",
+      "date": "2024-07-01",
+      "summary": "This article provides an overview of the core concepts of Large Language Models (LLMs) in LangChain, including LLM components, prompt templates, indexing, memory, chains, and agents.",
+      "slug": "llms-part-2",
+      "image": "/static/images/resource/llms/chat_models.png",
+      "series": "LLMs",
+      "path": "blog/llms-part-2"
+    }
+  ]
+}
