@@ -31,7 +31,7 @@ export function getSeriesForArticle(articleSeries: string): SeriesArticle[] {
   const seriesSlug = Object.keys(seriesData).find((key) =>
     seriesData[key].some((article) => article.series === articleSeries)
   )
-  
+
   return seriesSlug ? seriesData[seriesSlug] : []
 }
 
@@ -40,7 +40,7 @@ export function getAllSeries(): {
 } {
   const seriesData = getSeriesData()
   const result: { [key: string]: { name: string; articles: SeriesArticle[]; count: number } } = {}
-  
+
   Object.entries(seriesData).forEach(([slug, articles]) => {
     if (articles.length > 0) {
       result[slug] = {
@@ -50,6 +50,6 @@ export function getAllSeries(): {
       }
     }
   })
-  
+
   return result
 }

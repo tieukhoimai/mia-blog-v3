@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import series styles */
-@import './series-page.css';
 
 .task-list-item::before {
   @apply hidden;
