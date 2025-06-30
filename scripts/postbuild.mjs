@@ -5,7 +5,7 @@ async function postbuild() {
     // Generate series data automatically from MDX files
     console.log('Generating series data...')
     execSync('node scripts/generate-series.mjs', { stdio: 'inherit' })
-    
+
     // Generate RSS feeds - commented out due to import assertion issue
     // await rss()
     console.log('Postbuild process completed successfully!')

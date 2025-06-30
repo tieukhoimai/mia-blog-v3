@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from '@/components/Link'
+import Tag from '@/components/Tag'
 
 interface SeriesArticle {
   title: string
@@ -12,6 +13,7 @@ interface SeriesArticle {
   series: string
   path: string
   seriesOrder?: number | null
+  tags: string[]
 }
 
 interface SeriesData {
@@ -81,63 +83,106 @@ export default function SeriesList() {
   }
 
   return (
-    <div className="grid gap-10 md:gap-10">
+    <div className="space-y-8">
       {Object.entries(seriesData).map(([seriesSlug, articles], index) => {
         const seriesName = articles[0]?.series || seriesSlug
-        // const seriesIcon = '🏷️'
-        // const bgClass = bgVariants[index % bgVariants.length]
 
         return (
           <div
             key={seriesSlug}
-            className="bg-teal-100 dark:bg-teal-950/30 border-l-4 border-teal-500 p-6 dark:border-teal-700"
+            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
           >
-            <div className="mb-4">
-              <h2 className="text-2xl font-semibold text-teal-900 dark:text-teal-100 flex items-center gap-2">
-                {/* {seriesIcon} <span>Series: {seriesName}</span> */}
-                <span>Series: {seriesName}</span>
-              </h2>
-              <p className="text-sm text-gray-700 dark:text-teal-300 mt-1">
-                {articles.length} article{articles.length > 1 ? 's' : ''} in this series
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-6">
-              {articles
-                .slice() // copy to avoid mutating original
-                .sort((a, b) => {
-                  // If both have seriesOrder, sort numerically
-                  if (a.seriesOrder != null && b.seriesOrder != null) {
-                    return a.seriesOrder - b.seriesOrder
-                  }
-                  // If only one has seriesOrder, that one comes first
-                  if (a.seriesOrder != null) return -1
-                  if (b.seriesOrder != null) return 1
-                  // Otherwise, keep original order
-                  return 0
-                })
-                .map((article, index) => (
-                  <div
-                    key={article.slug}
-                    className="flex flex-col md:flex-row items-start gap-4 bg-white dark:bg-teal-950/50 border border-gray-200 dark:border-teal-800 p-5 shadow-sm transition-all duration-300 hover:shadow-lg hover:scale-[1.01] hover:border-teal-400 dark:hover:border-teal-500 hover:bg-teal-50 dark:hover:bg-teal-900/40"
+            <div className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-teal-500 text-white rounded-full flex items-center justify-center font-bold text-lg">
+                  📚
+                </div>
+                <div className="flex-1">
+                  <Link
+                    href={`/series/${seriesSlug}`}
+                    className="text-2xl font-bold text-gray-900 dark:text-gray-100 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                   >
-                    <div className="bg-teal-500 dark:bg-teal-200 text-white dark:text-teal-900 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center font-bold text-xl md:text-2xl shrink-0">
-                      {article.seriesOrder || index + 1}
+                    {seriesName}
+                  </Link>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    A comprehensive series of {articles.length} article
+                    {articles.length > 1 ? 's' : ''} covering {seriesName.toLowerCase()} topics in
+                    depth.
+                  </p>
+                </div>
+                <Link
+                  href={`/series/${seriesSlug}`}
+                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-900/30 border border-teal-300 dark:border-teal-700 rounded-md hover:bg-teal-100 dark:hover:bg-teal-900/50 transition-colors"
+                >
+                  View Series
+                  <svg
+                    className="ml-1 w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Link>
+              </div>
+
+              <div className="space-y-3">
+                {articles
+                  .slice()
+                  .sort((a, b) => {
+                    if (a.seriesOrder != null && b.seriesOrder != null) {
+                      return a.seriesOrder - b.seriesOrder
+                    }
+                    if (a.seriesOrder != null) return -1
+                    if (b.seriesOrder != null) return 1
+                    return 0
+                  })
+                  .map((article, index) => (
+                    <div
+                      key={article.slug}
+                      className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      <div className="w-8 h-8 bg-teal-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                        {article.seriesOrder || index + 1}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <Link
+                          href={`/${article.path}`}
+                          className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-teal-600 dark:hover:text-teal-400 transition-colors truncate block"
+                        >
+                          {article.title}
+                        </Link>
+                        <div className="flex items-center justify-between">
+                          <time className="text-xs text-gray-500 dark:text-gray-400">
+                            {article.date}
+                          </time>
+                          {article.tags && article.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1">
+                              {article.tags.slice(0, 2).map((tag) => (
+                                <span
+                                  key={tag}
+                                  className="text-xs px-2 py-1 bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 rounded-full"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                              {article.tags.length > 2 && (
+                                <span className="text-xs text-gray-500 dark:text-gray-400">
+                                  +{article.tags.length - 2}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex-1 text-left">
-                      <Link
-                        href={`/${article.path}`}
-                        className="block text-lg md:text-xl font-semibold text-gray-900 dark:text-teal-100 hover:text-teal-800 dark:hover:text-teal-50 transition-colors"
-                      >
-                        {article.title}
-                      </Link>
-                      <ExpandableSummary text={article.summary} />
-                      <time className="text-xs text-gray-500 dark:text-gray-400">
-                        {article.date}
-                      </time>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+              </div>
             </div>
           </div>
         )

@@ -7,6 +7,7 @@ import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
 import Image from '@/components/Image'
 import Tag from '@/components/Tag'
+import SeriesNavigation from '@/components/SeriesNavigation'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 
@@ -30,7 +31,7 @@ interface LayoutProps {
 }
 
 export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
-  const { filePath, path, slug, date, title, tags, image } = content
+  const { filePath, path, slug, date, title, tags, image, series } = content
   const basePath = path.split('/')[0]
 
   return (
@@ -105,6 +106,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 />
               </div>
               <div className="prose max-w-none pb-8 pt-10 dark:prose-invert">{children}</div>
+              {series && <SeriesNavigation currentSeries={series} currentSlug={slug} />}
               <div className=" pb-6 pt-6 text-sm text-gray-700 dark:text-gray-300">
                 <Link href={editUrl(filePath)}>View on GitHub</Link>
               </div>

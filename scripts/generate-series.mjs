@@ -53,6 +53,7 @@ function createSeriesData() {
         series: frontmatter.series,
         path: `blog/${articleSlug}`,
         seriesOrder: frontmatter.seriesOrder || null,
+        tags: frontmatter.tags || [],
       })
     } catch (error) {
       console.error(`❌ Error processing ${filePath}:`, error.message)

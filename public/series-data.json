@@ -8,7 +8,8 @@
       "image": "/static/images/resource/relational-database-management-system/thumbnail.png",
       "series": "Database & Data Engineering",
       "path": "blog/relational-database-management-system",
-      "seriesOrder": 1
+      "seriesOrder": 1,
+      "tags": ["Database", "Data Management"]
     },
     {
       "title": "ER Modeling and Normalization",
@@ -18,7 +19,8 @@
       "image": "/static/images/resource/er-modeling-and-normalization/thumbnail.png",
       "series": "Database & Data Engineering",
       "path": "blog/er-modeling-and-normalization",
-      "seriesOrder": 2
+      "seriesOrder": 2,
+      "tags": ["Database", "Data Modeling", "Normalization", "ER Diagram"]
     },
     {
       "title": "Dimensional Modeling - Part 1: Basic Fact Table Techniques",
@@ -28,7 +30,8 @@
       "image": "/static/images/resource/dimensional-part-1/thumbnail.jpg",
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-part-1",
-      "seriesOrder": 3
+      "seriesOrder": 3,
+      "tags": ["Data Warehouse", "Database"]
     },
     {
       "title": "Dimensional Modeling - Part 2: Basic Dimension Table Techniques",
@@ -38,7 +41,8 @@
       "image": "/static/images/resource/dimensional-part-2/thumbnail.jpg",
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-part-2",
-      "seriesOrder": 4
+      "seriesOrder": 4,
+      "tags": ["Data Warehouse", "Database"]
     }
   ],
   "llms": [
@@ -50,7 +54,8 @@
       "image": "/static/images/resource/llms/part-1.png",
       "series": "LLMs",
       "path": "blog/llms-part-1",
-      "seriesOrder": null
+      "seriesOrder": null,
+      "tags": ["LLMs", "Language Models", "LangChain"]
     },
     {
       "title": "LLMs in LangChain - Part 2. LLMs Core Concepts",
@@ -60,7 +65,8 @@
       "image": "/static/images/resource/llms/chat_models.png",
       "series": "LLMs",
       "path": "blog/llms-part-2",
-      "seriesOrder": null
+      "seriesOrder": null,
+      "tags": ["LLMs", "Language Models", "LangChain"]
     }
   ]
 }
