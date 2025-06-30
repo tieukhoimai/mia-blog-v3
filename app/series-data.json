@@ -1,13 +1,24 @@
 {
   "database--data-engineering": [
     {
+      "title": "Relational Database Management System",
+      "date": "2025-06-29",
+      "summary": "This article provides an overview of Relational Database Management Systems (RDBMS), covering key features such as data representation through tables, transaction principles (Atomicity, Consistency, Isolation, Durability), and concepts like primary and foreign keys. It highlights the importance of data integrity, security, normalization, and referential integrity in maintaining valid relationships between tables for effective data management.",
+      "slug": "relational-database-management-system",
+      "image": "/static/images/resource/relational-database-management-system/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/relational-database-management-system",
+      "seriesOrder": 1
+    },
+    {
       "title": "Dimensional Modeling - Part 1: Basic Fact Table Techniques",
       "date": "2023-04-02",
       "summary": "In this article, I will introduce the concept of the Basic Fact table in Dimensional data modeling. To understand this technique, we will explore the different types of data modeling and recap some fundamental knowledge, including the star and snowflake schemas, and the concepts of normalization.",
       "slug": "dimensional-part-1",
       "image": "/static/images/resource/dimensional-part-1/thumbnail.jpg",
       "series": "Database & Data Engineering",
-      "path": "blog/dimensional-part-1"
+      "path": "blog/dimensional-part-1",
+      "seriesOrder": 2
     },
     {
       "title": "Dimensional Modeling - Part 2: Basic Dimension Table Techniques",
@@ -16,16 +27,8 @@
       "slug": "dimensional-part-2",
       "image": "/static/images/resource/dimensional-part-2/thumbnail.jpg",
       "series": "Database & Data Engineering",
-      "path": "blog/dimensional-part-2"
-    },
-    {
-      "title": "Relational Database Management System",
-      "date": "2025-06-29",
-      "summary": "This article provides an overview of Relational Database Management Systems (RDBMS), covering key features such as data representation through tables, transaction principles (Atomicity, Consistency, Isolation, Durability), and concepts like primary and foreign keys. It highlights the importance of data integrity, security, normalization, and referential integrity in maintaining valid relationships between tables for effective data management.",
-      "slug": "relational-database-management-system",
-      "image": "/static/images/resource/relational-database-management-system/thumbnail.png",
-      "series": "Database & Data Engineering",
-      "path": "blog/relational-database-management-system"
+      "path": "blog/dimensional-part-2",
+      "seriesOrder": 3
     }
   ],
   "llms": [
@@ -36,7 +39,8 @@
       "slug": "llms-part-1",
       "image": "/static/images/resource/llms/part-1.png",
       "series": "LLMs",
-      "path": "blog/llms-part-1"
+      "path": "blog/llms-part-1",
+      "seriesOrder": null
     },
     {
       "title": "LLMs in LangChain - Part 2. LLMs Core Concepts",
@@ -45,7 +49,8 @@
       "slug": "llms-part-2",
       "image": "/static/images/resource/llms/chat_models.png",
       "series": "LLMs",
-      "path": "blog/llms-part-2"
+      "path": "blog/llms-part-2",
+      "seriesOrder": null
     }
   ]
 }

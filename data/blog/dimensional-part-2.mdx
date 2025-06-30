@@ -1,11 +1,12 @@
 ---
-title: "Dimensional Modeling - Part 2: Basic Dimension Table Techniques"
+title: 'Dimensional Modeling - Part 2: Basic Dimension Table Techniques'
 date: '2023-08-08'
 tags: ['Data Warehouse', 'Database']
 draft: false
 summary: 'The topics covered include Degenerate Dimension, Conformed Dimension, Role-Playing Dimension, Junk Dimension, Outrigger Dimension, and Slowly Changing Dimensions (SCD). The SCD category further delves into different types, such as Type 0 to Type 7, each with its unique approach to handling historical and changing data.'
 image: '/static/images/resource/dimensional-part-2/thumbnail.jpg'
 series: 'Database & Data Engineering'
+seriesOrder: 3
 ---
 
 <TOCInline toc={props.toc} asDisclosure toHeading={3} />
@@ -13,69 +14,66 @@ series: 'Database & Data Engineering'
 ## 1. Degenerate Dimension
 
 > A degenerate dimension is a concept within data warehousing and database design. It refers to a dimension that consists of a single attribute, typically a key or identifier, found in a fact table. This type of dimension is commonly encountered in scenarios involving transactional or accumulating snapshot fact tables.
-> 
 
-For instance, consider a fact table that records sales transactions. In this context, the `TransactionId` can be regarded as a degenerate dimension. Unlike conventional dimensions, degenerate dimensions lack descriptive information or hierarchical structure. 
+For instance, consider a fact table that records sales transactions. In this context, the `TransactionId` can be regarded as a degenerate dimension. Unlike conventional dimensions, degenerate dimensions lack descriptive information or hierarchical structure.
 
-Furthermore, they don't find a place in any separate dimension table as they are directly associated with the fact records themselves. 
+Furthermore, they don't find a place in any separate dimension table as they are directly associated with the fact records themselves.
 
 This streamlined approach can help reduce join complexity and storage overhead in data warehousing environments.
 
 ![Fig 1. Illustration for Degenerated Dimension](/static/images/resource/dimensional-part-2/degenerated.png)
 
-<p style={{ textAlign: "center" }}>**Fig 1.** Illustration for Degenerated Dimension</p>
+<p style={{ textAlign: 'center' }}>**Fig 1.** Illustration for Degenerated Dimension</p>
 
 ## 2. Conformed Dimension
 
-> A conformed dimension is descriptive master reference data that’s referenced in multiple dimensional models. Conformed dimensions are a fundamental element of the Kimball approach. 
+> A conformed dimension is descriptive master reference data that’s referenced in multiple dimensional models. Conformed dimensions are a fundamental element of the Kimball approach.
 > Conformed dimensions allow DW/BI users to consistently **slice-and-dice performance metrics** from multiple business process data sources. Conformed dimensions allow data from different sources to be integrated based on common, unified dimension attributes.
 > Finally, conformed dimensions allow a dimension table to be built and maintained once rather than recreating slightly different versions during each development cycle.
 >
-> *Reference:* [Design tip 135 conformed dimensions as the foundation for agile data warehousing](https://www.kimballgroup.com/2011/06/design-tip-135-conformed-dimensions-as-the-foundation-for-agile-data-warehousing/)
-> 
+> _Reference:_ [Design tip 135 conformed dimensions as the foundation for agile data warehousing](https://www.kimballgroup.com/2011/06/design-tip-135-conformed-dimensions-as-the-foundation-for-agile-data-warehousing/)
 
-In a more specific scenario, `ProductId` and `DateID` are found in the `Fact Sales` and `Fact Inventory` tables and these identifiers establish essential links to the `Dim Product` and `Dim Date` dimensions, respectively. 
+In a more specific scenario, `ProductId` and `DateID` are found in the `Fact Sales` and `Fact Inventory` tables and these identifiers establish essential links to the `Dim Product` and `Dim Date` dimensions, respectively.
 
 **This linkage designates the `Dim Product` and `Dim Date` dimensions as conformed dimensions within this particular context.** This underscores the vital role of conformed dimensions, which play a pivotal role in harmonizing data across analyses, ensuring data uniformity and precise insights from various perspectives.
 
-Moreover,  **calendar-date dimension** extends beyond its role as a prime example of a conformed dimension and **multiple hierarchies in dimensions - many dimensions inherently encompass more than one natural hierarchy**. For instance, the **calendar-date dimensions** can encompass both a day-to-week-to-fiscal period hierarchy and a day-to-month-to-year hierarchy. 
+Moreover, **calendar-date dimension** extends beyond its role as a prime example of a conformed dimension and **multiple hierarchies in dimensions - many dimensions inherently encompass more than one natural hierarchy**. For instance, the **calendar-date dimensions** can encompass both a day-to-week-to-fiscal period hierarchy and a day-to-month-to-year hierarchy.
 
 ![Fig 2. Illustration for Conformed Dimension](/static/images/resource/dimensional-part-2/conformed_dimension.png)
 
-<p style={{ textAlign: "center" }}>**Fig 2.** Illustration for Conformed Dimension</p>
+<p style={{ textAlign: 'center' }}>**Fig 2.** Illustration for Conformed Dimension</p>
 
-<div id='3-role-playing-dimension'/>
+<div id="3-role-playing-dimension" />
 
 ## 3. Role-Playing Dimension
 
 ![Fig 3. Illustration for Role-Playing Dimensions](/static/images/resource/dimensional-part-2/role-playing_dimension.png)
-<p style={{ textAlign: "center" }}>**Fig 3.** Illustration for Role-Playing Dimensions</p>
+
+<p style={{ textAlign: 'center' }}>**Fig 3.** Illustration for Role-Playing Dimensions</p>
 
 > A **single physical dimension** can be referenced **multiple times in a fact table**, with each reference linking to a logically distinct role for the dimension
-> 
-> *Reference*: [Role-playing Dimension](https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/role-playing-dimension/)
-> 
+>
+> _Reference_: [Role-playing Dimension](https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/role-playing-dimension/)
 
-For example, a fact table can have several dates, each of which is represented by *a foreign key to the date dimension*.  It is essential that each foreign key refers to a separate view of the date dimension so that the references are independent. **These separate dimension views (with unique attribute column names) are called *roles*.**
+For example, a fact table can have several dates, each of which is represented by _a foreign key to the date dimension_.  It is essential that each foreign key refers to a separate view of the date dimension so that the references are independent. **These separate dimension views (with unique attribute column names) are called *roles*.**
 
-Role-playing dimensions are most commonly associated with [accumulating snapshot fact tables](https://tieukhoimai.me/blog/dimensional-part-1/#63-accumulating-snapshot-fact-tables) due to their time-dependent nature, they can also be applied to transaction and periodic fact tables. The key is to determine whether analyzing data from different viewpoints within the same table provides meaningful insights and enhances your analytical capabilities. 
+Role-playing dimensions are most commonly associated with [accumulating snapshot fact tables](https://tieukhoimai.me/blog/dimensional-part-1/#63-accumulating-snapshot-fact-tables) due to their time-dependent nature, they can also be applied to transaction and periodic fact tables. The key is to determine whether analyzing data from different viewpoints within the same table provides meaningful insights and enhances your analytical capabilities.
 
 For example, in an order fulfillment process, using a `Date` dimension with roles like placed date, paid date, ship date, and received date can provide insights into the different stages of order processing over time.
 
-<div id='4-junk-dimension'/>
+<div id="4-junk-dimension" />
 
 ## 4. Junk Dimension
 
-> Transactional business processes typically produce a number of miscellaneous, ***low-cardinality**** ﬂags and indicators. Rather than making separate dimensions for each ﬂag and attribute, you can create a single ***junk dimension*** combining them together. This dimension, frequently labeled as a *transaction proﬁle dimension* in a schema, does not need to be the Cartesian product of all the attributes’ possible values, but should only contain the combination of values that actually occur in the source data.
-> 
-> *Reference*: [Junk Dimension](https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/junk-dimension/)
-> 
+> Transactional business processes typically produce a number of miscellaneous, **\*low-cardinality\*\*** ﬂags and indicators. Rather than making separate dimensions for each ﬂag and attribute, you can create a single **_junk dimension_** combining them together. This dimension, frequently labeled as a *transaction proﬁle dimension* in a schema, does not need to be the Cartesian product of all the attributes’ possible values, but should only contain the combination of values that actually occur in the source data.
+>
+> _Reference_: [Junk Dimension](https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/junk-dimension/)
 
-****Low-cardinality** implies that the attribute has a small number of possible values or options. This is in contrast to high-cardinality, where an attribute has a large number of distinct values.*
+\***\*Low-cardinality** implies that the attribute has a small number of possible values or options. This is in contrast to high-cardinality, where an attribute has a large number of distinct values.\*
 
 ![Fig 4. Illustration for Junk Dimensions](/static/images/resource/dimensional-part-2/junk_dimension.png)
 
-<p style={{ textAlign: "center" }}>**Fig 4.** Illustration for Junk Dimensions</p>
+<p style={{ textAlign: 'center' }}>**Fig 4.** Illustration for Junk Dimensions</p>
 
 When utilizing the cross-join technique, the SQL query generates what is known as a **junk dimension key**. This key is created by generating all possible combinations of rows, resulting in an `n x m` matrix, where `n` represents the number of distinct values in one dimension (e.g., `dim_product`), and `m` represents the number of distinct values in another dimension (e.g., `dim_promo`). The resulting key is a unique identifier for each combination of attributes.
 
@@ -89,7 +87,7 @@ Outrigger dimensions come into play when a dimension table or entity has a relat
 
 ![Fig 5. Illustration for Outrigger Dimension](/static/images/resource/dimensional-part-2/outrigger_dimension.png)
 
-<p style={{ textAlign: "center" }}>**Fig 5.** Illustration for Outrigger Dimension</p>
+<p style={{ textAlign: 'center' }}>**Fig 5.** Illustration for Outrigger Dimension</p>
 
 For example, consider a scenario where a `DimPromo` needs to reference a separate dimension that represents the `PromoDateID` - start date of the promotion. These secondary dimension references are called outrigger dimensions.
 
@@ -105,17 +103,17 @@ In a Type 1 Slowly Changing Dimension (SCD), changes to attributes result in the
 
 ![Fig 6. SCD Type 1](/static/images/resource/dimensional-part-2/type1.png)
 
-<p style={{ textAlign: "center" }}>**Fig 6.** SCD Type 1</p>
+<p style={{ textAlign: 'center' }}>**Fig 6.** SCD Type 1</p>
 
 ### 6.2. [Type 2: Add new row](http://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/type-2)
 
-Type 2 SCD involves adding new rows to the dimension table whenever a change occurs. Each new row represents a different version of the data, preserving the historical record. 
+Type 2 SCD involves adding new rows to the dimension table whenever a change occurs. Each new row represents a different version of the data, preserving the historical record.
 
 A surrogate key is typically assigned to each row for identification. While this approach captures historical data comprehensively, it can increase storage requirements and may lead to more complex querying due to multiple versions of the same entity.
 
 ![Fig 7. SCD Type 2](/static/images/resource/dimensional-part-2/type2.png)
 
-<p style={{ textAlign: "center" }}>**Fig 7.** SCD Type 2</p>
+<p style={{ textAlign: 'center' }}>**Fig 7.** SCD Type 2</p>
 
 ### 6.3. [Type 3: Add new attribute](http://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/type-3)
 
@@ -125,7 +123,7 @@ For example, a product dimension might have an extra column to store the previou
 
 ![Fig 8. SCD Type 1](/static/images/resource/dimensional-part-2/type3.png)
 
-<p style={{ textAlign: "center" }}>**Fig 8.** SCD Type 3</p>
+<p style={{ textAlign: 'center' }}>**Fig 8.** SCD Type 3</p>
 
 ### 6.4. [Type 4: Add mini-dimension](http://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/type-4-mini-dimension)
 
@@ -133,7 +131,7 @@ In a Type 4 SCD, a separate table, often referred to as a `mini-dimension` or `h
 
 ![Fig 9. SCD Type 4](/static/images/resource/dimensional-part-2/type4.png)
 
-<p style={{ textAlign: "center" }}>**Fig 9.** SCD Type 4</p>
+<p style={{ textAlign: 'center' }}>**Fig 9.** SCD Type 4</p>
 
 ### 6.5. [Type 5: Add mini-dimension and Type 1 outrigger](http://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/type-5)
 
@@ -147,7 +145,7 @@ Type 6 introduces an interesting twist by embedding a Type 1 attribute within a 
 
 ![Fig 10. SCD Type 6](/static/images/resource/dimensional-part-2/type6.png)
 
-<p style={{ textAlign: "center" }}>**Fig 10.** SCD Type 6</p>
+<p style={{ textAlign: 'center' }}>**Fig 10.** SCD Type 6</p>
 
 For example, let's say you have a Type 2 dimension for product price. In a Type 6 scenario, an alternate attribute such as `current price` and `previous price` is added. Whenever the `current price` attribute changes, it overwrites the existing value in a Type 1 manner. This hybrid approach allows certain attributes to be updated quickly while maintaining historical tracking for the main Type 2 attributes.
 
@@ -161,6 +159,6 @@ Another approach involves placing both the surrogate and the natural key directl
 
 ![Fig 11. SCD Type 7](/static/images/resource/dimensional-part-2/type7.png)
 
-<p style={{ textAlign: "center" }}>**Fig 11.** SCD Type 7</p>
+<p style={{ textAlign: 'center' }}>**Fig 11.** SCD Type 7</p>
 
 For instance, consider a situation where you're monitoring `Product Price` . In this case, a Type 2 product dimension would handle historical changes over time. To enhance this approach, a Type 7 fact table could link to the product dimension using two keys: one key for tracking historical changes and another known as a durable key which remains constant even when attributes change. This durable key ensures consistent reference to the product, unaffected by attribute modifications.

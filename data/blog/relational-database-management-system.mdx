@@ -1,31 +1,33 @@
 ---
 title: 'Relational Database Management System'
 date: '2025-06-29'
-tags: ['Database', 'Data Science', 'Data Management']
+tags: ['Database', 'Data Management']
 draft: false
 summary: 'This article provides an overview of Relational Database Management Systems (RDBMS), covering key features such as data representation through tables, transaction principles (Atomicity, Consistency, Isolation, Durability), and concepts like primary and foreign keys. It highlights the importance of data integrity, security, normalization, and referential integrity in maintaining valid relationships between tables for effective data management.'
 image: '/static/images/resource/relational-database-management-system/thumbnail.png'
 series: 'Database & Data Engineering'
+seriesOrder: 1
 ---
 
-*The thumbnail is sourced from [Modeling: relational to graph](https://neo4j.com/docs/getting-started/data-modeling/relational-to-graph-modeling/)*
+_The thumbnail is sourced from [Modeling: relational to graph](https://neo4j.com/docs/getting-started/data-modeling/relational-to-graph-modeling/)_
 
 <TOCInline toc={props.toc} asDisclosure toHeading={3} />
 
 ## 1. Relational Database Management System (RDBMS)
 
 - An RDBMS is a database management system based on the relational model
-    - A relational data model makes it possible to graphically represent the requirements and data organization of a company
+  - A relational data model makes it possible to graphically represent the requirements and data organization of a company
 - In general, the minimum requirements for which a system can be called an RDBMS are
-    - Display data to the user in the form of relation
-    - It must provide relational operators to manipulate data in tabular form
-    - The universally known model for "designing" a database is the table
+  - Display data to the user in the form of relation
+  - It must provide relational operators to manipulate data in tabular form
+  - The universally known model for "designing" a database is the table
 
 ## 2. Core Functions of RDBMS
 
 ### 2.1. Data Management Operations
 
 **Archiving, Deletion, and Data Review:**
+
 - Information stored in the form of relations
 - Depending on access rights, databases allow direct processing of stored information through SQL queries
 - Data in databases can be completely deleted, with recovery options varying by implementation
@@ -33,6 +35,7 @@ series: 'Database & Data Engineering'
 ### 2.2. Multi-user Access
 
 In multi-user environments:
+
 - Distribution of rights and data security are critical
 - Systems must keep data consistent even when multiple transactions are requested simultaneously
 - Concurrent access control prevents data conflicts
@@ -43,6 +46,7 @@ In multi-user environments:
 The data within a database contains specific rules, ensuring the correctness of the data and defining the logic of the business process that the database is intended to model.
 
 **How is it Maintained?**
+
 - Prevent multiple users from editing the same record simultaneously (record locking)
 - Prevent duplicate records from being entered
 - Enforce business rules and constraints
@@ -50,6 +54,7 @@ The data within a database contains specific rules, ensuring the correctness of 
 ### 2.4. Data Security
 
 Data security involves:
+
 - Preventing illegitimate access to stored data
 - Management by responsible administrators
 - Implementation of appropriate cryptographic methods
@@ -65,10 +70,9 @@ Data security involves:
 
 ACID represents the fundamental features and requirements for database management systems:
 
-
 ### 3.1. Atomicity
 
-**Definition:** Denotes the *all-or-nothing* property of the DBMS.
+**Definition:** Denotes the _all-or-nothing_ property of the DBMS.
 
 - Only valid requests are executed in the established order
 - Ensures that the entire transaction is correct
@@ -109,13 +113,14 @@ A relation is a set of tuples, where each element $d_j$ is a member of domain $D
 
 **Example:**
 
-| CustomerID | CustomerName | Status |
-|------------|-------------|---------|
-| 1 | Google | Active |
-| 2 | Amazon | Active |
-| 3 | Apple | Inactive |
+| CustomerID | CustomerName | Status   |
+| ---------- | ------------ | -------- |
+| 1          | Google       | Active   |
+| 2          | Amazon       | Active   |
+| 3          | Apple        | Inactive |
 
 **Domain Examples:**
+
 - For CustomerID: domain $D_1$ could be the set of positive integer numbers
 - For CustomerName: domain $D_2$ could consist of all strings (text values)
 - For Status: domain $D_3$ could be a predefined list of valid statuses (Active, Inactive)
@@ -127,6 +132,7 @@ A relation is a set of tuples, where each element $d_j$ is a member of domain $D
 ![Functional Dependency](/static/images/resource/relational-database-management-system/functional-dependency.png)
 
 **Notation:**
+
 - $R.A \rightarrow R.B$: if $R.B$ is functionally dependent on attribute $A$ in $R$
 - $R.A \neq R.B$: if $R.B$ is NOT functionally dependent on attribute $A$ in $R$
 - If $R.A \rightarrow R.B$ and $R.B \rightarrow R.A$ then $R.A$ and $R.B$ are in one-to-one correspondence: $R.A \iff R.B$
@@ -138,11 +144,13 @@ The definition given above can be extended to **collections of attributes**: If 
 A database is a tool for grouping and managing information of various kinds through the use of tables, in which the data is related to each other
 
 **Problems with Single Table Approach:**
+
 - Risk of data redundancy
 - Does not highlight relationships between data subsets in a timely manner
 - Duplicated and redundant information
 
 **Solution - Normalization:**
+
 - A **gradual process** of progressive optimization
 - Starts from non-normalized relations
 - Reaches a certain level of normalization
@@ -160,6 +168,7 @@ A set of one or more attributes can be defined as a primary key if it has the fo
 ### 6.2. Choosing a Primary Key
 
 **Best Practices:**
+
 - Keys composed of fewer attributes are preferable
 - For efficiency reasons, prefer keys with attributes frequently used in relational operations
 - Ensure stability - primary key values should not change frequently
@@ -171,6 +180,7 @@ A set of one or more attributes can be defined as a primary key if it has the fo
 A **foreign key** is a column (or set of columns) in one table that connects to the primary key data in another table.
 
 **Key Terminology:**
+
 - **Parent Table**: The reference table containing the primary key
 - **Child Table**: The table containing the foreign key
 - **Relationship**: The foreign key in the child table references the primary key in the parent table
@@ -195,5 +205,6 @@ A **foreign key** is a column (or set of columns) in one table that connects to 
 ### 8.2. Referential Constraints
 
 A **referential constraint** is the rule by which, given a child table, the values of the foreign key are valid only if:
+
 - They appear as values of a parent key
 - Null values are usually allowed (depending on business rules)

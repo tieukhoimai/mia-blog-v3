@@ -75,8 +75,9 @@ function createSeriesData(allBlogs) {
     image: string
     series: string
     path: string
+    seriesOrder?: number | null
   }
-  
+
   const seriesData: Record<string, SeriesArticle[]> = {}
   allBlogs.forEach((file) => {
     if (file.series && (!isProduction || file.draft !== true)) {
@@ -92,16 +93,27 @@ function createSeriesData(allBlogs) {
         image: file.image,
         series: file.series,
         path: file.path,
+        seriesOrder: file.seriesOrder || null,
       })
     }
   })
 
   // Sort articles within each series by date
   Object.keys(seriesData).forEach((seriesSlug) => {
-    seriesData[seriesSlug].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    seriesData[seriesSlug].sort((a, b) => {
+      // If both have seriesOrder, sort by that
+      if (a.seriesOrder != null && b.seriesOrder != null) {
+        return (a.seriesOrder || 0) - (b.seriesOrder || 0)
+      }
+      // If only one has seriesOrder, prioritize it
+      if (a.seriesOrder != null) return -1
+      if (b.seriesOrder != null) return 1
+      // Otherwise fall back to date sorting
+      return new Date(a.date).getTime() - new Date(b.date).getTime()
+    })
   })
 
-  writeFileSync('./app/series-data.json', JSON.stringify(seriesData))
+  return seriesData
 }
 
 function createSearchIndex(allBlogs) {
@@ -134,6 +146,7 @@ export const Blog = defineDocumentType(() => ({
     bibliography: { type: 'string' },
     canonicalUrl: { type: 'string' },
     series: { type: 'string' },
+    seriesOrder: { type: 'number' },
   },
   computedFields: {
     ...computedFields,
@@ -193,10 +206,14 @@ export default makeSource({
       rehypePresetMinify,
     ],
   },
-  // onSuccess: async (importData) => {
-  //   const { allBlogs } = await importData()
-  //   createTagCount(allBlogs)
-  //   createSeriesData(allBlogs)
-  //   createSearchIndex(allBlogs)
-  // },
+  onSuccess: async (importData) => {
+    const { allBlogs } = await importData()
+    createTagCount(allBlogs)
+
+    // Note: Series data is now generated in the postbuild.mjs script
+    // via scripts/generate-series.mjs to avoid conflicts
+
+    // Create search index
+    createSearchIndex(allBlogs)
+  },
 })
