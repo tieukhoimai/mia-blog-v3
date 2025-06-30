@@ -23,6 +23,28 @@
       "tags": ["Database", "Data Modeling", "Normalization", "ER Diagram"]
     },
     {
+      "title": "Data Modeling",
+      "date": "2025-07-01",
+      "summary": "This article explores the importance of Data Modeling as a foundational blueprint for organizing information within a business, aiding in the development of a data warehouse. It emphasizes the role of a Logical Data Model (LDM) in establishing frameworks for business intelligence and analytics, ensuring data consistency, quality, and effective communication. The article also contrasts Online Transactional Processing (OLTP) and Online Analytical Processing (OLAP) models and summarizes the transition from a Logical to a Physical Data Model (PDM) for enhanced database performance.",
+      "slug": "data-modeling",
+      "image": "/static/images/resource/data-modeling/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/data-modeling",
+      "seriesOrder": 3,
+      "tags": ["Data Warehouse", "Database", "Data Science"]
+    },
+    {
+      "title": "Dimensional Modeling - Four-Step Design Process and Use Case",
+      "date": "2025-07-02",
+      "summary": "This article outlines a structured approach to Data Design, detailing essential steps for creating effective data models that align with business needs. It covers gathering business requirements, conducting collaborative workshops, and following the Four-Step Dimensional Design Process. The article also features a use case for modeling data in a Fast Food outlet and discusses managing changes in dimension data using Slowly Changing Dimensions (SCDs).",
+      "slug": "dimensional-modeling-four-step",
+      "image": "/static/images/resource/dimensional-modeling-four-step/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/dimensional-modeling-four-step",
+      "seriesOrder": 4,
+      "tags": ["Data Warehouse", "Dimensional Modeling", "Database"]
+    },
+    {
       "title": "Dimensional Modeling - Part 1: Basic Fact Table Techniques",
       "date": "2023-04-02",
       "summary": "In this article, I will introduce the concept of the Basic Fact table in Dimensional data modeling. To understand this technique, we will explore the different types of data modeling and recap some fundamental knowledge, including the star and snowflake schemas, and the concepts of normalization.",
@@ -30,7 +52,7 @@
       "image": "/static/images/resource/dimensional-part-1/thumbnail.jpg",
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-part-1",
-      "seriesOrder": 3,
+      "seriesOrder": 5,
       "tags": ["Data Warehouse", "Database"]
     },
     {
@@ -41,7 +63,7 @@
       "image": "/static/images/resource/dimensional-part-2/thumbnail.jpg",
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-part-2",
-      "seriesOrder": 4,
+      "seriesOrder": 6,
       "tags": ["Data Warehouse", "Database"]
     }
   ],

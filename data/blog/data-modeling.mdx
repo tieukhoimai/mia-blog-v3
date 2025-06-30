@@ -1,0 +1,178 @@
+---
+title: Data Modeling
+date: '2025-07-01'
+tags: ['Data Warehouse', 'Database', 'Data Science']
+draft: false
+summary: 'This article explores the importance of Data Modeling as a foundational blueprint for organizing information within a business, aiding in the development of a data warehouse. It emphasizes the role of a Logical Data Model (LDM) in establishing frameworks for business intelligence and analytics, ensuring data consistency, quality, and effective communication. The article also contrasts Online Transactional Processing (OLTP) and Online Analytical Processing (OLAP) models and summarizes the transition from a Logical to a Physical Data Model (PDM) for enhanced database performance.'
+image: '/static/images/resource/data-modeling/thumbnail.png'
+series: 'Database & Data Engineering'
+seriesOrder: 3
+---
+
+<TOCInline toc={props.toc} asDisclosure toHeading={3} />
+
+## Data Model
+
+A Data Model is a blueprint that visually communicates how information is organized in customer business. Think of it as the architectural foundation that supports all your business intelligence initiatives.
+
+### Key Definitions
+
+- **A data warehouse data model**
+  - is **the information framework** for **business analytics** and
+  - is one of the first steps towards building the foundation for a robust and flexible DWH
+- **A data model**
+  - is the **framework** for **business intelligence** and
+  - it is the first step towards building the foundation for a robust and flexible DWH
+- **A Logical Data Model** determines the value of the warehouse because it describes the data.
+- If the data needed to answer **critical business questions** _were not included in the warehouse_, the warehouse itself will not provide any value
+
+> **A successful data model** blueprint will allow to "start small" and **grow a data warehouse for different uses over time** without having to refactor.
+
+### Why Data Modeling Matters
+
+Data modeling provides discipline and structure to the complexities inherent in data management. Consider these analogies:
+
+- Building a house without a blueprint?
+- Driving without a map?
+
+It facilitates arriving at a **common understanding** of important business concepts and facilitates communication within the business. It graphically represents the data requirements and data organization of the business through:
+
+- **Entities**: Identifies those things for which it is important to track information
+- **Attributes**: Characteristics of those entities
+- **Relationships**: Connections between different entities
+
+### Benefits of Data Modeling
+
+#### 1. Single Version of the Truth
+
+- Provides common business definitions for all entities
+- Documents business rules at corporate level
+- Supports consistent reporting and analytical results
+- Helps eliminate data redundancy
+
+#### 2. Documents Critical Topics
+
+- Identifies inconsistent business definitions and sources of inaccurate information as a result of customizing the LDM
+- Documents data mappings in ETL process (logical-physical)
+- Helps identify correct sources of data to populate LDM
+
+#### 3. Data Quality Management
+
+- Use common definitions to validate the processing rules at data capture against the agreed definitions
+
+#### 4. New System Development
+
+- LDM forms the design foundation
+- Rigorous technique for stable and reliable database environment
+- Supports faster design and development
+
+### Requirements for Data Modeling
+
+The requirements must be sufficiently clear to describe the following:
+
+- Macro areas of analysis that must be met (e.g. Sales performance, order analysis, analysis of the new accounts, etc...)
+- Historical depth of the data to be analyzed
+- Historization of information – AS-IS vs AS-WAS analysis
+- Frequency of availability of input data and refresh rate
+- Definition of the granularity of the information
+
+![Data Modeling Requirements](/static/images/resource/data-modeling/requirements.png)
+
+## Data Warehouse Model (OLTP vs OLAP)
+
+Understanding the difference between OLTP and OLAP models is crucial for effective data warehouse design.
+
+| CRITERIA               | OLTP DATABASE                  | DATA WAREHOUSE                 |
+| ---------------------- | ------------------------------ | ------------------------------ |
+| Purpose                | Execute business process       | Evaluate business process      |
+| Transaction Type       | Insert, update, delete, select | Select                         |
+| Transaction style      | Predefined                     | Unpredictable                  |
+| Optimized for          | Efficiency and consistency     | Query performance/ease of use  |
+| Update Frequency       | Real Time – business event     | Periodic – scheduled – near rt |
+| Update concurrency     | High                           | Low                            |
+| Historical data access | Recent                         | Years of history               |
+| Selection criteria     | Precise, narrow                | Fuzzy, broad                   |
+| Comparison             | Infrequent                     | Frequent                       |
+| Query complexity       | Low                            | High                           |
+| Joins                  | Few                            | Many                           |
+| Transaction per day    | Millions                       | Thousands                      |
+| Data volumes           | Tera                           | Peta                           |
+| Data                   | Raw – detailed data            | Detailed and aggregated data   |
+| Design technique       | ER – 3rd Normal Form 3NF       | Dimensional/other              |
+
+### OLTP Model (On-line Transactional Processing)
+
+OLTP must be efficient in writing events → OLTP must be efficient in extract information about events.
+
+**Design Technique**: ER data model in 3NF is a good fit.
+
+- Remove data redundancy to reduce amount of information to be written in a single transaction
+- Updates in a 3NF database is efficient
+  - Example: customer service – update on a department allocation → 1 row in a 3NF
+    - Avoids anomalies
+    - Data integrity satisfied
+
+### OLAP Model (On-line Analytical Processing)
+
+**Challenges with OLTP Model for Analytics:**
+
+- Complexity of queries
+- Not user friendly – OLAP are made for users to make sense of the data
+- OLTP must work well interacting with other software, not humans
+- Even the simplest BI request could become a challenge
+- Difficult to optimize performance
+- Wrong joins could lead to misinterpretation of the data
+
+**Design Technique**: Dimensional/other
+
+→ **Topology**: a clear separation between those tables identified as Fact Tables and those one identified as Dimension one.
+
+**Two main different Dimensional Topologies:**
+
+1. **Star Schema**
+2. **Snowflake Schema**
+
+## From Logical Data Model to Physical Data Model
+
+The transition from a Logical Data Model (LDM) to a Physical Data Model (PDM) is a critical step in database implementation.
+
+![Logical to Physical Model](/static/images/resource/data-modeling/logical-to-physical.png)
+
+When transitioning to a Physical Data Model, several key considerations come into play:
+
+| Field Type                                                                   | Standard Naming Convention          |
+| ---------------------------------------------------------------------------- | ----------------------------------- |
+| Natural code (integer or string)                                             | \_CODE                              |
+| Surrogate key                                                                | \_SK                                |
+| Description                                                                  | \_DESC (or \_NAME)                  |
+| Date                                                                         | \_DATE                              |
+| Time                                                                         | \_TIME                              |
+| Timestamp                                                                    | \_TSTAMP, \_DTIME, \_DT, \_DATETIME |
+| Flag                                                                         | _FLG, IS_, HAS\_                    |
+| Number                                                                       | \_NUM                               |
+| Technical field - Loading session ID (YYYYMMDDHH24MISS, e.g: 20210525181234) | \_\_SESSION_ID                      |
+| Technical field - Timestamp of the insert                                    | \_\_INSERT_TSTAMP                   |
+| Technical field - Timestamp of the update                                    | \_\_UPDATE_TSTAMP                   |
+| Technical field - Logical deletion flag: true = deleted, false = valid       | \_\_DELETE_FLAG, IS_DELETE, DEL_FLG |
+| Quantity Metric Fields                                                       | \_QTY                               |
+| Amount Metric Fields                                                         | \_AMT                               |
+| Value Metric                                                                 | \_VAL                               |
+
+Physical Table Structure Should Include:
+
+- **Technical metadata** (job_id, insert/update data, etc)
+- **Technical columns** for managing the data quality
+- **Primary and/or secondary indexes** of the table to improve performance
+- **Table partitioning functions**
+- Adding **surrogate key** to simplify join, improve performance, optimize space
+
+### Understanding Surrogate Keys
+
+A surrogate key is called `surrogate` because it does not exist in the original information but it's calculated during the ETL phase. It is at 99% of cases an incremental number that is derived from other columns that represent the primary key of a table.
+
+**Surrogate keys are useful for:**
+
+- Improve query performance
+- Save disk space
+- Simplify join complexity
+- Decouple source information code from DWH identifier
