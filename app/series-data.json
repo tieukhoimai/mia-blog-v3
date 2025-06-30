@@ -11,6 +11,16 @@
       "seriesOrder": 1
     },
     {
+      "title": "ER Modeling and Normalization",
+      "date": "2025-06-30",
+      "summary": "This article covers Entity-Relationship (E-R) Modeling, which visually depicts the relationships between identifiable entities in a database. It discusses key concepts such as entities and their attributes, relationships and cardinality, and the importance of normalization (1NF, 2NF, 3NF) to optimize data structure and reduce redundancy for improved data integrity and efficiency.",
+      "slug": "er-modeling-and-normalization",
+      "image": "/static/images/resource/er-modeling-and-normalization/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/er-modeling-and-normalization",
+      "seriesOrder": 2
+    },
+    {
       "title": "Dimensional Modeling - Part 1: Basic Fact Table Techniques",
       "date": "2023-04-02",
       "summary": "In this article, I will introduce the concept of the Basic Fact table in Dimensional data modeling. To understand this technique, we will explore the different types of data modeling and recap some fundamental knowledge, including the star and snowflake schemas, and the concepts of normalization.",
@@ -18,7 +28,7 @@
       "image": "/static/images/resource/dimensional-part-1/thumbnail.jpg",
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-part-1",
-      "seriesOrder": 2
+      "seriesOrder": 3
     },
     {
       "title": "Dimensional Modeling - Part 2: Basic Dimension Table Techniques",
@@ -28,7 +38,7 @@
       "image": "/static/images/resource/dimensional-part-2/thumbnail.jpg",
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-part-2",
-      "seriesOrder": 3
+      "seriesOrder": 4
     }
   ],
   "llms": [
