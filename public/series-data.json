@@ -34,7 +34,7 @@
       "tags": ["Data Warehouse", "Database", "Data Science"]
     },
     {
-      "title": "Dimensional Modeling - Four-Step Design Process and Use Case",
+      "title": "Dimensional Modeling - Four-Step Design Process",
       "date": "2025-07-02",
       "summary": "This article outlines a structured approach to Data Design, detailing essential steps for creating effective data models that align with business needs. It covers gathering business requirements, conducting collaborative workshops, and following the Four-Step Dimensional Design Process. The article also features a use case for modeling data in a Fast Food outlet and discusses managing changes in dimension data using Slowly Changing Dimensions (SCDs).",
       "slug": "dimensional-modeling-four-step",
@@ -65,6 +65,17 @@
       "path": "blog/dimensional-part-2",
       "seriesOrder": 6,
       "tags": ["Data Warehouse", "Database"]
+    },
+    {
+      "title": "Dimensional Modeling - Part 3: Dimensions Hierarchy",
+      "date": "2025-07-09",
+      "summary": "This article examines various hierarchy types in data modeling, including Fixed Depth Positional Hierarchies, Slightly Ragged Hierarchies, and Ragged Hierarchies. Fixed Depth Hierarchies feature clear many-to-one relationships, such as product to brand, allowing for easy navigation and quick queries. The article discusses strategies for managing ragged hierarchies through the use of bridge tables and pathstring attributes to simplify analysis and improve performance.",
+      "slug": "dimensional-modeling-hierarchy",
+      "image": "/static/images/resource/dimensional-hierarchy/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/dimensional-modeling-hierarchy",
+      "seriesOrder": 7,
+      "tags": ["Data Warehouse", "Dimensional Modeling", "Database", "Hierarchy"]
     }
   ],
   "llms": [

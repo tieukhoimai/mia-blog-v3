@@ -1,0 +1,159 @@
+---
+title: 'Dimensional Modeling - Part 3: Dimensions Hierarchy'
+date: '2025-07-09'
+tags: ['Data Warehouse', 'Dimensional Modeling', 'Database', 'Hierarchy']
+draft: false
+summary: 'This article examines various hierarchy types in data modeling, including Fixed Depth Positional Hierarchies, Slightly Ragged Hierarchies, and Ragged Hierarchies. Fixed Depth Hierarchies feature clear many-to-one relationships, such as product to brand, allowing for easy navigation and quick queries. The article discusses strategies for managing ragged hierarchies through the use of bridge tables and pathstring attributes to simplify analysis and improve performance.'
+image: '/static/images/resource/dimensional-hierarchy/thumbnail.png'
+series: 'Database & Data Engineering'
+seriesOrder: 7
+---
+
+<TOCInline toc={props.toc} asDisclosure toHeading={3} />
+
+Hierarchies are a fundamental aspect of dimensional modeling that provide structure and navigational paths through data. They enable users to analyze information at different levels of detail, supporting both drill-down and roll-up operations.
+
+Properly designed hierarchies make it easier for business users to intuitively navigate through data dimensions, such as time periods, geographic regions, or product categories. However, not all hierarchies have the same structure, and the implementation approach can significantly impact both query performance and maintenance complexity.
+
+This article explores different types of hierarchies encountered in dimensional modeling and the techniques to implement them effectively. We'll examine fixed depth hierarchies, which are straightforward to implement, as well as more complex ragged hierarchies that require specialized handling techniques.
+
+## Fixed Depth Positional Hierarchies
+
+A fixed depth hierarchy is a series of many-to-one relationships, such as product to brand to category to department.
+
+When a fixed depth hierarchy is defined and the hierarchy levels have agreed upon names, the hierarchy levels should appear as separate positional attributes in a dimension table.
+
+_Example: Defined levels (e.g., Product → Brand → Category → Department)_
+
+A fixed depth hierarchy is by far the easiest to understand and navigate as long as the above criteria are met. It also delivers predictable and fast query performance.
+
+When the hierarchy is not a series of many-to-one relationships or the number of levels varies such that the levels do not have agreed upon names, a ragged hierarchy technique must be used.
+
+## Slightly Ragged/Variable Depth Hierarchies
+
+Slightly ragged hierarchies don’t have a fixed number of levels, but the range in depth is small.
+
+Geographic hierarchies often range in depth from perhaps three levels to six levels.
+
+_Example: Region Name → Country → State → City_
+
+Rather than using the complex machinery for unpredictably variable hierarchies, you can force-fit **slightly ragged hierarchies** into **a fixed depth positional design** with separate dimension attributes for the maximum number of levels, and then populate the attribute value based on rules from the business.
+
+## Ragged/Variable Depth Hierarchies
+
+Ragged hierarchies of indeterminate depth are difficult to model and query in a relational database.
+
+_For instance, one category might consist of three levels (e.g., Country → State → City), while another may only have two levels (e.g., Country → City)._
+
+Although SQL extensions and OLAP access languages provide some support for recursive parent/ child relationships, these approaches have limitations.
+
+→ With SQL extensions, alternative ragged hierarchies cannot be substituted at query time, shared ownership structures are not supported, and time varying ragged hierarchies are not supported.
+
+All these objections can be overcome in relational databases by modeling a ragged hierarchy with a specially constructed bridge table.
+
+### Bridge Table
+
+This **bridge table** contains a row for every possible path in the ragged hierarchy and enables all forms of hierarchy traversal to be accomplished with standard SQL rather than using special language extensions.
+
+| ParentID | ChildID | HierarchyLevel |
+| -------- | ------- | -------------- |
+| NULL     | 1       | 1              |
+| 1        | 2       | 2              |
+| 2        | 3       | 3              |
+| 2        | 4       | 3              |
+
+In this example, we have a bridge table representing a geographic hierarchy where:
+
+- Node 1 is at the top level (e.g., World)
+- Node 2 is a child of Node 1 (e.g., Continent)
+- Nodes 3 and 4 are both children of Node 2 (e.g., Countries)
+
+This structure enables navigation between different levels in the hierarchy and supports queries that need to traverse up or down the hierarchy.
+
+```sql
+-- Create dimension table to store hierarchy nodes
+CREATE TABLE dim_geography (
+    geo_key INT PRIMARY KEY,
+    geo_id VARCHAR(20),
+    geo_name VARCHAR(100),
+    geo_type VARCHAR(50) -- e.g., 'Continent', 'Country', 'State', 'City'
+);
+
+-- Create bridge table for hierarchy relationships
+CREATE TABLE bridge_geo_hierarchy (
+    parent_geo_key INT REFERENCES dim_geography(geo_key),
+    child_geo_key INT REFERENCES dim_geography(geo_key),
+    distance INT, -- Level separation between parent and child
+    top_flag CHAR(1), -- 'Y' if parent is at the top of this branch
+    bottom_flag CHAR(1), -- 'Y' if child is at the bottom of this branch
+    PRIMARY KEY (parent_geo_key, child_geo_key)
+);
+
+-- Query to find all descendants of a particular geography node
+SELECT c.geo_key, c.geo_name, c.geo_type, b.distance
+FROM dim_geography p
+JOIN bridge_geo_hierarchy b ON p.geo_key = b.parent_geo_key
+JOIN dim_geography c ON b.child_geo_key = c.geo_key
+WHERE p.geo_name = 'North America'
+ORDER BY b.distance;
+```
+
+### Pathstring attribute
+
+The use of **a bridge table** for ragged variable depth hierarchies can be avoided by implementing **a pathstring attribute** in the dimension.
+
+For each row in the dimension, the pathstring attribute contains a specially encoded text string containing the complete path description from the supreme node of a hierarchy down to the node described by the particular dimension row.
+
+| NodeID | NodeName      | PathString                  |
+| ------ | ------------- | --------------------------- |
+| 1      | World         | /World                      |
+| 2      | North America | /World/North America        |
+| 3      | USA           | /World/North America/USA    |
+| 4      | Canada        | /World/North America/Canada |
+
+The pathstring approach stores the complete hierarchical path for each node in the dimension. This makes it easy to:
+
+- Determine the level of any node (by counting the number of path separators)
+- Find all descendants of a node (by searching for path strings that start with a specific prefix)
+- Find all ancestors of a node (by parsing the path string)
+- Support irregular hierarchies without needing a separate bridge table
+
+Using SQL string functions, you can query nodes at specific levels or find descendants without recursive queries or specialized language extensions. However, the pathstring approach does not enable rapid substitution of alternative hierarchies or shared ownership hierarchies.
+
+The pathstring approach may also be vulnerable to structure changes in the ragged hierarchy that could force the entire hierarchy to be relabeled.
+
+```sql
+-- Create dimension table with pathstring attribute
+CREATE TABLE dim_geography (
+    geo_key INT PRIMARY KEY,
+    geo_id VARCHAR(20),
+    geo_name VARCHAR(100),
+    geo_type VARCHAR(50), -- e.g., 'Continent', 'Country', 'State', 'City'
+    geo_level INT, -- The level in the hierarchy (1=World, 2=Continent, etc.)
+    geo_path VARCHAR(255) -- e.g., "/World/North America/USA"
+);
+
+-- Query to find all descendants of a particular geography node
+SELECT geo_key, geo_name, geo_type, geo_level
+FROM dim_geography
+WHERE geo_path LIKE '/World/North America/%'
+   OR geo_path = '/World/North America'
+ORDER BY geo_level;
+```
+
+### Bridge Table vs. Pathstring Comparison
+
+| Aspect                               | Bridge Table                            | Pathstring Attribute            |
+| ------------------------------------ | --------------------------------------- | ------------------------------- |
+| **Implementation Complexity**        | Medium to High                          | Low to Medium                   |
+| **Query Complexity**                 | Higher (requires joins)                 | Lower (uses string functions)   |
+| **Support for Multiple Hierarchies** | Yes                                     | Limited                         |
+| **Support for Shared Ownership**     | Yes                                     | No                              |
+| **Time-Varying Hierarchies**         | Supported                               | Challenging                     |
+| **Update Complexity**                | Easier to update specific relationships | Requires rebuilding pathstrings |
+| **Performance**                      | May require more joins                  | Generally faster for lookups    |
+| **Storage Requirements**             | Separate table required                 | Embedded in dimension table     |
+
+The choice between these approaches depends on the specific requirements of your data warehouse, including how frequently the hierarchy changes and whether you need to support multiple hierarchical views.
+
+Many of the standard hierarchy analysis requests can then be handled by standard SQL, without resorting to SQL language extensions.
