@@ -118,11 +118,19 @@ A database is in **2NF** (2nd normal form) when:
 
 2. **All non-key attributes** functionally depend on the **entire key** (no partial dependencies)
 
-![2NF Dependencies](/static/images/resource/er-modeling-and-normalization/image%205.png)
+| NON-PK ATTRIBUTE   | DEPENDS ON               | IS ENTIRE KEY [Y,N] |
+| ------------------ | ------------------------ | ------------------- |
+| CONSULTANT         | CONSULTANT CODE          | N                   |
+| SENIORITY          | CONSULTANT CODE          | N                   |
+| OFFICE             | CONSULTANT CODE          | N                   |
+| ADDRESS            | CONSULTANT CODE          | N                   |
+| CITY               | CONSULTANT CODE          | N                   |
+| STATE              | CONSULTANT CODE          | N                   |
+| ZIP                | CONSULTANT CODE          | N                   |
+| PROJECT MANAGER    | PROJECT                  | N                   |
+| PROJECT ALLOCATION | CONSULTANT CODE, PROJECT | Y                   |
 
 This means that if you have a composite primary key, all non-key attributes should depend on the complete key, not just part of it.
-
-**Example Analysis:**
 
 Given the primary key `[CONSULTANT CODE, PROJECT]`, let's analyze the dependencies:
 

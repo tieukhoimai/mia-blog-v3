@@ -125,7 +125,7 @@ OLTP must be efficient in writing events → OLTP must be efficient in extract i
 
 **Design Technique**: Dimensional/other
 
-→ **Topology**: a clear separation between those tables identified as Fact Tables and those one identified as Dimension one.
+**Topology**: a clear separation between those tables identified as Fact Tables and those one identified as Dimension one.
 
 **Two main different Dimensional Topologies:**
 
@@ -165,14 +165,3 @@ Physical Table Structure Should Include:
 - **Primary and/or secondary indexes** of the table to improve performance
 - **Table partitioning functions**
 - Adding **surrogate key** to simplify join, improve performance, optimize space
-
-### Understanding Surrogate Keys
-
-A surrogate key is called `surrogate` because it does not exist in the original information but it's calculated during the ETL phase. It is at 99% of cases an incremental number that is derived from other columns that represent the primary key of a table.
-
-**Surrogate keys are useful for:**
-
-- Improve query performance
-- Save disk space
-- Simplify join complexity
-- Decouple source information code from DWH identifier
