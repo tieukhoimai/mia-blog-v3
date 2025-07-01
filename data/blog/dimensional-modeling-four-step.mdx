@@ -109,10 +109,32 @@ Dimension tables contain the **descriptive attributes** used by BI applications 
 
 ### Step 4: Identify the Facts
 
-> **Why we need to identify the dimensions before the fact?**
-> Referential Integrity!
-> Parent first → Children later
-> **Dim first → Fact later**
+<div
+  style={{
+    backgroundColor: '#e6f7f5',
+    border: '1px solid #b2e8e0',
+    borderLeft: '4px solid #0d9488',
+    padding: '20px',
+    margin: '20px 0',
+    borderRadius: '8px',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+    fontFamily: 'inherit',
+  }}
+>
+  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+    <span style={{ fontSize: '24px', marginRight: '12px' }}>💡</span>
+    <strong style={{ fontSize: '18px', color: '#0d9488' }}>
+      Why we need to identify the dimensions before the fact?
+    </strong>
+  </div>
+  <div style={{ paddingLeft: '36px', lineHeight: '1.6' }}>
+    <span>Referential Integrity!</span>
+    <br />
+    <span>Parent first → Children later</span>
+    <br />
+    <span>Dim first → Fact later</span>
+  </div>
+</div>
 
 - Facts are the **measurements** that result from a business process event
 - A single fact table row has a one-to-one relationship to a **measurement event** as described by the fact table's grain
@@ -148,7 +170,7 @@ The business objective is to create a data model that can store and report numbe
 
 - **Store**: there are many McDonalds stores in the world, It is important to refer to a specific ones
 
-> For each identified Dimension a separate Dimension table will be created.
+For each identified Dimension a separate Dimension table will be created.
 
 ### Step 2: Identify the Measures
 
@@ -159,8 +181,7 @@ In this specific example a `Measure` could be:
 - The number of burgers/fries sold (Typical naming convention: Quantity)
 - The price of each burgers/fries (Typical naming convention: Value)
 
-> Measures are not stored in Dimension tables, but in Fact tables.
-> When we talk about Measures we ALWAYS refer to Fact tables.
+Measures are not stored in Dimension tables, but in Fact tables. When we talk about Measures we ALWAYS refer to Fact tables.
 
 ### Step 3: Identify the Attributes or the Properties of the Dimensions
 
@@ -183,9 +204,7 @@ For example, since in our case the granularity is food getting sold per store pe
 
 ![Fact Table Structure](/static/images/resource/dimensional-modeling-four-step/fact-table.png)
 
-_What does the first record of the table mean?_
-
-On day 1/01/2022 in the store Mc Florence a total of 5 French Fries have been sold for a total value of 10 euros
+_What does the first record of the table mean?_ On day 1/01/2022 in the store Mc Florence a total of 5 French Fries have been sold for a total value of 10 euros
 
 ## Topology: Star Schema vs Snowflake Dimensional Topology
 
@@ -230,7 +249,7 @@ In SCD type 2 there are created these following technical fields:
 - `Date_to` (or Timestamp_to or to): indicates the time until which the record is valid
 - `Valid_flag` (or something like that): sometimes it is also created this Boolean field which indicates if record is valid or not
 
-> Primary key is composed by Natural Key's fields and the technical data or timestamp field (e.g "From") which indicates the date from which the record is valid.
+**Primary key is composed by Natural Key's fields and the technical data or timestamp field (e.g "From") which indicates the date from which the record is valid.**
 
 ![SCD Type 2 Primary Key](/static/images/resource/dimensional-modeling-four-step/scd-type2-pk.png)
 
@@ -238,4 +257,4 @@ In SCD type 2 there are created these following technical fields:
 
 ![SCD Type 3](/static/images/resource/dimensional-modeling-four-step/scd-type3.png)
 
-> Adding a new column to show the previous value
+**Adding a new column to show the previous value**
