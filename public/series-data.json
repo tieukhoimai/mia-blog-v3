@@ -68,7 +68,7 @@
     },
     {
       "title": "Dimensional Modeling - Part 3: Dimensions Hierarchy",
-      "date": "2025-07-09",
+      "date": "2025-07-02",
       "summary": "This article examines various hierarchy types in data modeling, including Fixed Depth Positional Hierarchies, Slightly Ragged Hierarchies, and Ragged Hierarchies. Fixed Depth Hierarchies feature clear many-to-one relationships, such as product to brand, allowing for easy navigation and quick queries. The article discusses strategies for managing ragged hierarchies through the use of bridge tables and pathstring attributes to simplify analysis and improve performance.",
       "slug": "dimensional-modeling-hierarchy",
       "image": "/static/images/resource/dimensional-hierarchy/thumbnail.png",
@@ -76,6 +76,28 @@
       "path": "blog/dimensional-modeling-hierarchy",
       "seriesOrder": 7,
       "tags": ["Data Warehouse", "Dimensional Modeling", "Database", "Hierarchy"]
+    },
+    {
+      "title": "Data Integration - Part 1: ETL, Pushdown and Data Orchestrator",
+      "date": "2025-07-03",
+      "summary": "This article discusses data integration, focusing on combining data from multiple sources into a unified view for better analysis. It contrasts ETL (Extract, Transform, Load) and ELT (Extract, Load, Transform) methodologies, explaining their approaches to data handling. The article also highlights three types of ETL pushdown techniques and the concept of data orchestrators.",
+      "slug": "data-integration-etl-pushdown",
+      "image": "/static/images/resource/data-integration-etl-pushdown/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/data-integration-etl-pushdown",
+      "seriesOrder": 8,
+      "tags": ["Data Integration", "ETL", "ELT", "Data Engineering", "Data Warehouse"]
+    },
+    {
+      "title": "Data Integration - Part 2: Loading Strategies, Change Data Capture and Data Layers",
+      "date": "2025-07-04",
+      "summary": "This article explores data loading methodologies, including batch and streaming approaches, and various loading strategies such as full and incremental loads. It also examines Change Data Capture (CDC) techniques and the layered architecture of modern data warehouses, from raw data ingestion to presentation marts.",
+      "slug": "data-integration-loading",
+      "image": "/static/images/resource/data-integration-loading/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/data-integration-loading",
+      "seriesOrder": 9,
+      "tags": ["Data Integration", "ETL", "CDC", "Data Warehouse", "Data Engineering"]
     }
   ],
   "llms": [

@@ -1,0 +1,155 @@
+---
+title: 'Data Integration - Part 2: Loading Strategies, Change Data Capture and Data Layers'
+date: '2025-07-04'
+tags: ['Data Integration', 'ETL', 'CDC', 'Data Warehouse', 'Data Engineering']
+draft: false
+summary: 'This article explores data loading methodologies, including batch and streaming approaches, and various loading strategies such as full and incremental loads. It also examines Change Data Capture (CDC) techniques and the layered architecture of modern data warehouses, from raw data ingestion to presentation marts.'
+image: '/static/images/resource/data-integration-loading/thumbnail.png'
+series: 'Database & Data Engineering'
+seriesOrder: 9
+---
+
+<TOCInline toc={props.toc} asDisclosure toHeading={3} />
+
+In [Part 1](/blog/data-integration-etl-pushdown), we explored ETL vs. ELT approaches and pushdown optimization techniques. This second article builds on those concepts by examining how data is loaded into target systems, how changes are tracked and captured, and how data is organized within a modern data warehouse architecture.
+
+Effective loading strategies are crucial for maintaining data freshness, minimizing processing overhead, and ensuring system reliability. These strategies must balance competing requirements like timeliness, resource utilization, and data consistency.
+
+## Loading Methods
+
+There are two primary methods for loading data into target systems: batch loading and stream loading. Each has distinct characteristics and use cases.
+
+### Batch Loading
+
+Batch loading **loads large volumes of data at once**, typically **in a scheduled or periodic manner**. It's suitable for large datasets with less frequent updates.
+
+Batch loading refers to **the process of grouping and processing multiple items** (like shipments, data records, or files) together as a single unit, often for efficiency or automation. This approach is commonly used when large quantities of data are handled.
+
+### Stream Loading
+
+Stream loading involves **continuous** or near **real-time data** transfer, enabling immediate access to the latest data. It's suitable for applications that require real-time data processing.
+
+Data stream loading refers to the process of **ingesting a continuous flow of data into a system**, typically for immediate processing and analysis.
+
+This contrasts with **batch processing**, where data is collected and processed in **discrete chunks**. Data **streams** are characterized by their **real-time nature, high volume, and continuous generation**, making them suitable for applications like real-time analytics, event-driven architectures, and streaming media.
+
+| Characteristic            | Batch Loading                               | Stream Loading                                 |
+| ------------------------- | ------------------------------------------- | ---------------------------------------------- |
+| Frequency                 | Scheduled intervals (hourly, daily, weekly) | Continuous, real-time                          |
+| Latency                   | Higher (minutes to hours)                   | Lower (seconds to minutes)                     |
+| Data Volume per Operation | Large volumes                               | Small chunks                                   |
+| Complexity                | Simpler to implement                        | More complex architecture                      |
+| Resource Usage            | Intensive but predictable                   | Consistent but lower peaks                     |
+| Use Cases                 | Historical reporting, overnight processing  | Real-time dashboards, alerts, timely decisions |
+| Error Handling            | Easier to restart and recover               | More complex error recovery                    |
+
+If the source system doesn't have a reliable audit system, data have to be extracted and loaded in the data warehouse slice by slice. In this case, it's mandatory to define a time window of data to refresh every time. The assumption is that data outside the time window should not change. This process could help in identifying hard deletion in the source system:
+
+- **Record Hard Delete** – record is physically deleted from the source system
+- **Record Soft Delete** – record is flagged as not valid or deleted in a specific column of the source's table
+
+## Loading Strategies
+
+### Full Load
+
+This **strategy** involves **transferring** **all** data from the source to the target, typically **replacing existing data** in the target system. It is simple to implement but can be time-consuming and resource-intensive, especially for large datasets.
+
+![Full Load Strategy](/static/images/resource/data-integration-loading/full-load.png)
+
+The source table will be written on target database as is. No logic is applied.
+
+### Incremental Load
+
+This **strategy** focuses on **transferring only the changes or new data since the last load**, minimizing the amount of data transferred and processed. It is more efficient for handling large datasets with frequent updates but requires more logic to track changes and handle conflicts.
+
+![Incremental Load Strategy](/static/images/resource/data-integration-loading/incremental-load.png)
+
+If we're doing **incremental loading**, records that do not have any change will not come - only new or updated records will come. After each execution the date until which the loading has been performed will be stored in some data warehouse table and next batch will extract only records that has an update date greater than the stored one.
+
+Once we extract records **incrementally** based on their last update date, we can compare each record with the target based on their natural keys and determine if the record is a new record or updated record.
+
+In this case, the source system must have an **audit system**.
+
+## Change Data Capture (CDC)
+
+CDC is a generic term for **techniques** that monitor sources in order to **detect** and **capture data changes**.
+
+There are 3 most popular CDC techniques applicable in DBMS environments:
+
+### Timestamp-based Capture
+
+It is performed by adding a timestamp column to each table of interest. These timestamps provide the selection criteria for the capture change of record.
+
+Points of attention:
+
+- You need an added column for each table of interest
+- It is not possible to capture intermediate states of data, so if a record changed state more than once since the last ETL run, only the last state would be available
+  _If a record was updated multiple times between runs → only the latest version is captured_
+
+### Trigger-based Capture
+
+A change (e.g., insert/update/delete) occurs in a source table.
+
+This approach involves triggers to track changes in the source database. Whenever **a modification takes place in the source database**, a corresponding log record is written into a dedicated log table. These dedicated log tables serve to **determine rows changed since the last ETL processing**. The statements that are executed when a trigger is fired maintain a timestamp column. The set and granularity of the events and conditions that cause a trigger to fire are database specific. This approach enables capturing all types of events (INSERT, UPDATE, DELETE).
+
+Summary:
+
+1. A change (e.g., insert/update/delete) occurs in a source table.
+2. A trigger writes a log entry to a dedicated log table.
+3. During ETL processes, system reads the log table to find out which rows have changed
+4. When the trigger logs a change, it **adds a timestamp** to the log record
+
+Disadvantage: It might affect performance on the source systems. This technique imposes a considerable operational overhead at the source system.
+
+In simple terms: while triggers help you track every change in real time ↔ they can **slow down your database**
+
+### Transaction Log Capture
+
+This technique employs the logging and recovery capabilities of a DBMS. Since **transaction logs** are utilized by DBMS to store transaction information for logging and recovery, these logs contain all information required to capture changed data.
+
+A specialized vendor-specific application must be written to monitor the log files and capture the data of interest.
+
+You can't just read the transaction logs manually — they are often stored in a binary, proprietary format, which is not human-readable. So, a special application/tool (usually provided by the database vendor or third parties) must be used (Example: SQL Server - Change Data Capture built-in)
+
+Transaction logs have to be available until the changes of interest are captured.
+
+A problem can occur when the recycling of the transaction log takes place because it's reused by the DBMS.
+
+Many databases automatically reuse (overwrite) old parts of the transaction log to save space — this is called log recycling.
+
+## Data Warehouse Layers - How to organize the data in a database?
+
+Different layers in a database will have different scopes:
+
+1. **Ingest**: raw data from various sources.
+2. **Clean and transform**: the data to ensure its quality and consistency.
+3. **Organize**: the data into a structured relational format.
+4. **Present**: the data in a way that is easily consumed and understood by different users and applications.
+
+### Raw Layer (or Bronze Layer)
+
+This is the initial layer where data is ingested from various sources in its original format, without any transformation. **It's a repository of raw data,** often stored in its native format (e.g., JSON, CSV) or in a compressed format like Parquet. The data in this layer is typically immutable, ensuring a historical record of the original data.
+
+### Staging Layer (or Silver Layer)
+
+This layer **processes the data** from the raw layer, performing basic cleaning, validation, and transformation tasks. The goal is to **prepare the data for the next stages**, making it suitable for further processing and analysis. This layer might involve tasks like:
+
+- **Data Cleaning**: Handling missing values, inconsistencies, and errors.
+- **Data Transformation**: Standardizing formats, converting data types, and resolving inconsistencies.
+- **Data Validation**: Ensuring data integrity and adherence to defined rules.
+
+### Normalized Layer (or Conformed Layer)
+
+This layer applies relational database principles to organize and store the data. It involves creating **a structured schema** with well-defined tables, relationships, and primary keys. This layer aims to:
+
+- **Ensure Data Consistency**: Establishing a consistent and standardized format across different datasets.
+- **Support Complex Queries**: Enabling efficient and accurate data retrieval for various analytical needs.
+- **Facilitate Data Modeling**: Providing a foundation for building more complex data models for specialized use cases.
+
+### Mart Layer (or Gold Layer)
+
+This is the final layer, where **data is tailored** to the specific needs of different business users and applications. It involves creating **data marts** or **subject-oriented databases** that are optimized for specific analytical purposes. This layer might involve:
+
+- **Data Denormalization**: Optimizing data for performance in specific applications, potentially sacrificing some data consistency.
+- **Data Aggregation**: Summarizing data at different granularities to facilitate reporting and analysis.
+- **Data Presentation**: Designing user interfaces and dashboards for easy data consumption.
