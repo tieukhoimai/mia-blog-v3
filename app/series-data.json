@@ -98,6 +98,17 @@
       "path": "blog/data-integration-loading",
       "seriesOrder": 9,
       "tags": ["Data Integration", "ETL", "CDC", "Data Warehouse", "Data Engineering"]
+    },
+    {
+      "title": "Big Data: Concepts, Architecture, and Technologies",
+      "date": "2025-07-04",
+      "summary": "This article explores the world of Big Data, covering core concepts like the 4Vs (Volume, Velocity, Variety, Veracity), key technologies including Hadoop, Kafka, and Spark, and modern architectures such as Persistent Staging Areas and real-time processing systems. It provides a comprehensive overview of the technologies that emerged to address the challenges of modern data growth beyond traditional database capabilities.",
+      "slug": "big-data",
+      "image": "/static/images/resource/big-data/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/big-data",
+      "seriesOrder": 10,
+      "tags": ["Big Data", "Hadoop", "Kafka", "Spark", "Data Engineering", "Data Warehouse"]
     }
   ],
   "llms": [
