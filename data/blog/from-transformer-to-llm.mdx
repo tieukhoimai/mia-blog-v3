@@ -3,7 +3,7 @@ title: From Transformer to LLMs
 date: '2024-12-12'
 tags: ['LLMs', 'Language Models', 'Transformer', 'Fine-tuning', 'RAG']
 draft: false
-summary: 'This article explores the evolution from Transformers to Large Language Models (LLMs), detailing the mechanisms of self-attention and multi-head attention, the role of position embeddings, various types of transformer models, and the training and fine-tuning processes of LLMs.'
+summary: 'This article explores the evolution from Transformers to Large Language Models (LLMs), detailing the mechanisms of self-attentiBut greedy decoding is **short-sighted** - Can get trapped in local minima (good "local" choice of token, but poor text at the end, with no way to backtrack)n and multi-head attention, the role of position embeddings, various types of transformer models, and the training and fine-tuning processes of LLMs.'
 image: '/static/images/resource/from-transformer-to-llm/thumbnail-board-room-attention.png'
 series: 'LLMs'
 seriesOrder: 1
@@ -77,11 +77,15 @@ Multi-head attention is a mechanism within transformers that extends self-attent
 - One for semantic relatedness
 - One for coreference, etc
 
-{/\* <img src="/static/images/resource/from-transformer-to-llm/transformer_self-attention_viz_1.png" alt="multi-head-attention"/>
+{/\*
+
+<img
+  src="/static/images/resource/from-transformer-to-llm/transformer_self-attention_viz_1.png"
+  alt="multi-head-attention"
+/>
 
 <p style={{ textAlign: 'center' }}>*Source: http://jalammar.github.io/illustrated-transformer*</p>
-
-\*/}
+*/}
 
 In multi-head attention, the attention mechanism is applied multiple times in parallel, with each attention "head" using its own set of learned parameters. Each head independently computes attention using its own query, key, and value matrices:
 
@@ -278,7 +282,7 @@ But greedy decoding is **short-sighted** ↔ Can get trapped in local minima (go
 
 ### 6.2 Beam search decoding
 
-- We keep at each step a «beam» of K hypotheses representing the best partial outputs so far
+- We keep at each step a "beam" of K hypotheses representing the best partial outputs so far
 - Those K hypotheses are gradually expanded, token by token
 - Until we reach `<eos>` or the maximum output length
 - Finally, we take the hypothesis with max probability among the K alternatives
@@ -317,7 +321,7 @@ The `creativity` of the generation can be controlled by the temperature
 ### 7.3. Advantages of RAG
 
 - Easier to **edit** the LLM’s factual knowledge: simply update the underlying database, without needing to retrain the LLM!
-- Cleaner distinction between «linguistic» and «factual» knowledge
+- Cleaner distinction between "linguistic" and "factual" knowledge
 - Better **transparency**: if a model produces a wrong answer, we can check whether the error stems from the retrieved documents
 - Better **attribution**: the LLM can indicate the sources that have been used to generate its response
 
