@@ -1,0 +1,184 @@
+{
+  "database--data-engineering": [
+    {
+      "title": "Relational Database Management System",
+      "date": "2025-06-29",
+      "summary": "This article provides an overview of Relational Database Management Systems (RDBMS), covering key features such as data representation through tables, transaction principles (Atomicity, Consistency, Isolation, Durability), and concepts like primary and foreign keys. It highlights the importance of data integrity, security, normalization, and referential integrity in maintaining valid relationships between tables for effective data management.",
+      "slug": "relational-database-management-system",
+      "image": "/static/images/resource/relational-database-management-system/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/relational-database-management-system",
+      "seriesOrder": 1,
+      "tags": ["Database", "Data Management"]
+    },
+    {
+      "title": "ER Modeling and Normalization",
+      "date": "2025-06-30",
+      "summary": "This article covers Entity-Relationship (E-R) Modeling, which visually depicts the relationships between identifiable entities in a database. It discusses key concepts such as entities and their attributes, relationships and cardinality, and the importance of normalization (1NF, 2NF, 3NF) to optimize data structure and reduce redundancy for improved data integrity and efficiency.",
+      "slug": "er-modeling-and-normalization",
+      "image": "/static/images/resource/er-modeling-and-normalization/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/er-modeling-and-normalization",
+      "seriesOrder": 2,
+      "tags": ["Database", "Data Modeling", "Normalization", "ER Diagram"]
+    },
+    {
+      "title": "Data Modeling",
+      "date": "2025-07-01",
+      "summary": "This article explores the importance of Data Modeling as a foundational blueprint for organizing information within a business, aiding in the development of a data warehouse. It emphasizes the role of a Logical Data Model (LDM) in establishing frameworks for business intelligence and analytics, ensuring data consistency, quality, and effective communication. The article also contrasts Online Transactional Processing (OLTP) and Online Analytical Processing (OLAP) models and summarizes the transition from a Logical to a Physical Data Model (PDM) for enhanced database performance.",
+      "slug": "data-modeling",
+      "image": "/static/images/resource/data-modeling/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/data-modeling",
+      "seriesOrder": 3,
+      "tags": ["Data Warehouse", "Database", "Data Science"]
+    },
+    {
+      "title": "Dimensional Modeling - Part 0: 4-Step Design Process",
+      "date": "2025-07-02",
+      "summary": "This article outlines a structured approach to Data Design, detailing essential steps for creating effective data models that align with business needs. It covers gathering business requirements, conducting collaborative workshops, and following the Four-Step Dimensional Design Process. The article also features a use case for modeling data in a Fast Food outlet and discusses managing changes in dimension data using Slowly Changing Dimensions (SCDs).",
+      "slug": "dimensional-modeling-four-step",
+      "image": "/static/images/resource/dimensional-modeling-four-step/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/dimensional-modeling-four-step",
+      "seriesOrder": 4,
+      "tags": ["Data Warehouse", "Dimensional Modeling", "Database"]
+    },
+    {
+      "title": "Dimensional Modeling - Part 1: Basic Fact Table Techniques",
+      "date": "2023-04-02",
+      "summary": "In this article, I will introduce the concept of the Basic Fact table in Dimensional data modeling. To understand this technique, we will explore the different types of data modeling and recap some fundamental knowledge, including the star and snowflake schemas, and the concepts of normalization.",
+      "slug": "dimensional-part-1",
+      "image": "/static/images/resource/dimensional-part-1/thumbnail.jpg",
+      "series": "Database & Data Engineering",
+      "path": "blog/dimensional-part-1",
+      "seriesOrder": 5,
+      "tags": ["Data Warehouse", "Database"]
+    },
+    {
+      "title": "Dimensional Modeling - Part 2: Basic Dimension Table Techniques",
+      "date": "2023-08-08",
+      "summary": "The topics covered include Degenerate Dimension, Conformed Dimension, Role-Playing Dimension, Junk Dimension, Outrigger Dimension, and Slowly Changing Dimensions (SCD). The SCD category further delves into different types, such as Type 0 to Type 7, each with its unique approach to handling historical and changing data.",
+      "slug": "dimensional-part-2",
+      "image": "/static/images/resource/dimensional-part-2/thumbnail.jpg",
+      "series": "Database & Data Engineering",
+      "path": "blog/dimensional-part-2",
+      "seriesOrder": 6,
+      "tags": ["Data Warehouse", "Database"]
+    },
+    {
+      "title": "Dimensional Modeling - Part 3: Dimensions Hierarchy",
+      "date": "2025-07-02",
+      "summary": "This article examines various hierarchy types in data modeling, including Fixed Depth Positional Hierarchies, Slightly Ragged Hierarchies, and Ragged Hierarchies. Fixed Depth Hierarchies feature clear many-to-one relationships, such as product to brand, allowing for easy navigation and quick queries. The article discusses strategies for managing ragged hierarchies through the use of bridge tables and pathstring attributes to simplify analysis and improve performance.",
+      "slug": "dimensional-modeling-hierarchy",
+      "image": "/static/images/resource/dimensional-hierarchy/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/dimensional-modeling-hierarchy",
+      "seriesOrder": 7,
+      "tags": ["Data Warehouse", "Dimensional Modeling", "Database", "Hierarchy"]
+    },
+    {
+      "title": "Data Integration - Part 1: ETL, Pushdown and Data Orchestrator",
+      "date": "2025-07-03",
+      "summary": "This article discusses data integration, focusing on combining data from multiple sources into a unified view for better analysis. It contrasts ETL (Extract, Transform, Load) and ELT (Extract, Load, Transform) methodologies, explaining their approaches to data handling. The article also highlights three types of ETL pushdown techniques and the concept of data orchestrators.",
+      "slug": "data-integration-etl-pushdown",
+      "image": "/static/images/resource/data-integration-etl-pushdown/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/data-integration-etl-pushdown",
+      "seriesOrder": 8,
+      "tags": ["Data Integration", "ETL", "ELT", "Data Engineering", "Data Warehouse"]
+    },
+    {
+      "title": "Data Integration - Part 2: Loading Strategies, Change Data Capture and Data Layers",
+      "date": "2025-07-04",
+      "summary": "This article explores data loading methodologies, including batch and streaming approaches, and various loading strategies such as full and incremental loads. It also examines Change Data Capture (CDC) techniques and the layered architecture of modern data warehouses, from raw data ingestion to presentation marts.",
+      "slug": "data-integration-loading",
+      "image": "/static/images/resource/data-integration-loading/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/data-integration-loading",
+      "seriesOrder": 9,
+      "tags": ["Data Integration", "ETL", "CDC", "Data Warehouse", "Data Engineering"]
+    },
+    {
+      "title": "Big Data: Concepts, Architecture, and Technologies",
+      "date": "2025-07-04",
+      "summary": "This article explores the world of Big Data, covering core concepts like the 4Vs (Volume, Velocity, Variety, Veracity), key technologies including Hadoop, Kafka, and Spark, and modern architectures such as Persistent Staging Areas and real-time processing systems. It provides a comprehensive overview of the technologies that emerged to address the challenges of modern data growth beyond traditional database capabilities.",
+      "slug": "big-data",
+      "image": "/static/images/resource/big-data/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/big-data",
+      "seriesOrder": 10,
+      "tags": ["Big Data", "Hadoop", "Kafka", "Spark", "Data Engineering", "Data Warehouse"]
+    },
+    {
+      "title": "Monolithic Data Lake vs Data Mesh",
+      "date": "2025-07-05",
+      "summary": "This article compares monolithic data lake architecture with the decentralized data mesh approach. While data lakes centralize data for easier access, they face scalability challenges. Data mesh treats data as a product owned by domain teams, enhancing agility through four key principles: domain-oriented ownership, data as a product, self-serve infrastructure, and federated governance.",
+      "slug": "data-lake-vs-data-mesh",
+      "image": "/static/images/resource/data-mesh/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/data-lake-vs-data-mesh",
+      "seriesOrder": 11,
+      "tags": ["Data Engineering", "Data Architecture", "Data Mesh", "Data Lake"]
+    }
+  ],
+  "llms": [
+    {
+      "title": "From Transformer to LLMs",
+      "date": "2024-12-12",
+      "summary": "This article explores the evolution from Transformers to Large Language Models (LLMs), detailing the mechanisms of self-attention and multi-head attention, the role of position embeddings, various types of transformer models, and the training and fine-tuning processes of LLMs.",
+      "slug": "from-transformer-to-llm",
+      "image": "/static/images/resource/from-transformer-to-llm/thumbnail-board-room-attention.png",
+      "series": "LLMs",
+      "path": "blog/from-transformer-to-llm",
+      "seriesOrder": 1,
+      "tags": ["LLMs", "Language Models", "Transformer", "Fine-tuning", "RAG"]
+    },
+    {
+      "title": "LLMs in LangChain - Part 1. Conceptual",
+      "date": "2024-06-30",
+      "summary": "This article provides an overview of Large Language Models (LLMs), LLMs evolution and the core concepts of LangChain - an open source framework for building applications based on LLMs.",
+      "slug": "llms-part-1",
+      "image": "/static/images/resource/llms/part-1.png",
+      "series": "LLMs",
+      "path": "blog/llms-part-1",
+      "seriesOrder": 2,
+      "tags": ["LLMs", "Language Models", "LangChain"]
+    },
+    {
+      "title": "LLMs in LangChain - Part 2. LLMs Core Concepts",
+      "date": "2024-07-01",
+      "summary": "This article provides an overview of the core concepts of Large Language Models (LLMs) in LangChain, including LLM components, prompt templates, indexing, memory, chains, and agents.",
+      "slug": "llms-part-2",
+      "image": "/static/images/resource/llms/chat_models.png",
+      "series": "LLMs",
+      "path": "blog/llms-part-2",
+      "seriesOrder": 3,
+      "tags": ["LLMs", "Language Models", "LangChain"]
+    }
+  ],
+  "retrieval-augmented-generation-rag": [
+    {
+      "title": "Vector Database - Pinecone",
+      "date": "2024-04-01",
+      "summary": "In this article, we delve into Vector Databases by using Pinecone and explore the fundamentals of vector embeddings, indexes, and essential components of these databases. Furthermore, it will provide a guide on setting up a Vector Database on Pinecone, walking through the installation process, obtaining API keys, and initializing client connections.",
+      "slug": "vector-database",
+      "image": "/static/images/resource/vector-database/fig1.png",
+      "series": "Retrieval Augmented Generation (RAG)",
+      "path": "blog/vector-database",
+      "seriesOrder": null,
+      "tags": ["Database", "Vector Databases", "Pinecone"]
+    },
+    {
+      "title": "Retrieval Augmented Generation (RAG) with Vector Databases",
+      "date": "2025-03-14",
+      "summary": "The article delves into Retrieval-Augmented Generation (RAG), which integrates retrieval and generative models to enhance GenAI applications efficiently. It highlights the architecture of RAG, utilizing vector databases for data retrieval and response generation.",
+      "slug": "rag-with-vector-db",
+      "image": "/static/images/resource/rag-with-vector-db/thumbnail.png",
+      "series": "Retrieval Augmented Generation (RAG)",
+      "path": "blog/rag-with-vector-db",
+      "seriesOrder": null,
+      "tags": ["LLMs", "RAG", "Vector Databases", "Database"]
+    }
+  ]
+}

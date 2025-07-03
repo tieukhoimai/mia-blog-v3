@@ -1,10 +1,12 @@
 ---
 title: LLMs in LangChain - Part 2. LLMs Core Concepts
 date: '2024-07-01'
-tags: ['LLMs','Language Models','LangChain']
+tags: ['LLMs', 'Language Models', 'LangChain']
 draft: false
 summary: 'This article provides an overview of the core concepts of Large Language Models (LLMs) in LangChain, including LLM components, prompt templates, indexing, memory, chains, and agents.'
 image: '/static/images/resource/llms/chat_models.png'
+series: 'LLMs'
+seriesOrder: 3
 ---
 
 <TOCInline toc={props.toc} asDisclosure toHeading={3} />
@@ -22,111 +24,110 @@ LLMs are simply an intermediate that allows one to connect to all popular LLMs a
 ### 2. Prompt Template
 
 1. **Prompt** refers to the inputs to the model and can be classified into three types based on their contextual information [2]
-    
-    **(i) Zero-shot prompts** - These prompts don’t contain examples for the  model to replicate. Zero-shot prompts essentially show the model’s ability to  complete the prompt without any additional examples or information. It means  the model has to rely on its pre-existing knowledge to generate a plausible answer.
-    
-    - Instruction-content
-    - Instruction-content-instruction
-    - Continuation
-    
-    **(ii) One-shot prompts** - These prompts provide the model with a single  example to replicate and continue the pattern. This allows for the generation  of predictable responses from the model.
-    
-    **(iii) Few-shot prompts** - These prompts provide the model with multiple  examples to replicate. Use few-shot prompts to complete complicated tasks,  such as synthesizing data based on a pattern.
-    
-2. **Prompt Templates** are a way to create a dynamic prompts for LLMs. In LangChain there are `PromptTemplates` and `ChatPromptTemplates`
-    
-    ***(ii) Prompt Templates** are used for tasks that involve generating text, such as answering questions or completing sentences*
-    
-    ```python
-    from langchain.prompts import PromptTemplate
-    
-    # Define a template for the prompt
-    template = '''You are an experienced AI Engineer.
-    Write a few sentences about the following concept "{concept}" in {fields}.'''
-    
-    # Create a PromptTemplate object from the template
-    prompt_template = PromptTemplate.from_template(template=template)
-    
-    # Fill in the variable
-    prompt = prompt_template.format(concept='prompt templates', fields='LLMs')
-    
-    # Returns the generated prompt
-    prompt
-    
-    # Output:
-    # 'You are an experienced AI Engineer.\nWrite a few sentences about the following concept "prompt templates" in LLMs.'
-    ```
-    
-    ```python
-    llm = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0)
-    output = llm.invoke(prompt)
-    print(output.content)
-    
-    # Output:
-    # Prompt templates in LLMs refer to predefined structures or formats that guide users in generating effective prompts for the language model. These templates help users frame their input in a way that maximizes the model's understanding and response accuracy. By providing a framework for crafting prompts, template can streamline the process of interacting with LLMs and improve the quality of generated outputs. Additionally, prompt templates can also help users explore different types of prompts and experiment with various input styles to achieve desired results.
-    ```
-    
-    ***(ii) Chat Prompt Templates** are specifically designed for tasks that involve engaging in conversations*
-    
-    ```python
-    # Create a chat template with system and human messages
-    chat_template = ChatPromptTemplate.from_messages(
-        [
-            SystemMessage(content='You respond only in the JSON format.'),
-            HumanMessagePromptTemplate.from_template('Top {n} countries in {area} by population.')
-        ]
-    )
-    
-    # Fill in the specific values for n and area
-    messages = chat_template.format_messages(n='5', area='World')
-    print(messages)  # Outputs the formatted chat messages
-    
-    # Output: 
-    # [SystemMessage(content='You respond only in the JSON format.'), HumanMessage(content='Top 5 countries in World by population.')]
-    ```
-    
-    ```python
-    from langchain_openai import ChatOpenAI
-    llm = ChatOpenAI()
-    output = llm.invoke(messages)
-    print(output.content)
 
-    # Output:    
-    # {
-    #     "data": [
-    #     {
-    #         "country": "China",
-    #         "population": 1444216107
-    #     },
-    #     {
-    #         "country": "India",
-    #         "population": 1393409038
-    #     },
-    #     {
-    #         "country": "United States",
-    #         "population": 332915073
-    #     },
-    #     {
-    #         "country": "Indonesia",
-    #         "population": 276361783
-    #     },
-    #     {
-    #         "country": "Pakistan",
-    #         "population": 225199937
-    #     }
-    #     ]
-    # }
-    ```
-    
+   **(i) Zero-shot prompts** - These prompts don’t contain examples for the model to replicate. Zero-shot prompts essentially show the model’s ability to complete the prompt without any additional examples or information. It means the model has to rely on its pre-existing knowledge to generate a plausible answer.
+   - Instruction-content
+   - Instruction-content-instruction
+   - Continuation
+
+   **(ii) One-shot prompts** - These prompts provide the model with a single example to replicate and continue the pattern. This allows for the generation of predictable responses from the model.
+
+   **(iii) Few-shot prompts** - These prompts provide the model with multiple examples to replicate. Use few-shot prompts to complete complicated tasks, such as synthesizing data based on a pattern.
+
+2. **Prompt Templates** are a way to create a dynamic prompts for LLMs. In LangChain there are `PromptTemplates` and `ChatPromptTemplates`
+
+   **\*(ii) Prompt Templates** are used for tasks that involve generating text, such as answering questions or completing sentences\*
+
+   ```python
+   from langchain.prompts import PromptTemplate
+
+   # Define a template for the prompt
+   template = '''You are an experienced AI Engineer.
+   Write a few sentences about the following concept "{concept}" in {fields}.'''
+
+   # Create a PromptTemplate object from the template
+   prompt_template = PromptTemplate.from_template(template=template)
+
+   # Fill in the variable
+   prompt = prompt_template.format(concept='prompt templates', fields='LLMs')
+
+   # Returns the generated prompt
+   prompt
+
+   # Output:
+   # 'You are an experienced AI Engineer.\nWrite a few sentences about the following concept "prompt templates" in LLMs.'
+   ```
+
+   ```python
+   llm = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0)
+   output = llm.invoke(prompt)
+   print(output.content)
+
+   # Output:
+   # Prompt templates in LLMs refer to predefined structures or formats that guide users in generating effective prompts for the language model. These templates help users frame their input in a way that maximizes the model's understanding and response accuracy. By providing a framework for crafting prompts, template can streamline the process of interacting with LLMs and improve the quality of generated outputs. Additionally, prompt templates can also help users explore different types of prompts and experiment with various input styles to achieve desired results.
+   ```
+
+   **\*(ii) Chat Prompt Templates** are specifically designed for tasks that involve engaging in conversations\*
+
+   ```python
+   # Create a chat template with system and human messages
+   chat_template = ChatPromptTemplate.from_messages(
+       [
+           SystemMessage(content='You respond only in the JSON format.'),
+           HumanMessagePromptTemplate.from_template('Top {n} countries in {area} by population.')
+       ]
+   )
+
+   # Fill in the specific values for n and area
+   messages = chat_template.format_messages(n='5', area='World')
+   print(messages)  # Outputs the formatted chat messages
+
+   # Output:
+   # [SystemMessage(content='You respond only in the JSON format.'), HumanMessage(content='Top 5 countries in World by population.')]
+   ```
+
+   ```python
+   from langchain_openai import ChatOpenAI
+   llm = ChatOpenAI()
+   output = llm.invoke(messages)
+   print(output.content)
+
+   # Output:
+   # {
+   #     "data": [
+   #     {
+   #         "country": "China",
+   #         "population": 1444216107
+   #     },
+   #     {
+   #         "country": "India",
+   #         "population": 1393409038
+   #     },
+   #     {
+   #         "country": "United States",
+   #         "population": 332915073
+   #     },
+   #     {
+   #         "country": "Indonesia",
+   #         "population": 276361783
+   #     },
+   #     {
+   #         "country": "Pakistan",
+   #         "population": 225199937
+   #     }
+   #     ]
+   # }
+   ```
+
 ### 3. Indexing
 
 **Indexing** involves structuring documents and texts to enable LLMs to extract useful information efficiently. In LangChain, indexing is designed to optimize how documents are stored and retrieved within vector stores. These vector stores are specialized databases that excel in handling high-dimensional data points represented in vector embeddings.
 
-For more detail, the indexing process in vector database [[3]](https://www.pinecone.io/learn/vector-database/) typically uses algorithms like Product Quantization (PQ), Locality-Sensitive Hashing (LSH), or Hierarchical Navigable Small World (HNSW) to map the vector embeddings of the data into a specialized data structure. 
+For more detail, the indexing process in vector database [[3]](https://www.pinecone.io/learn/vector-database/) typically uses algorithms like Product Quantization (PQ), Locality-Sensitive Hashing (LSH), or Hierarchical Navigable Small World (HNSW) to map the vector embeddings of the data into a specialized data structure.
 
 ### 4. Memory
 
-**Memories** can be used to save conversation history and feed it along with new questions to LLM so multi-turn natural conversation chat can be implemented. 
+**Memories** can be used to save conversation history and feed it along with new questions to LLM so multi-turn natural conversation chat can be implemented.
 
 ```python
 from langchain.chains import ConversationChain
@@ -183,7 +184,7 @@ Prompt after formatting:
 What is the capital of Vietnam?. List the top 3 places to visit in that city. Use bullet points
 
 > Finished chain.
-The capital of Vietnam is Hanoi. 
+The capital of Vietnam is Hanoi.
 
 Top 3 places to visit in Hanoi:
 - Hoan Kiem Lake and Ngoc Son Temple
@@ -243,14 +244,14 @@ output = overall_chain.invoke('linear regression')
 
 # 4. **Mean Calculation**: It calculates the mean (average) values of both `x` and `y` using `np.mean()`. These mean values are crucial for determining the slope and intercept of the regression line.
 
-# 5. **Slope (Beta1) and Intercept (Beta0) Calculation**: 
-#     - The slope (`beta1`) of the regression line measures the change in the dependent variable (`y`) for a one-unit change in the independent variable (`x`). It is calculated by dividing the sum of the products of differences between each `x` value and the mean of `x` with corresponding differences between each `y` value and the mean of `y`, by the sum of the squares of differences between each `x` value and the mean of `x`. Mathematically, it is expressed as: 
+# 5. **Slope (Beta1) and Intercept (Beta0) Calculation**:
+#     - The slope (`beta1`) of the regression line measures the change in the dependent variable (`y`) for a one-unit change in the independent variable (`x`). It is calculated by dividing the sum of the products of differences between each `x` value and the mean of `x` with corresponding differences between each `y` value and the mean of `y`, by the sum of the squares of differences between each `x` value and the mean of `x`. Mathematically, it is expressed as:
 #     \[ beta1 = \frac{\sum ((x_i - x_{mean}) * (y_i - y_{mean}))}{\sum ((x_i - x_{mean})^2)} \]
-    
-#     - The intercept (`beta0`) of the regression line represents the value of `y` when `x` is zero. It is calculated using the relationship between the means of `x` and `y`, and the slope (`beta1`). Mathematically: 
+
+#     - The intercept (`beta0`) of the regression line represents the value of `y` when `x` is zero. It is calculated using the relationship between the means of `x` and `y`, and the slope (`beta1`). Mathematically:
 #     \[ beta0 = y_{mean} - beta1 * x_{mean} \]
 
-# 6. **Return Values**: Finally, the function returns the calculated values of the slope (`beta1`) and intercept (`beta0`) of the regression line. 
+# 6. **Return Values**: Finally, the function returns the calculated values of the slope (`beta1`) and intercept (`beta0`) of the regression line.
 
 # To use this function, the user needs to provide arrays of `x` and `y` values, and the function will output the slope and intercept of the line that fits best to these points in the context of least squares fitting. These outputs essentially define the linear equation that best describes the relationship between the independent and dependent variables in the given dataset. The given implementation is a clear example for teaching or understanding the basics of simple linear regression without relying on higher-level APIs or libraries that obfuscate these fundamental calculations.
 
@@ -261,7 +262,8 @@ output = overall_chain.invoke('linear regression')
 **Agents** use an LLM to determine which actions to take and in what order. Actions can include using tools, observing their output, or responding to the user.
 
 ![Agents](/static/images/resource/llms/agent.png)
-<p style={{ textAlign: "center" }}> Source: LLM Agents [5]</p>
+
+<p style={{ textAlign: 'center' }}> Source: LLM Agents [5]</p>
 
 **Tools** are entities that take a string as input and return a string as output. They are like specialized apps for LLMs, expanding their capabilities by connecting them to search engines, APIs, and more.
 
@@ -285,12 +287,13 @@ print(output)
 ```
 
 For Example:
+
 - Initialize the LLMs model
 - Define and create PromptTemplate
 - 3 tools:
-    - Python REPL tool
-    - Wikipedia Tool
-    - DuckDuckGo
+  - Python REPL tool
+  - Wikipedia Tool
+  - DuckDuckGo
 
 ```python
 # Create tools for the agent

@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .task-list-item::before {
   @apply hidden;
 }

@@ -1,19 +1,22 @@
 ---
 title: From Transformer to LLMs
 date: '2024-12-12'
-tags: ['LLMs','Language Models', 'Transformer', 'Fine-tuning', 'RAG']
+tags: ['LLMs', 'Language Models', 'Transformer', 'Fine-tuning', 'RAG']
 draft: false
-summary: 'This article explores the evolution from Transformers to Large Language Models (LLMs), detailing the mechanisms of self-attention and multi-head attention, the role of position embeddings, various types of transformer models, and the training and fine-tuning processes of LLMs.'
+summary: 'This article explores the evolution from Transformers to Large Language Models (LLMs), detailing the mechanisms of self-attentiBut greedy decoding is **short-sighted** - Can get trapped in local minima (good "local" choice of token, but poor text at the end, with no way to backtrack)n and multi-head attention, the role of position embeddings, various types of transformer models, and the training and fine-tuning processes of LLMs.'
 image: '/static/images/resource/from-transformer-to-llm/thumbnail-board-room-attention.png'
+series: 'LLMs'
+seriesOrder: 1
 ---
 
 <p className="note">
-  *The thumbnail is sourced from [A Deep Dive into Transformers with TensorFlow and Keras: Part 1](https://pyimagesearch.com/2022/09/05/a-deep-dive-into-transformers-with-tensorflow-and-keras-part-1/).*
+  *The thumbnail is sourced from [A Deep Dive into Transformers with TensorFlow and Keras: Part
+  1](https://pyimagesearch.com/2022/09/05/a-deep-dive-into-transformers-with-tensorflow-and-keras-part-1/).*
 </p>
 
 <TOCInline toc={props.toc} asDisclosure toHeading={3} />
 
-The transformer is a neural network with a specific structure that includes a mechanism called **self-attention** or more specifically, **multi-head attention**.  This allows the model to build rich contextual representations of a token’s meaning by attending to and integrating information from surrounding tokens, effectively capturing how tokens relate to each other over long spans.
+The transformer is a neural network with a specific structure that includes a mechanism called **self-attention** or more specifically, **multi-head attention**. This allows the model to build rich contextual representations of a token’s meaning by attending to and integrating information from surrounding tokens, effectively capturing how tokens relate to each other over long spans.
 
 # I. The Transformer
 
@@ -69,22 +72,17 @@ This output, $h_t$, represents the context-aware embedding of token $t$, combini
 ### 1.2. Multi-head attention
 
 Multi-head attention is a mechanism within transformers that extends self-attention by allowing the model to attend to different aspects of the input simultaneously. This is achieved by using multiple attention heads, each operating independently but in parallel.
+
 - One for syntactic relatedness
 - One for semantic relatedness
 - One for coreference, etc
-
-{/* <img src="/static/images/resource/from-transformer-to-llm/transformer_self-attention_viz_1.png" alt="multi-head-attention"/> 
-
-<p style={{ textAlign: "center" }}>*Source: http://jalammar.github.io/illustrated-transformer*</p>
-
-*/}
 
 In multi-head attention, the attention mechanism is applied multiple times in parallel, with each attention "head" using its own set of learned parameters. Each head independently computes attention using its own query, key, and value matrices:
 
 - Query vector: $q_i^h=W^{Q,h} \cdot g_i$
 - Key vector: $k_i^h=W^{K,h}\cdot g_i$
 - Value vector: $v_i^h= V^h \cdot g_i$
-  
+
 For each head $h$, the attention scores are computed as:
 
 $$
@@ -105,10 +103,6 @@ To address this, transformers use position embeddings to encode the position of 
 
 **Simple solution:** Concatenate the semantic word embedding with an absolute position embedding. This combined embedding is then used as the input to the transformer model, enabling it to understand the order of words in addition to their meanings.
 
-{/*
-![position_embedding](/static/images/resource/from-transformer-to-llm/position_embedding_viz_2.png)
-*/}
-
 Multi-head self-attention isn’t quite sufficient. We need a few extra things and package everything up into so-called Transformer blocks.
 
 ## 3. Types of Transformer models
@@ -122,18 +116,10 @@ Encoder self-attention covers the entire sequence, i.e. both the words to the le
   - Throw away the output layer, create a new one
   - Fine-tune the model to predict the label at the `[CLS]` position
 
-{/*
-![encoder_text_classification](/static/images/resource/from-transformer-to-llm/encoder_text_classification_viz_3.png)
-*/}
-
 - Sequence labeling
   - Train a model on the MLM task
   - Throw away the output layer, create a new one
   - Fine-tune the model on POS-annotated data
-
-{/*
-![encoder_sequence_labeling](/static/images/resource/from-transformer-to-llm/encoder_sequence_labeling_viz_4.png)
-*/}
 
 ### 4.2. Sequence Decoders with self-attention
 
@@ -141,23 +127,13 @@ Encoder self-attention covers the entire sequence, i.e. both the words to the le
 - But typically, far-way tokens get less attention.
 - Decoder self-attention only covers the words to the left of the current position (because the words to the right are not yet known at test time).
 
-{/*
-![decoder](/static/images/resource/from-transformer-to-llm/decoder_viz_5.png)
-*/}
-
 ### 4.3. Encoder-Decoder model with cross-attention (Machine Translation)
 
 - **Train an Encoder for the Source Language:** The encoder processes the input sequence in the source language and generates a set of context-aware representations for each token.
 - **Train a Decoder for the Target Language:** The decoder generates the output sequence in the target language, using the context provided by the encoder.
 - **Connecting Encoder and Decoder:**
   - **First Idea:** Directly connecting the encoder and decoder can work if the source and target languages have the same word order.
-    {/*
-    ![mt_first_idea](/static/images/resource/from-transformer-to-llm/mt_first_idea_viz_6.png)
-    */}
   - **Cross-Attention:** To handle different word orders and improve translation quality, we use cross-attention. Cross-attention allows the decoder to focus on relevant parts of the source sequence by attending to the encoder's output representations.
-    {/*
-    ![mt_cross_attention](/static/images/resource/from-transformer-to-llm/mt_cross_attention_viz_7.png)
-    */}
 
 # II. Large Language Models (LLMs)
 
@@ -174,18 +150,19 @@ Self-attention allows the model to weigh the importance of different tokens in t
 ## 2. Training Process
 
 - The LLM is trained through **self-supervision**:
-
   1. Given a text made of tokens $[w_1, w_2, \dots, w_n]$, we take partial sequences $[w_1, w_2, \dots, w_i]$ and seek to predict the next token $w_{i+1}$.
   2. The LLM will take as input $[w_1, w_2, \dots, w_i]$ and output a **probability distribution** $\hat{y}_i$ over possible next tokens.
   3. The loss for this token is then defined as the cross-entropy:
+
      $$
      L_{CE} = -\log \hat{y}_i[w_{i+1}]
      $$
-
      - **Explanation:** Probability of the actual token $w_{i+1}$ in the output distribution $\hat{y}_i$.
+
   4. We then make (at batch level) a small update on the model weights $\theta$ to reduce the loss.
 
 - **Basic model update** through stochastic gradient descent (SGD):
+
   $$
   \theta^{t+1} = \theta^t - \eta \nabla_\theta L_{CE}
   $$
@@ -198,13 +175,12 @@ Self-attention allows the model to weigh the importance of different tokens in t
   - Such as Adam (Adaptive Moment Estimation).
   - **Distributed training** setup using many GPUs.
 
-
 ## 3. Types of LLMs
 
 - Encoder-only
   - **Masked language modeling**: These models predict missing words in a sentence.
   - **Smaller & older models**: Despite being less complex, they are still effective for information extraction (IE) tasks.
-- Decoder-only: 
+- Decoder-only:
   - **Dominant approach to LLMs**: These models generate text by predicting the next word in a sequence.
 - Encoder-decoder
   - **Self-attention and cross-attention**: These models use both mechanisms to process input and output sequences.
@@ -226,7 +202,6 @@ During fine-tuning, only a small fraction of the parameters are optimized, a tec
 These PEFT techniques enable efficient adaptation of large pre-trained models to new tasks with minimal computational resources and data requirements.
 
 ![PEFT](/static/images/resource/from-transformer-to-llm/PEFT_viz_9.png)
-
 
 ### 4.2. Two Alignment Strategies
 
@@ -275,7 +250,7 @@ But greedy decoding is **short-sighted** ↔ Can get trapped in local minima (go
 
 ### 6.2 Beam search decoding
 
-- We keep at each step a «beam» of K hypotheses representing the best partial outputs so far
+- We keep at each step a "beam" of K hypotheses representing the best partial outputs so far
 - Those K hypotheses are gradually expanded, token by token
 - Until we reach `<eos>` or the maximum output length
 - Finally, we take the hypothesis with max probability among the K alternatives
@@ -293,6 +268,7 @@ But greedy decoding is **short-sighted** ↔ Can get trapped in local minima (go
 ### 6.5. Temperature
 
 The `creativity` of the generation can be controlled by the temperature
+
 - Temperatures < 1 will make the decoder more “conservative”, increasing its focus on high-probability tokens
 - Temperatures > 1 will make the decoder more “creative” and sometimes select less-likely tokens
 
@@ -311,8 +287,9 @@ The `creativity` of the generation can be controlled by the temperature
 2. **Reader**: Retrieve the most relevant texts and add them to the prompt to generate the response.
 
 ### 7.3. Advantages of RAG
+
 - Easier to **edit** the LLM’s factual knowledge: simply update the underlying database, without needing to retrain the LLM!
-- Cleaner distinction between «linguistic» and «factual» knowledge
+- Cleaner distinction between "linguistic" and "factual" knowledge
 - Better **transparency**: if a model produces a wrong answer, we can check whether the error stems from the retrieved documents
 - Better **attribution**: the LLM can indicate the sources that have been used to generate its response
 

@@ -5,6 +5,7 @@ tags: ['LLMs', 'RAG', 'Vector Databases', 'Database']
 draft: false
 summary: 'The article delves into Retrieval-Augmented Generation (RAG), which integrates retrieval and generative models to enhance GenAI applications efficiently. It highlights the architecture of RAG, utilizing vector databases for data retrieval and response generation.'
 image: '/static/images/resource/rag-with-vector-db/thumbnail.png'
+series: 'Retrieval Augmented Generation (RAG)'
 ---
 
 <TOCInline toc={props.toc} asDisclosure toHeading={3} />
@@ -12,9 +13,8 @@ image: '/static/images/resource/rag-with-vector-db/thumbnail.png'
 # I. Why is Retrieval-augmented generation (RAG)
 
 > **Retrieval-Augmented Generation** refers to an advanced natural language processing technique that combines the strengths of both **retrieval models** and **generative models**.
-> 
-> *Source: [RAG Vs VectorDB](https://medium.com/@bijit211987/rag-vs-vectordb-2c8cb3e0ee52#:~:text=Retrieval%2DAugmented%20Generation%20refers%20to,to%20some%20query%20or%20context)*
 >
+> _Source: [RAG Vs VectorDB](https://medium.com/@bijit211987/rag-vs-vectordb-2c8cb3e0ee52#:~:text=Retrieval%2DAugmented%20Generation%20refers%20to,to%20some%20query%20or%20context)_
 
 RAG is the preferred approach from a cost-efficacy perspective. While there are 3 main strategies for enhancing GenAI applications. Let’s examine why RAG better for its practical effectiveness.
 
@@ -23,12 +23,12 @@ RAG is the preferred approach from a cost-efficacy perspective. While there are 
 - For smaller models like BERT, we can easily do “full” fine-tuning
 - For larger LLMs (like Llama, Phi, Mistral, Qwen, …), this is more complicated
 - Only optimize a small fraction of parameters. So-called **Parameter-Efficient Fine Tuning (PEFT)**
-    - **Adapters:** Insert small trainable modules between layers
-    - **LoRA (Low-Rank Adaptation):** Modifies the model weights using lowrank matrices
-    - **Soft Prompting:** Appends trainable vectors to the input prompt
-    - **IA3 (Intrinsic Attention-guided Adaptation):** Adjusts attention mechanism in transformer layers
+  - **Adapters:** Insert small trainable modules between layers
+  - **LoRA (Low-Rank Adaptation):** Modifies the model weights using lowrank matrices
+  - **Soft Prompting:** Appends trainable vectors to the input prompt
+  - **IA3 (Intrinsic Attention-guided Adaptation):** Adjusts attention mechanism in transformer layers
 
-*However, it involves recurring, costly, and time-intensive labeling by experts, along with constant quality monitoring due to data changes and model accuracy drift.*
+_However, it involves recurring, costly, and time-intensive labeling by experts, along with constant quality monitoring due to data changes and model accuracy drift._
 
 ## 2. Model alignment
 
@@ -41,10 +41,11 @@ Two alignment strategies are Instruction tuning and Preference alignment
 Classical fine-tuning on a language modelling objective (= next token prediction), but on a dataset of `<instruction, correct response>` pairs.
 
 How to collect such dataset?
+
 - Manually, by asking humans to write a question/problem and a correct answer to that problem
 - By converting existing datasets for supervised NLP tasks (for text classification, sentiment analysis, NER, machine translation, etc.) to prompts → answers
 - By using LLMs to generate instructions-> responses, based on external
-databases, general guidelines, etc.
+  databases, general guidelines, etc.
 
 ### 2.2. Preference Alignment
 
@@ -55,7 +56,7 @@ One can also improve the model alignment using preference data, such as ratings 
 
 Given a dataset of human preferences, the goal is to optimize the LLM to maximise the probability of getting a positive rating, and minimize the probability of a negative rating. Several optimization methods are possible, most prominently Reinforcement Learning from Human Feedback (RLHR) and Direct Preference Optimization (DPO).
 
-*Despite its advantages, model alignment is complex, involving constant refinement to ensure models remain aligned with evolving ethical and user preferences. It can be resource-intensive, requiring substantial manual effort to curate datasets and provide feedback.*
+_Despite its advantages, model alignment is complex, involving constant refinement to ensure models remain aligned with evolving ethical and user preferences. It can be resource-intensive, requiring substantial manual effort to curate datasets and provide feedback._
 
 ## 3. Prompting Engineering
 
@@ -66,7 +67,7 @@ A prompt is simply the input to the LLM, which can be a question or instructions
 
 Prompt engineering involves experimenting with and fine-tuning the instructions given to a model to elicit desired performances. This approach is the **most cost-effective** method to enhance the precision of your GenAI application since prompt adjustments can be implemented swiftly with minimal code modifications.
 
-*Though this technique refines the outputs generated by LLMs, it does not equip them with new or dynamic context. Consequently, GenAI applications might still encounter limitations in accessing up-to-date information, making them prone to inaccuracies or context misinterpretations (often referred to as "hallucinations").*
+_Though this technique refines the outputs generated by LLMs, it does not equip them with new or dynamic context. Consequently, GenAI applications might still encounter limitations in accessing up-to-date information, making them prone to inaccuracies or context misinterpretations (often referred to as "hallucinations")._
 
 # II. What is RAG
 
@@ -75,15 +76,13 @@ Prompt engineering involves experimenting with and fine-tuning the instructions 
 RAG combines two key processes to enhance response generation:
 
 1. **Retriever** = Given a user prompt, we first search for relevant documents in a text database
-    - **Sparse retrieval**: Utilizes algorithms that search through indexed terms.
-    - **Dense retrievers:** Employs document embeddings to find semantically relevant texts.
-    - Retrieve data from **non-text sources**
+   - **Sparse retrieval**: Utilizes algorithms that search through indexed terms.
+   - **Dense retrievers:** Employs document embeddings to find semantically relevant texts.
+   - Retrieve data from **non-text sources**
 2. **Generative** = The most relevant texts are then retrieved and added to the prompt to generate the response
-    >
-    > Given the following information: [RETRIEVED TEXTS]
-    > 
-    > Answer the following question: [USER QUESTION]
-    > 
+   > Given the following information: [RETRIEVED TEXTS]
+   >
+   > Answer the following question: [USER QUESTION]
 
 ## 2. RAG architecture with Vector Database
 
@@ -100,8 +99,10 @@ Providing Large Language Models (LLMs) with missing knowledge involves using a v
 
 ![rag-process](/static/images/resource/rag-with-vector-db/rag-process.png)
 
-
-<p style={{ textAlign: "center" }}>*Source: [https://www.pinecone.io/learn/retrieval-augmented-generation/](https://www.pinecone.io/learn/retrieval-augmented-generation/)*</p>
+<p style={{ textAlign: 'center' }}>
+  *Source:
+  [https://www.pinecone.io/learn/retrieval-augmented-generation/](https://www.pinecone.io/learn/retrieval-augmented-generation/)*
+</p>
 
 ### 2.2. From text to Embeddings
 
@@ -156,20 +157,20 @@ class Pipeline:
         # For find similar documents in vector database
         self.score_threshold = 0.4
         self.k = 5
-        
+
         # Initialize chat models and Pinecone index
         self.index_name = "vector-db-name"
         self.llm = ChatOpenAI(model_name="gpt-4o", temperature=0.9)
         self.vector_store = CommunityPinecone.from_existing_index(self.index_name, OpenAIEmbeddings(model='text-embedding-3-small'))
-        
+
         # Initialize session state variables
         self.initialize_session_state()
-  
+
         # Initialize conversation chain
         self.initialize_conversation_chain()
-  
+
   ...
-  
+
   # Function to retrieve similarity documents
   def find_match(self, input_text):
       matches = ""
@@ -178,9 +179,9 @@ class Pipeline:
           k=self.k)
       matches = [doc.page_content for doc, score in result if score > self.score_threshold]
       return "\n".join(matches)
-      
+
   ...
-  
+
   def initialize_conversation_chain(self):
       self.system_msg_template = SystemMessagePromptTemplate.from_template(
           template="""
@@ -189,16 +190,16 @@ class Pipeline:
       )
       self.human_msg_template = HumanMessagePromptTemplate.from_template(template="{input}")
       self.prompt_template = ChatPromptTemplate.from_messages([
-          self.system_msg_template, 
+          self.system_msg_template,
           self.human_msg_template
       ])
       self.conversation = ConversationChain(
-          memory=st.session_state.buffer_memory, 
-          prompt=self.prompt_template, 
-          llm=self.llm, 
+          memory=st.session_state.buffer_memory,
+          prompt=self.prompt_template,
+          llm=self.llm,
           verbose=True
       )
-      
+
 pipeline = Pipeline()
 ...
 context = pipeline.find_match(query)
@@ -217,6 +218,6 @@ For example, the pipeline retrieves movie-related data from a vector database an
 3. [Build a RAG chatbot](https://docs.pinecone.io/guides/get-started/build-a-rag-chatbot)
 4. [Fixing Hallucination with Knowledge Bases](https://www.pinecone.io/learn/series/langchain/langchain-retrieval-augmentation/)
 5. [Lecture 8 - Large Language Models, IN4080, Autumn 2024, University of Oslo](https://www.uio.no/studier/emner/matnat/ifi/IN4080/h24/slides/in4080---2024---llms.pdf)
-6. [Vector Database - Pinecone](https://tieukhoimai.me/blog/vector-database) 
+6. [Vector Database - Pinecone](https://tieukhoimai.me/blog/vector-database)
 7. [Pinecone GitHub: LangChain with Azure OpenAI - Retrieval Examples](https://github.com/pinecone-io/examples/blob/master/learn/generation/langchain/00-azure-openai-retrieval.ipynb)
 8. [Pinecone GitHub: LangChain Multi-query](https://github.com/pinecone-io/examples/blob/master/learn/generation/langchain/handbook/10-langchain-multi-query.ipynb)

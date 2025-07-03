@@ -1,0 +1,142 @@
+---
+title: 'Data Integration - Part 1: ETL, Pushdown and Data Orchestrator'
+date: '2025-07-03'
+tags: ['Data Integration', 'ETL', 'ELT', 'Data Engineering', 'Data Warehouse']
+draft: false
+summary: 'This article discusses data integration, focusing on combining data from multiple sources into a unified view for better analysis. It contrasts ETL (Extract, Transform, Load) and ELT (Extract, Load, Transform) methodologies, explaining their approaches to data handling. The article also highlights three types of ETL pushdown techniques and the concept of data orchestrators.'
+image: '/static/images/resource/data-integration-etl-pushdown/thumbnail.png'
+series: 'Database & Data Engineering'
+seriesOrder: 8
+---
+
+<TOCInline toc={props.toc} asDisclosure toHeading={3} />
+
+## Introduction
+
+Data integration is the **process** of combining data from multiple sources into a single, unified view for easier analysis and decision-making. It involves extracting, transforming, and loading data from various systems and formats, ensuring **consistency** and **accuracy**.
+
+This process allows organizations to gain a more comprehensive understanding of their data and make better-informed decisions.
+
+## ETL vs ELT
+
+Data Warehouse and Business Intelligence environments are mainly based on data use cases, therefore it is mandatory to have the right approach and the right tools to manage data with robustness and in a centralized manner.
+
+| Characteristic            | ETL (Extract-Transform-Load)                 | ELT (Extract-Load-Transform)                     |
+| ------------------------- | -------------------------------------------- | ------------------------------------------------ |
+| Processing Location       | Transformation occurs in separate ETL server | Transformation occurs inside the target database |
+| Scalability               | Limited by ETL server capacity               | Scales with database computing power             |
+| Data Volume Handling      | Better for smaller data volumes              | Optimal for large data volumes                   |
+| Implementation Speed      | Can be slower to implement                   | Faster implementation with SQL                   |
+| Transformation Complexity | Handles complex transformations well         | Limited to what SQL/database functions can do    |
+| Target System Load        | Minimal processing load on target            | Heavy processing on target system                |
+| Storage Requirements      | Requires less storage in target              | Requires more storage (raw + processed data)     |
+| Best Use Case             | Complex transformations, smaller datasets    | Big data, cloud data warehouses                  |
+
+### ETL
+
+ETL refers to the processes to gather data and present it to the final user.
+
+- **E: Extract** – data is extracted from **homogeneous** or **heterogeneous** data sources
+  - **Homogeneous** dataset: If it is made up of things that are **similar** to each other. They usually refer to a single data source.
+  - **Heterogeneous data source**: Refer to datasets with **diverse** types, structures, formats, or origins.
+- **T: Transform** – data is transformed for storing in the proper format or structure for the purposes of querying and analysis
+- **L: Load** – data is loaded into the final target **database** or **data warehouse** or **data lake**
+
+| Target System  | Structure          | Purpose                           | Data Type                             |
+| -------------- | ------------------ | --------------------------------- | ------------------------------------- |
+| Database       | Highly structured  | Day-to-day operations             | Structured                            |
+| Data Warehouse | Structured         | Analytical processing & reporting | Mostly structured                     |
+| Data Lake      | Unstructured/mixed | Storing raw data for future use   | All types (structured → unstructured) |
+
+The choice of target system significantly impacts ETL design decisions. While databases require rigidly structured data for operational efficiency, data warehouses need organized but analytics-optimized structures, and data lakes accept virtually any data format for future processing. These different requirements drive both the transformation approach and loading strategy in ETL pipelines.
+
+### ELT
+
+- **Extract-Load-Transform** is a more widely adopted practice in recent years.
+- ELT changes the loading pattern to leverage the computing power of the database.
+- ELT tools will generate SQL statements which are going to be directly executed by the database.
+- SQL statements can be written manually, speeding up learning curves and adoption across teams.
+- No or limited GUI to learn.
+- Sometimes the only way to process a large amount of data is to first load the data in a loosely defined and unconstrained table and then manipulate it once the data is already loaded.
+- **ELT components (Input, Mapper and Output)** are useful for bulk loading the tables by **pushing** processing overhead to the database rather than **iterating through the resultset** in memory.
+
+<div
+  style={{
+    padding: '1rem',
+    marginBottom: '1rem',
+    border: '1px solid var(--tw-prose-quote-borders)',
+    borderRadius: '0.5rem',
+    backgroundColor: 'var(--tw-prose-quote-bg)',
+  }}
+>
+  <p>
+    <strong>Key Difference:</strong> ETL performs transformations before loading data into the
+    target system, while ELT loads raw data first and then leverages the target system's processing
+    power for transformations.
+  </p>
+</div>
+
+## Pushdown
+
+**Query pushdown** is a database optimization technique where the processing of a query, or parts of it, is pushed down to the data source (e.g., a database) for execution.
+
+This means that operations like filtering, aggregation, or other transformations are performed at the source instead of being done by the client application or a middle layer.
+
+**Pushdown** is available when **source table and/or target are the same database instance.**
+
+| Characteristic      | No Pushdown                                                                                                                      | Partial Pushdown                                                   | Full Pushdown                                                  |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------------- |
+| Source DB Workload  | Light workload, can be time consuming if tables are big and e.g. a filter or join could strongly reduce the volume of the result | High (the source DB executes all the required transformations)     | High (the source DB executes all the required transformations) |
+| Target DB Workload  | Light workload, time consuming (one insert statement for each row)                                                               | Light workload, time consuming (one insert statement for each row) | High (bulk load of all the data in one single step)            |
+| Network Traffic     | Very high                                                                                                                        | High (source traffic reduced by applied filters)                   | None                                                           |
+| ETL Server Workload | Very high                                                                                                                        | Low                                                                | None                                                           |
+| Overall Time Taken  | Very high                                                                                                                        | Medium                                                             | Very low                                                       |
+
+### No Pushdown
+
+When **push down is not available** due to limitations, applied functions or data locations, the **ETL** tool will have to:
+
+1. Fully read the source table from the database server
+2. Transfer the data into the ETL application servers
+3. Execute the required transformations
+4. Send the result data to the target database
+
+![No Pushdown Scenario](/static/images/resource/data-integration-etl-pushdown/no-pushdown.png)
+
+In this scenario, the ETL server bears the full burden of data processing, which can lead to performance bottlenecks for large datasets.
+
+### Partial Pushdown
+
+**Partial pushdown** could happen when **the source tables are on the same database**, the applied transformation is pushdown compliant, **but the target is different.**
+
+In this case the ETL tool will have to:
+
+1. Ask the source database to execute the transformation through any SQL statement
+2. Get the result of the source table transformation from the database server
+3. Transfer it to the ETL application server
+4. Send it to the target database
+
+![Partial Pushdown Scenario](/static/images/resource/data-integration-etl-pushdown/partial-pushdown.png)
+
+In this scenario, a part of the workload is moved to the source database server, which can significantly improve performance by reducing the amount of data transferred and processed by the ETL server.
+
+### Full Pushdown
+
+**Full pushdown** happens when the source and the target tables are on the same database and the applied transformations are pushdown-compliant.
+
+In this case the ETL tool has to:
+
+1. Ask the source database to execute the required transformations
+2. Load the result into the target table through an SQL statement
+
+![Full Pushdown Scenario](/static/images/resource/data-integration-etl-pushdown/full-pushdown.png)
+
+In this scenario, the ETL tool is a simple **orchestrator** without any operative role in the process: all the workload is pushed to the database which is usually far more efficient than the ETL in performing massive workloads.
+
+## Data Orchestrator
+
+A data orchestrator is **a tool or system** that **manages and automates the flow of data** between different systems and applications.
+
+It's essentially **a central conductor** that coordinates the movement, transformation, and integration of data from various sources into a usable format for analysis.
+
+![Data Orchestrator Overview](/static/images/resource/data-integration-etl-pushdown/data-orchestrator.png)

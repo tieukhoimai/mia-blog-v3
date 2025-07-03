@@ -1,0 +1,175 @@
+---
+title: 'ER Modeling and Normalization'
+date: '2025-06-30'
+tags: ['Database', 'Data Modeling', 'Normalization', 'ER Diagram']
+draft: false
+summary: 'This article covers Entity-Relationship (E-R) Modeling, which visually depicts the relationships between identifiable entities in a database. It discusses key concepts such as entities and their attributes, relationships and cardinality, and the importance of normalization (1NF, 2NF, 3NF) to optimize data structure and reduce redundancy for improved data integrity and efficiency.'
+image: '/static/images/resource/er-modeling-and-normalization/thumbnail.png'
+series: 'Database & Data Engineering'
+seriesOrder: 2
+---
+
+<TOCInline toc={props.toc} asDisclosure toHeading={3} />
+
+## 1. E-R Modelling
+
+### 1.1. RDBMS Logical Data Modeling / E-R Logical Data Model
+
+**Entity - Relationship Model** is a fundamental concept in database design that:
+
+- Is a type of flowchart that illustrates how "entities" such as people, objects or concepts relate to each other within a system
+- Defines a conceptual data schema
+- Defines the conceptual view of a database
+- Illustrates the logical structure of database
+
+The ER model serves as a blueprint for database design, helping developers understand the structure and relationships within the data before implementing the physical database.
+
+### 1.2. Entity
+
+An **entity** represents a distinguishable object or concept in the real world:
+
+- An `entity` can be a real-world object, either animate or inanimate, that can be easily identifiable
+- All these entities have some attributes or properties that give them their identity
+- An `entity set` is a collection of similar types of `entities`
+- An `entity set` may contain `entities` with attributes sharing similar values
+- `Entities` can be thought of as **Nouns**
+- Typically shown as a **rectangle** in ER diagrams
+
+**Examples of entities:**
+
+- Customer, Employee, Product, Order, Department
+
+### 1.3. Relationships
+
+**Relationships** define how entities are connected to each other:
+
+- `Relationships` represent logical associations between two or more `entities`
+- The association among `entities` is called a relationship
+- For example:
+  - An employee **works at** a department
+  - A student **enrolls in** a course
+  - A customer **places** an order
+- `Relationships` are represented by **diamond-shaped boxes** in ER diagrams
+
+### 1.4. Cardinality
+
+**Cardinality** defines the numerical relationship between entities:
+
+- Cardinality defines the number of `entities` in one `entity set` that can be associated with the number of entities of another set via relationship
+- Cardinality is a couple of natural numbers that specifies the minimum and maximum number of instances of a relationship in which an entity instance can participate
+- It's possible to use the constant **N** to refer to a generic number greater than 1
+- In the ER diagram, the cardinality of the relationship is labeled on the arc that links the entity to the relationship
+
+![Cardinality Example](/static/images/resource/er-modeling-and-normalization/cardinality-example.png)
+
+**Example Analysis:**
+
+In the relation between **CONSULTANT** and **PROJECT PLANNING**:
+
+- 1 CONSULTANT is allocated to 1 or more Project Planning (e.g., MRO01 is planned to work on 1 or more projects) – **one-to-many** relation
+- 1 PROJECT PLANNING can have one and only 1 consultant planned on it – **one-to-one** relation
+
+In the relation between **PROJECT** and **PROJECT PLANNING**:
+
+- 1 PROJECT can be managed with 1 or more Project Planning (e.g., project Fashion#1 is managed with two project planning) – **one-to-many** relation
+- 1 PROJECT PLANNING is referred to one and only 1 project – **one-to-one** relation
+
+## 2. Normalization
+
+In database design, normalization is a systematic approach to organizing data efficiently:
+
+> **Mathematical Analogy:** In mathematics, a set B of elements of a vector space V is called a basis if every element of V can be written in a unique way as a finite linear combination of elements of B.
+> Similarly, **Normal Form** is a systematic way to express every single tuple without losing information.
+
+**Key Definitions:**
+
+- **Normal Form**: A **state** at which relations are organized in accordance with specific requirements
+- **Normalization**: The **process** of structuring a database in accordance with specific Normal Forms
+
+**The Process:**
+If a relation has several concepts that are independent of each other, it is decomposed into smaller relations, one for each concept, until the desired Normal Form is reached.
+
+### 2.1. First Normal Form (1NF)
+
+For each relation contained in the database, a relation is in **1NF** if and only if:
+
+- Each attribute is defined over a domain with **atomic (indivisible)** values
+- Each attribute contains a **single value** from that domain
+
+**Example:**
+
+**Before 1NF (Unnormalized):**
+
+![1NF Before](/static/images/resource/er-modeling-and-normalization/image%202.png)
+
+**After 1NF (Normalized):**
+
+![1NF After](/static/images/resource/er-modeling-and-normalization/image%203.png)
+
+**Important Note:** The primary key changes from `CONSULTANT CODE` to `[CONSULTANT CODE, PROJECT]` to maintain uniqueness.
+
+### 2.2. Second Normal Form (2NF)
+
+A database is in **2NF** (2nd normal form) when:
+
+1. **It is in 1st normal form**, and
+
+![2NF Requirements](/static/images/resource/er-modeling-and-normalization/image%204.png)
+
+2. **All non-key attributes** functionally depend on the **entire key** (no partial dependencies)
+
+| NON-PK ATTRIBUTE   | DEPENDS ON               | IS ENTIRE KEY [Y,N] |
+| ------------------ | ------------------------ | ------------------- |
+| CONSULTANT         | CONSULTANT CODE          | N                   |
+| SENIORITY          | CONSULTANT CODE          | N                   |
+| OFFICE             | CONSULTANT CODE          | N                   |
+| ADDRESS            | CONSULTANT CODE          | N                   |
+| CITY               | CONSULTANT CODE          | N                   |
+| STATE              | CONSULTANT CODE          | N                   |
+| ZIP                | CONSULTANT CODE          | N                   |
+| PROJECT MANAGER    | PROJECT                  | N                   |
+| PROJECT ALLOCATION | CONSULTANT CODE, PROJECT | Y                   |
+
+This means that if you have a composite primary key, all non-key attributes should depend on the complete key, not just part of it.
+
+Given the primary key `[CONSULTANT CODE, PROJECT]`, let's analyze the dependencies:
+
+1. **Partial Dependencies on CONSULTANT CODE:**
+   - `Consultant`, `Seniority`, `Office`, `Address`, `City`, `State`, and `Zip` depend solely on `CONSULTANT CODE`
+   - **Solution:** Group them in a dedicated **CONSULTANT** table
+
+![CONSULTANT Table](/static/images/resource/er-modeling-and-normalization/image%206.png)
+
+2. **Partial Dependencies on PROJECT:**
+   - `Project Manager` depends solely on `PROJECT`
+   - **Solution:** Group them in a dedicated **PROJECT** table
+
+![PROJECT Table](/static/images/resource/er-modeling-and-normalization/image%207.png)
+
+3. **Full Dependencies on the entire key:**
+   - `Project Allocation` depends on the entire key `[CONSULTANT CODE, PROJECT]`
+   - **Solution:** Keep them in a **CONSULTANT_PROJECT** table
+
+![CONSULTANT_PROJECT Table](/static/images/resource/er-modeling-and-normalization/image%208.png)
+
+### 2.3. Third Normal Form (3NF)
+
+A database is in **3NF** (3rd normal form) if it is:
+
+1. **In 2nd normal form**, and
+
+![3NF Requirements](/static/images/resource/er-modeling-and-normalization/image%209.png)
+
+2. **All non-key attributes depend on the key only** (no transitive dependencies)
+
+![3NF Dependencies](/static/images/resource/er-modeling-and-normalization/image%2010.png)
+
+This means there should be no non-key attributes that depend on other non-key attributes.
+
+**Example of Transitive Dependency:**
+
+If in the CONSULTANT table, `Zip` depends on `City` and `State` rather than directly on `CONSULTANT CODE`, this creates a transitive dependency:
+
+`CONSULTANT CODE → City, State → Zip`
+
+**Solution:** Create separate tables to eliminate transitive dependencies by separating location information into its own table.
