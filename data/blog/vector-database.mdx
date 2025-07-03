@@ -5,13 +5,14 @@ tags: ['Database', 'Vector Databases', 'Pinecone']
 draft: false
 summary: 'In this article, we delve into Vector Databases by using Pinecone and explore the fundamentals of vector embeddings, indexes, and essential components of these databases. Furthermore, it will provide a guide on setting up a Vector Database on Pinecone, walking through the installation process, obtaining API keys, and initializing client connections.'
 image: '/static/images/resource/vector-database/fig1.png'
+series: 'Retrieval Augmented Generation (RAG)'
 ---
 
 <TOCInline toc={props.toc} asDisclosure toHeading={3} />
 
 ## I. Introcution
 
-**Vector Database** is a type of database, designed to store and query unstructured data, which does not have a fixed schema, such as text, images and audio. There are many vector databases available such as [Pinecone](https://www.pinecone.io/), [Chroma](https://www.trychroma.com/) or [qdrant](https://qdrant.tech/). 
+**Vector Database** is a type of database, designed to store and query unstructured data, which does not have a fixed schema, such as text, images and audio. There are many vector databases available such as [Pinecone](https://www.pinecone.io/), [Chroma](https://www.trychroma.com/) or [qdrant](https://qdrant.tech/).
 
 Vector databases have the capabilities of a traditional database that are absent in standalone **`vector indexes`** and the specialization of dealing with **`vector embeddings`**, which traditional scalar-based databases lack [1]
 
@@ -28,11 +29,13 @@ The distance between two embeddings or two vectors measures the **relatedness** 
 
 ![vector-embedding](/static/images/resource/vector-database/vector-embedding.png)
 
-<p style={{ textAlign: "center" }}>Source: [DeepAI](https://deepai.org/publication/in-search-for-linear-relations-in-sentence-embedding-spaces)</p>
+<p style={{ textAlign: 'center' }}>
+  Source: [DeepAI](https://deepai.org/publication/in-search-for-linear-relations-in-sentence-embedding-spaces)
+</p>
 
 We often train models to translate objects to vectors [2]
 
-- For text data: models such as [Word2Vec](https://en.wikipedia.org/wiki/Word2vec), [GLoVE](https://en.wikipedia.org/wiki/GloVe_(machine_learning)), and [BERT](https://en.wikipedia.org/wiki/BERT_(language_model)) transform words, sentences, or paragraphs into vector embeddings.
+- For text data: models such as [Word2Vec](https://en.wikipedia.org/wiki/Word2vec), [GLoVE](<https://en.wikipedia.org/wiki/GloVe_(machine_learning)>), and [BERT](<https://en.wikipedia.org/wiki/BERT_(language_model)>) transform words, sentences, or paragraphs into vector embeddings.
 - For Images: models such as [convolutional neural networks (CNNs)](https://en.wikipedia.org/wiki/Convolutional_neural_network)
 - For Audio, it can be transformed into vectors using image embedding transformations over the audio frequencies visual representation (e.g., using its [Spectrogram](https://en.wikipedia.org/wiki/Spectrogram)).
 
@@ -40,12 +43,12 @@ We often train models to translate objects to vectors [2]
 
 An index is the highest-level organizational unit of vector data. It accepts and stores vectors, serves queries over the vectors it contains, and does other vector operations over its contents. [3]
 
-1. **Serverless indexes:** 
-    - Not configure or manage any compute or storage resources
-    - Scale automatically based on usage (based on a **[breakthough architecture](https://docs.pinecone.io/reference/architecture/serverless-architecture))**
+1. **Serverless indexes:**
+   - Not configure or manage any compute or storage resources
+   - Scale automatically based on usage (based on a **[breakthough architecture](https://docs.pinecone.io/reference/architecture/serverless-architecture))**
 2. **Pod-based architecture**
-    - Pre-configured units of hardware (pods)
-    - Depending on the pod type, pod size, and number of pods used, having different amounts of storage and higher or lower latency and throughput
+   - Pre-configured units of hardware (pods)
+   - Depending on the pod type, pod size, and number of pods used, having different amounts of storage and higher or lower latency and throughput
 
 ## II. Pipeline for Vector Databases
 
@@ -53,7 +56,10 @@ Vector databased use a combination of different optimized algorithms that all pa
 
 ![vector-database](/static/images/resource/vector-database/vector-database.png)
 
-<p style={{ textAlign: "center" }}>Source: [What is a Vector Database & How Does it Work? Use Cases + Examples](https://www.pinecone.io/learn/vector-database/)</p>
+<p style={{ textAlign: 'center' }}>
+  Source: [What is a Vector Database & How Does it Work? Use Cases +
+  Examples](https://www.pinecone.io/learn/vector-database/)
+</p>
 
 This image can be broken down into 3 steps:
 
@@ -119,7 +125,7 @@ pc.create_index(
 )
 ```
 
-**4.2.  Options 2: Creates an index on [Pinecone Console](https://app.pinecone.io/organizations/)**
+**4.2. Options 2: Creates an index on [Pinecone Console](https://app.pinecone.io/organizations/)**
 
 ![Pinecone-console-step-1](/static/images/resource/vector-database/fig1.png)
 
@@ -193,20 +199,20 @@ ids = [str(i) for i in range(8)]
 **6.1. upsert - inserting a new value or updating an existing value**
 
 - Inserting vector
-    
-    ```python
-    index.upsert(vectors=zip(ids, vectors))
 
-    # Returns: {'upserted_count': 8}
-    ```
-    
+  ```python
+  index.upsert(vectors=zip(ids, vectors))
+
+  # Returns: {'upserted_count': 8}
+  ```
+
 - Updating vector
-    
-    ```python
-    index.upsert(vectors=[('1', [0.5]* 1536)])
 
-    # Returns: {'upserted_count': 1}
-    ```
+  ```python
+  index.upsert(vectors=[('1', [0.5]* 1536)])
+
+  # Returns: {'upserted_count': 1}
+  ```
 
 **6.2. fetch - selecting a vector by ids**
 
@@ -286,7 +292,7 @@ index.query(
     top_k=3,
     include_values=False
     )
-    
+
 # Returns:
 # {'matches': [{'id': '1', 'score': 0.867275953, 'values': []},
 #              {'id': '0', 'score': 0.758308589, 'values': []},
@@ -312,7 +318,7 @@ ids = list('xyz')
 
 index.upsert(vectors=zip(ids, vectors),
              namespace='my-first-namespace')
-             
+
 # Returns:
 # {'upserted_count': 3}
 ```
@@ -323,7 +329,7 @@ ids = list('ab')
 
 index.upsert(vectors=zip(ids, vectors),
              namespace='my-second-namespace')
-             
+
 # Returns:
 # {'upserted_count': 2}
 ```

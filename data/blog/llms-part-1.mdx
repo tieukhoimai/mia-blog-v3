@@ -1,11 +1,12 @@
 ---
 title: LLMs in LangChain - Part 1. Conceptual
 date: '2024-06-30'
-tags: ['LLMs','Language Models','LangChain']
+tags: ['LLMs', 'Language Models', 'LangChain']
 draft: false
 summary: 'This article provides an overview of Large Language Models (LLMs), LLMs evolution and the core concepts of LangChain - an open source framework for building applications based on LLMs.'
 image: '/static/images/resource/llms/part-1.png'
 series: 'LLMs'
+seriesOrder: 2
 ---
 
 <TOCInline toc={props.toc} asDisclosure toHeading={3} />
@@ -14,34 +15,36 @@ series: 'LLMs'
 
 **Language Modeling (LM)** is a key technique for enhancing the language comprehension abilities of machines. Essentially, LM aims to model the generative likelihood of word sequences to predict the probabilities of future (or missing) tokens. The evolution of LM has been extensively studied in the literature, progressing through four major stages [1]:
 
-1. **Statistical Language Models (SLMs)**: 
+1. **Statistical Language Models (SLMs)**:
    - Emerged in the 1990s, these models rely on statistical learning methods. The core idea is based on the Markov assumption, predicting the next word using the most recent context.
    - SLMs with a fixed context length n are known as **n-gram language models** (e.g., bigram and trigram models).
    - SLMs have significantly improved performance in **information retrieval (IR)** and **natural language processing (NLP)**.
-   
-2. **Neural Language Models (NLMs)**: 
-   - These models use neural networks, such as multi-layer perceptrons (MLP) and recurrent neural networks (RNNs), to characterize the probability of word sequences. 
-   - A notable advancement was the introduction of distributed word representations, creating a word prediction function based on aggregated context features (distributed word vectors). This led to a unified, end-to-end solution for various NLP tasks. 
+2. **Neural Language Models (NLMs)**:
+   - These models use neural networks, such as multi-layer perceptrons (MLP) and recurrent neural networks (RNNs), to characterize the probability of word sequences.
+   - A notable advancement was the introduction of distributed word representations, creating a word prediction function based on aggregated context features (distributed word vectors). This led to a unified, end-to-end solution for various NLP tasks.
    - The development of **word2vec** further simplified the process by using a shallow neural network to learn these representations, proving effective across numerous NLP applications.
-  
-3. **Pre-trained Language Models (PLMs)**: 
+
+3. **Pre-trained Language Models (PLMs)**:
    - The initial approach, **ELMo**, used a **bidirectional LSTM (biLSTM)** network to pre-train context-aware word representations, which were then fine-tuned for specific tasks.
-   - The advent of the Transformer architecture and self-attention mechanisms led to **BERT**, which pre-trains bidirectional language models on large-scale unlabeled data, producing highly effective semantic features. 
+   - The advent of the Transformer architecture and self-attention mechanisms led to **BERT**, which pre-trains bidirectional language models on large-scale unlabeled data, producing highly effective semantic features.
    - This pre-training and fine-tuning paradigm has inspired numerous studies and led to the development of models like **GPT-2** and **BART**, each introducing different architectures or improved pre-training strategies.
 
 ![PLMfamily](/static/images/resource/llms/PLMfamily.png)
 
-<p style={{ textAlign: "center" }}>*Source: https://github.com/thunlp/PLMpapers/tree/master*</p>
+<p style={{ textAlign: 'center' }}>*Source: https://github.com/thunlp/PLMpapers/tree/master*</p>
 
 4. **Large Language Models (LLMs)**: This category encompasses very large-scale **PLMs** with massive parameter sizes trained on extensive text data. LLMs excel in various NLP tasks due to their large-scale models and vast training datasets.
-    - **GPT-3,** with approximately 175 billion parameters, is trained on about 45 terabytes of text data.
-    - **GPT-4,** though not officially detailed, is estimated to have 1.7 trillion parameters.
-    - **PaLM** features 540 billion parameters.
-    - **LLaMA 3** offers models ranging from 7 billion to 65 billion parameters, trained on trillions of tokens.
+   - **GPT-3,** with approximately 175 billion parameters, is trained on about 45 terabytes of text data.
+   - **GPT-4,** though not officially detailed, is estimated to have 1.7 trillion parameters.
+   - **PaLM** features 540 billion parameters.
+   - **LLaMA 3** offers models ranging from 7 billion to 65 billion parameters, trained on trillions of tokens.
 
 ![Evolution](/static/images/resource/llms/evolution.png)
 
-<p style={{ textAlign: "center" }}>**The trends of the cumulative numbers of arXiv papers that contain the keyphrases “language model” (since June 2018) and “large language model” (since October 2019), respectively [1]**</p>
+<p style={{ textAlign: 'center' }}>
+  **The trends of the cumulative numbers of arXiv papers that contain the keyphrases “language
+  model” (since June 2018) and “large language model” (since October 2019), respectively [1]**
+</p>
 
 Moreover, LLMs need to be integrated with applications and sometimes specific data sources to work effectively; they are not standalone solutions. For instance, OpenAI's ChatGPT is a **conversational AI application fine-tuned for dialogue** using the GPT-3.5 or GPT-4 language models, depending on the version. On the other hand, OpenAI offers a commercial API that provides **direct access to their LLMs**, enabling developers to use these models in their own applications. Therefore, GPT-3.5 or 4.0 itself is a language model, not an application.
 
@@ -55,7 +58,7 @@ For example, developers can use LangChain components to build new prompt chains 
 
 ![LangChain](/static/images/resource/llms/langchain.jpeg)
 
-<p style={{ textAlign: "center" }}>Source: LangChain tutorial #5: Build an Ask the Data app [2]</p>
+<p style={{ textAlign: 'center' }}>Source: LangChain tutorial #5: Build an Ask the Data app [2]</p>
 
 ## III. Chat Models
 
@@ -63,15 +66,15 @@ For example, developers can use LangChain components to build new prompt chains 
 - LangChain integrates with various model providers (such as OpenAI, Cohere, Hugging Face) and offers a standard interface for interacting with these models.
 - LangChain supports models in synchronous, asynchronous, batching, and streaming modes, and provides additional features like caching.
 - The OpenAI Chat Completions API includes three message types [4]
-    - `SystemMessage`: Sets the assistant's behavior.
-    - `AIMessage`: Represents the assistant's message.
-    - `HumanMessage`: Represents the user's message or prompt.
+  - `SystemMessage`: Sets the assistant's behavior.
+  - `AIMessage`: Represents the assistant's message.
+  - `HumanMessage`: Represents the user's message or prompt.
 
 ```python
 # Chat Completions API Messages: System, Assistant and Human
 
 from langchain.schema import(
-    SystemMessage, 
+    SystemMessage,
     AIMessage,
     HumanMessage
 )
@@ -90,12 +93,12 @@ print(output.content)
 ## IV. Core concepts of LangChain
 
 1. **LLM components** [4]
-    1. **LLM wrappers** are simply an intermediate that allows one to connect to all popular LLMs.
-    2. **Prompt templates**
-        - **Prompt** refers to the inputs to the model
-        - **Prompt templates** are a way to create a dynamic prompts for LLMs
-    3. **Indexing** refers to ways to structure documents/texts so that LLMs can best interact with them for extracting useful information to work with.
-    4. **Memories** can be used to save conversation history and feed it along with new questions to LLM so multi-turn natural conversation chat can be implemented.
+   1. **LLM wrappers** are simply an intermediate that allows one to connect to all popular LLMs.
+   2. **Prompt templates**
+      - **Prompt** refers to the inputs to the model
+      - **Prompt templates** are a way to create a dynamic prompts for LLMs
+   3. **Indexing** refers to ways to structure documents/texts so that LLMs can best interact with them for extracting useful information to work with.
+   4. **Memories** can be used to save conversation history and feed it along with new questions to LLM so multi-turn natural conversation chat can be implemented.
 2. **Chains** combines multiple components together to solve a specific task and build an entire LLM application
 3. **Agents** facilitate interaction between the LLM and external APIs, enabling tools for LLM
 
@@ -112,6 +115,3 @@ Check out the next article for more details.
 [4] [Chat Completions API](https://platform.openai.com/docs/guides/text-generation/chat-completions-api)
 
 [5] [Learn the Language of Large Language Models: A Simple Introduction to Accessing LLM using Langchain](https://karthikvegeta.medium.com/learn-the-language-of-large-language-models-a-simple-introduction-to-accessing-llm-using-8e72c36665d3)
-
-
-

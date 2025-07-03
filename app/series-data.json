@@ -34,7 +34,7 @@
       "tags": ["Data Warehouse", "Database", "Data Science"]
     },
     {
-      "title": "Dimensional Modeling - Four-Step Design Process",
+      "title": "Dimensional Modeling - Part 0: 4-Step Design Process",
       "date": "2025-07-02",
       "summary": "This article outlines a structured approach to Data Design, detailing essential steps for creating effective data models that align with business needs. It covers gathering business requirements, conducting collaborative workshops, and following the Four-Step Dimensional Design Process. The article also features a use case for modeling data in a Fast Food outlet and discusses managing changes in dimension data using Slowly Changing Dimensions (SCDs).",
       "slug": "dimensional-modeling-four-step",
@@ -109,9 +109,31 @@
       "path": "blog/big-data",
       "seriesOrder": 10,
       "tags": ["Big Data", "Hadoop", "Kafka", "Spark", "Data Engineering", "Data Warehouse"]
+    },
+    {
+      "title": "Monolithic Data Lake vs Data Mesh",
+      "date": "2025-07-05",
+      "summary": "This article compares monolithic data lake architecture with the decentralized data mesh approach. While data lakes centralize data for easier access, they face scalability challenges. Data mesh treats data as a product owned by domain teams, enhancing agility through four key principles: domain-oriented ownership, data as a product, self-serve infrastructure, and federated governance.",
+      "slug": "data-lake-vs-data-mesh",
+      "image": "/static/images/resource/data-mesh/thumbnail.png",
+      "series": "Database & Data Engineering",
+      "path": "blog/data-lake-vs-data-mesh",
+      "seriesOrder": 11,
+      "tags": ["Data Engineering", "Data Architecture", "Data Mesh", "Data Lake"]
     }
   ],
   "llms": [
+    {
+      "title": "From Transformer to LLMs",
+      "date": "2024-12-12",
+      "summary": "This article explores the evolution from Transformers to Large Language Models (LLMs), detailing the mechanisms of self-attention and multi-head attention, the role of position embeddings, various types of transformer models, and the training and fine-tuning processes of LLMs.",
+      "slug": "from-transformer-to-llm",
+      "image": "/static/images/resource/from-transformer-to-llm/thumbnail-board-room-attention.png",
+      "series": "LLMs",
+      "path": "blog/from-transformer-to-llm",
+      "seriesOrder": 1,
+      "tags": ["LLMs", "Language Models", "Transformer", "Fine-tuning", "RAG"]
+    },
     {
       "title": "LLMs in LangChain - Part 1. Conceptual",
       "date": "2024-06-30",
@@ -120,7 +142,7 @@
       "image": "/static/images/resource/llms/part-1.png",
       "series": "LLMs",
       "path": "blog/llms-part-1",
-      "seriesOrder": null,
+      "seriesOrder": 2,
       "tags": ["LLMs", "Language Models", "LangChain"]
     },
     {
@@ -131,8 +153,32 @@
       "image": "/static/images/resource/llms/chat_models.png",
       "series": "LLMs",
       "path": "blog/llms-part-2",
-      "seriesOrder": null,
+      "seriesOrder": 3,
       "tags": ["LLMs", "Language Models", "LangChain"]
+    }
+  ],
+  "retrieval-augmented-generation-rag": [
+    {
+      "title": "Vector Database - Pinecone",
+      "date": "2024-04-01",
+      "summary": "In this article, we delve into Vector Databases by using Pinecone and explore the fundamentals of vector embeddings, indexes, and essential components of these databases. Furthermore, it will provide a guide on setting up a Vector Database on Pinecone, walking through the installation process, obtaining API keys, and initializing client connections.",
+      "slug": "vector-database",
+      "image": "/static/images/resource/vector-database/fig1.png",
+      "series": "Retrieval Augmented Generation (RAG)",
+      "path": "blog/vector-database",
+      "seriesOrder": null,
+      "tags": ["Database", "Vector Databases", "Pinecone"]
+    },
+    {
+      "title": "Retrieval Augmented Generation (RAG) with Vector Databases",
+      "date": "2025-03-14",
+      "summary": "The article delves into Retrieval-Augmented Generation (RAG), which integrates retrieval and generative models to enhance GenAI applications efficiently. It highlights the architecture of RAG, utilizing vector databases for data retrieval and response generation.",
+      "slug": "rag-with-vector-db",
+      "image": "/static/images/resource/rag-with-vector-db/thumbnail.png",
+      "series": "Retrieval Augmented Generation (RAG)",
+      "path": "blog/rag-with-vector-db",
+      "seriesOrder": null,
+      "tags": ["LLMs", "RAG", "Vector Databases", "Database"]
     }
   ]
 }
