@@ -103,13 +103,6 @@ Many databases automatically reuse (overwrite) old parts of the transaction log 
 
 Modern data warehouse architectures organize data into distinct layers, each serving specific purposes in the data processing pipeline. These layers follow Ralph Kimball's dimensional modeling principles for structured data warehouse design.
 
-Different layers in a database will have different scopes:
-
-1. **Extract**: raw data from various sources.
-2. **Stage**: the data temporarily for processing and transformation.
-3. **Transform**: the data to ensure its quality and consistency.
-4. **Present**: the data in dimensional models for business analysis.
-
 ### Staging Area
 
 This is the initial layer where data is temporarily stored after extraction from source systems. The staging area serves as a **work area for ETL processes**, where data is held in its original format before transformation. According to Kimball's methodology:

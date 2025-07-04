@@ -9,142 +9,84 @@ series: 'Database & Data Engineering'
 seriesOrder: 7
 ---
 
-<TOCInline toc={props.toc} asDisclosure toHeading={3} />
+<TOCInline toc={props.toc} asDisclosure toHeading={4} />
 
-Hierarchical structures form the backbone of dimensional modeling, providing organized pathways for data navigation and analysis. They empower analysts to examine information across varying granularities, facilitating seamless drill-down to detailed records and roll-up to summarized views. Well-structured hierarchies enable business users to naturally traverse data dimensions like temporal sequences, geographical territories, or product classifications. The structural characteristics of hierarchies, however, vary considerably, and implementation decisions directly influence query efficiency and system maintainability.
+Hierarchical structures in dimensional modeling can be classified into three main types: balanced, unbalanced, and ragged hierarchies. Each type presents unique characteristics and implementation considerations that directly impact query performance and system design.
 
-## Fixed Depth Positional Hierarchies
+## Balanced Hierarchies
 
-A fixed depth hierarchy represents a chain of many-to-one associations, exemplified by relationships such as product to brand to category to department. When hierarchical depth remains constant and level names are standardized, these hierarchy tiers should be represented as distinct positional attributes within the dimension table.
+**Balanced hierarchies** represent the most common hierarchical structure, characterized by a consistent number of levels across all branches. Every path from the root to leaf nodes traverses the same number of hierarchical tiers.
 
-_Example: Standardized levels (e.g., Product → Brand → Category → Department)_
+_Example: Calendar hierarchy (Year → Quarter → Month → Date) or standardized geographic hierarchy (Country → State → City)_
 
-Fixed depth hierarchies offer optimal comprehensibility and navigation efficiency when the above conditions are satisfied. They consistently deliver reliable and optimal query execution times. When hierarchical relationships deviate from many-to-one patterns or level counts fluctuate without standardized naming conventions, irregular hierarchy methodologies become necessary.
+The levels in balanced hierarchies are typically derived from columns within a single denormalized dimension table or from tables forming a snowflake dimension structure. When higher-level columns exist within a denormalized dimension, they contain redundant data that facilitates rapid query execution.
 
-## Slightly Ragged/Variable Depth Hierarchies
+- Fixed number of levels across all branches
+- Facts typically relate to the lowest hierarchical level
+- Supports aggregation from detailed to summary levels
+- Can be represented as distinct positional attributes within dimension tables
 
-Slightly ragged hierarchies lack uniform level counts but maintain limited depth variation ranges. Geographic hierarchies typically span between three and six hierarchical tiers.
+## Unbalanced Hierarchies
 
-_Example: Region Name → Country → State → City_
+**Unbalanced hierarchies** feature varying depths across different branches, with levels determined by parent-child relationships rather than predefined column structures. The hierarchical depth depends on dimension row relationships rather than static table schema design.
 
-Instead of implementing sophisticated mechanisms for unpredictably variable structures, **slightly ragged hierarchies** can be adapted into **fixed depth positional frameworks** using distinct dimension attributes for maximum level counts, populated according to established business logic.
+_Example: Employee reporting structure where organizational depth varies by department_
 
-## Ragged/Variable Depth Hierarchies
+In unbalanced hierarchies, dimension tables utilize surrogate keys alongside foreign key references to the same table, creating self-referential relationships. Facts apply to the dimension grain, requiring careful consideration of individual records and their hierarchical descendants during aggregation.
 
-Irregular hierarchies with undefined depth present significant modeling and querying challenges in relational database environments.
+- Variable number of levels determined by data relationships
+- Parent-child relationships define structure
+- Each member can potentially have subordinates
+- Requires recursive queries or specialized handling
 
-_Consider scenarios where one classification branch contains three tiers (e.g., Country → State → City), while another encompasses only two levels (e.g., Country → City)._
+## Ragged Hierarchies
 
-While SQL extensions and OLAP query languages offer partial support for recursive parent-child associations, these solutions impose notable constraints. SQL extensions prevent runtime substitution of alternative irregular hierarchies, lack shared ownership capability, and cannot accommodate time-dependent hierarchical changes. These limitations can be addressed in relational databases by representing irregular hierarchies through purposefully designed bridge table structures.
-The content you've provided appears to be well-structured technical documentation, but I cannot determine the specific sources for the bridge table and pathstring techniques without access to the original materials. You'll need to identify and add the appropriate citations based on where you sourced this information.
+**Ragged hierarchies** occur when members exist at levels that are not directly adjacent to their logical parents, creating gaps in the hierarchical structure. Missing intermediate levels are typically handled by repeating parent values or using null placeholders.
 
-### Bridge Table
+_Example: Geographic hierarchy where some countries lack state/province subdivisions (e.g., New Zealand: Country → City, bypassing state level)_
 
-This **bridge table** contains a row for every possible path in the ragged hierarchy and enables all forms of hierarchy traversal to be accomplished with standard SQL rather than using special language extensions.
+Ragged hierarchies present significant challenges for traditional relational database queries, often requiring specialized modeling techniques such as bridge tables or pathstring attributes to maintain query efficiency and structural integrity.
 
-| ParentID | ChildID | HierarchyLevel |
-| -------- | ------- | -------------- |
-| NULL     | 1       | 1              |
-| 1        | 2       | 2              |
-| 2        | 3       | 3              |
-| 2        | 4       | 3              |
+- Inconsistent intermediate levels
+- Parent-child relationships may skip hierarchical tiers
+- Requires special handling for missing levels
+- Complex aggregation and navigation requirements
 
-In this example, we have a bridge table representing a geographic hierarchy where:
+### Fixed Depth Positional Hierarchies
 
-- Node 1 is at the top level (e.g., World)
-- Node 2 is a child of Node 1 (e.g., Continent)
-- Nodes 3 and 4 are both children of Node 2 (e.g., Countries)
+When hierarchical depth remains constant and level names are standardized, these structures should be represented as distinct positional attributes within dimension tables. This approach provides optimal query performance and intuitive navigation patterns.
 
-This structure enables navigation between different levels in the hierarchy and supports queries that need to traverse up or down the hierarchy.
+### Slightly Ragged Hierarchies
 
-```sql
--- Create dimension table to store hierarchy nodes
-CREATE TABLE dim_geography (
-    geo_key INT PRIMARY KEY,
-    geo_id VARCHAR(20),
-    geo_name VARCHAR(100),
-    geo_type VARCHAR(50) -- e.g., 'Continent', 'Country', 'State', 'City'
-);
+For hierarchies with limited depth variation, **slightly ragged structures** can be adapted into **fixed depth positional frameworks** by creating dimension attributes for maximum level counts and populating them according to established business logic.
 
--- Create bridge table for hierarchy relationships
-CREATE TABLE bridge_geo_hierarchy (
-    parent_geo_key INT REFERENCES dim_geography(geo_key),
-    child_geo_key INT REFERENCES dim_geography(geo_key),
-    distance INT, -- Level separation between parent and child
-    top_flag CHAR(1), -- 'Y' if parent is at the top of this branch
-    bottom_flag CHAR(1), -- 'Y' if child is at the bottom of this branch
-    PRIMARY KEY (parent_geo_key, child_geo_key)
-);
+### Variable Depth Hierarchies
 
--- Query to find all descendants of a particular geography node
-SELECT c.geo_key, c.geo_name, c.geo_type, b.distance
-FROM dim_geography p
-JOIN bridge_geo_hierarchy b ON p.geo_key = b.parent_geo_key
-JOIN dim_geography c ON b.child_geo_key = c.geo_key
-WHERE p.geo_name = 'North America'
-ORDER BY b.distance;
-```
+Irregular hierarchies with undefined depth present significant modeling challenges requiring specialized approaches:
 
-### Pathstring attribute
+#### Bridge Table Approach
 
-The use of **a bridge table** for ragged variable depth hierarchies can be avoided by implementing **a pathstring attribute** in the dimension.
+**Bridge tables** contain rows for every possible hierarchical path, enabling standard SQL traversal without specialized language extensions.
 
-For each row in the dimension, the pathstring attribute contains a specially encoded text string containing the complete path description from the supreme node of a hierarchy down to the node described by the particular dimension row.
+| ParentID | ChildID | HierarchyLevel | Distance | TopFlag | BottomFlag |
+| -------- | ------- | -------------- | -------- | ------- | ---------- |
+| NULL     | 1       | 1              | 0        | Y       | N          |
+| 1        | 2       | 2              | 1        | N       | N          |
+| 1        | 3       | 3              | 2        | N       | Y          |
+| 2        | 3       | 3              | 1        | N       | Y          |
 
-| NodeID | NodeName      | PathString                  |
-| ------ | ------------- | --------------------------- |
-| 1      | World         | /World                      |
-| 2      | North America | /World/North America        |
-| 3      | USA           | /World/North America/USA    |
-| 4      | Canada        | /World/North America/Canada |
+#### Pathstring Attribute Approach
 
-The pathstring approach stores the complete hierarchical path for each node in the dimension. This makes it easy to:
+**Pathstring attributes** store complete hierarchical paths as encoded text strings, enabling efficient navigation without bridge table complexity.
 
-- Determine the level of any node (by counting the number of path separators)
-- Find all descendants of a node (by searching for path strings that start with a specific prefix)
-- Find all ancestors of a node (by parsing the path string)
-- Support irregular hierarchies without needing a separate bridge table
-
-Using SQL string functions, you can query nodes at specific levels or find descendants without recursive queries or specialized language extensions. However, the pathstring approach does not enable rapid substitution of alternative hierarchies or shared ownership hierarchies.
-
-The pathstring approach may also be vulnerable to structure changes in the ragged hierarchy that could force the entire hierarchy to be relabeled.
-
-```sql
--- Create dimension table with pathstring attribute
-CREATE TABLE dim_geography (
-    geo_key INT PRIMARY KEY,
-    geo_id VARCHAR(20),
-    geo_name VARCHAR(100),
-    geo_type VARCHAR(50), -- e.g., 'Continent', 'Country', 'State', 'City'
-    geo_level INT, -- The level in the hierarchy (1=World, 2=Continent, etc.)
-    geo_path VARCHAR(255) -- e.g., "/World/North America/USA"
-);
-
--- Query to find all descendants of a particular geography node
-SELECT geo_key, geo_name, geo_type, geo_level
-FROM dim_geography
-WHERE geo_path LIKE '/World/North America/%'
-   OR geo_path = '/World/North America'
-ORDER BY geo_level;
-```
-
-### Bridge Table vs. Pathstring Comparison
-
-| Aspect                               | Bridge Table                            | Pathstring Attribute            |
-| ------------------------------------ | --------------------------------------- | ------------------------------- |
-| **Implementation Complexity**        | Medium to High                          | Low to Medium                   |
-| **Query Complexity**                 | Higher (requires joins)                 | Lower (uses string functions)   |
-| **Support for Multiple Hierarchies** | Yes                                     | Limited                         |
-| **Support for Shared Ownership**     | Yes                                     | No                              |
-| **Time-Varying Hierarchies**         | Supported                               | Challenging                     |
-| **Update Complexity**                | Easier to update specific relationships | Requires rebuilding pathstrings |
-| **Performance**                      | May require more joins                  | Generally faster for lookups    |
-| **Storage Requirements**             | Separate table required                 | Embedded in dimension table     |
-
-The choice between these approaches depends on the specific requirements of your data warehouse, including how frequently the hierarchy changes and whether you need to support multiple hierarchical views.
-
-Many of the standard hierarchy analysis requests can then be handled by standard SQL, without resorting to SQL language extensions.
+| NodeID | NodeName      | PathString                  | Level |
+| ------ | ------------- | --------------------------- | ----- |
+| 1      | World         | /World                      | 1     |
+| 2      | North America | /World/North America        | 2     |
+| 3      | USA           | /World/North America/USA    | 3     |
+| 4      | Canada        | /World/North America/Canada | 3     |
 
 ## References
 
+- Microsoft. (n.d.). _Dimensional modeling in Microsoft Fabric Warehouse: Dimension tables_. Microsoft Learn. https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-dimension-tables
 - Lecture notes from Business Analytics course, Prof. Paolo Menna, University of Verona 2024-2025
