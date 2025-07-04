@@ -99,6 +99,16 @@ Hive consists of two main services:
 - **Hive Server**: The SQL engine that executes queries
 - **Metastore**: The table catalog that maintains metadata about tables and partitions
 
+### HCatalog: Table and Storage Management Layer
+
+HCatalog is a table and storage management layer for Hadoop that provides high-level abstraction to other frameworks like MapReduce, Spark, and Pig by performing I/O operations to the distributed storage layer for Hive tables.
+
+HCatalog comprises 3 key elements:
+
+- **SerDe**: Serialization and deserialization library to process various data formats
+- **Metastore DB**: Stores the schema of Hive tables
+- **WebHCat/HCatalog REST**: UI/REST layer on top of metastore DB for web clients
+
 ![Hive Architecture](/static/images/resource/big-data/05HDFS.png)
 _Source: [Stack Overflow - What is use of HCatalog in Hadoop](https://stackoverflow.com/questions/22533814/what-is-use-of-hcatalog-in-hadoop)_
 
