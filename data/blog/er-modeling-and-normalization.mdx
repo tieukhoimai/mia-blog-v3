@@ -96,80 +96,18 @@ For each relation contained in the database, a relation is in **1NF** if and onl
 - Each attribute is defined over a domain with **atomic (indivisible)** values
 - Each attribute contains a **single value** from that domain
 
-**Example:**
-
-**Before 1NF (Unnormalized):**
-
-![1NF Before](/static/images/resource/er-modeling-and-normalization/image%202.png)
-
-**After 1NF (Normalized):**
-
-![1NF After](/static/images/resource/er-modeling-and-normalization/image%203.png)
-
-**Important Note:** The primary key changes from `CONSULTANT CODE` to `[CONSULTANT CODE, PROJECT]` to maintain uniqueness.
-
 ### 2.2. Second Normal Form (2NF)
 
 A database is in **2NF** (2nd normal form) when:
 
 1. **It is in 1st normal form**, and
-
-![2NF Requirements](/static/images/resource/er-modeling-and-normalization/image%204.png)
-
 2. **All non-key attributes** functionally depend on the **entire key** (no partial dependencies)
-
-| NON-PK ATTRIBUTE   | DEPENDS ON               | IS ENTIRE KEY [Y,N] |
-| ------------------ | ------------------------ | ------------------- |
-| CONSULTANT         | CONSULTANT CODE          | N                   |
-| SENIORITY          | CONSULTANT CODE          | N                   |
-| OFFICE             | CONSULTANT CODE          | N                   |
-| ADDRESS            | CONSULTANT CODE          | N                   |
-| CITY               | CONSULTANT CODE          | N                   |
-| STATE              | CONSULTANT CODE          | N                   |
-| ZIP                | CONSULTANT CODE          | N                   |
-| PROJECT MANAGER    | PROJECT                  | N                   |
-| PROJECT ALLOCATION | CONSULTANT CODE, PROJECT | Y                   |
-
-This means that if you have a composite primary key, all non-key attributes should depend on the complete key, not just part of it.
-
-Given the primary key `[CONSULTANT CODE, PROJECT]`, let's analyze the dependencies:
-
-1. **Partial Dependencies on CONSULTANT CODE:**
-   - `Consultant`, `Seniority`, `Office`, `Address`, `City`, `State`, and `Zip` depend solely on `CONSULTANT CODE`
-   - **Solution:** Group them in a dedicated **CONSULTANT** table
-
-![CONSULTANT Table](/static/images/resource/er-modeling-and-normalization/image%206.png)
-
-2. **Partial Dependencies on PROJECT:**
-   - `Project Manager` depends solely on `PROJECT`
-   - **Solution:** Group them in a dedicated **PROJECT** table
-
-![PROJECT Table](/static/images/resource/er-modeling-and-normalization/image%207.png)
-
-3. **Full Dependencies on the entire key:**
-   - `Project Allocation` depends on the entire key `[CONSULTANT CODE, PROJECT]`
-   - **Solution:** Keep them in a **CONSULTANT_PROJECT** table
-
-![CONSULTANT_PROJECT Table](/static/images/resource/er-modeling-and-normalization/image%208.png)
 
 ### 2.3. Third Normal Form (3NF)
 
 A database is in **3NF** (3rd normal form) if it is:
 
 1. **In 2nd normal form**, and
-
-![3NF Requirements](/static/images/resource/er-modeling-and-normalization/image%209.png)
-
 2. **All non-key attributes depend on the key only** (no transitive dependencies)
 
-![3NF Dependencies](/static/images/resource/er-modeling-and-normalization/image%2010.png)
-
-This means there should be no non-key attributes that depend on other non-key attributes.
-
-**Example of Transitive Dependency:**
-
-If in the CONSULTANT table, `Zip` depends on `City` and `State` rather than directly on `CONSULTANT CODE`, this creates a transitive dependency:
-
-`CONSULTANT CODE → City, State → Zip`
-
-**Solution:** Create separate tables to eliminate transitive dependencies by separating location information into its own table.
+This means there should be no non-key attributes that depend on other non-key attributes. For example, to eliminate transitive dependencies, you should move attributes like `City`, `State`, and `Zip` into a separate `Location` table, so that each non-key attribute depends only on the primary key, not on other non-key attributes.

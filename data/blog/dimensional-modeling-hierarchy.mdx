@@ -11,45 +11,31 @@ seriesOrder: 7
 
 <TOCInline toc={props.toc} asDisclosure toHeading={3} />
 
-Hierarchies are a fundamental aspect of dimensional modeling that provide structure and navigational paths through data. They enable users to analyze information at different levels of detail, supporting both drill-down and roll-up operations.
-
-Properly designed hierarchies make it easier for business users to intuitively navigate through data dimensions, such as time periods, geographic regions, or product categories. However, not all hierarchies have the same structure, and the implementation approach can significantly impact both query performance and maintenance complexity.
-
-This article explores different types of hierarchies encountered in dimensional modeling and the techniques to implement them effectively. We'll examine fixed depth hierarchies, which are straightforward to implement, as well as more complex ragged hierarchies that require specialized handling techniques.
+Hierarchical structures form the backbone of dimensional modeling, providing organized pathways for data navigation and analysis. They empower analysts to examine information across varying granularities, facilitating seamless drill-down to detailed records and roll-up to summarized views. Well-structured hierarchies enable business users to naturally traverse data dimensions like temporal sequences, geographical territories, or product classifications. The structural characteristics of hierarchies, however, vary considerably, and implementation decisions directly influence query efficiency and system maintainability.
 
 ## Fixed Depth Positional Hierarchies
 
-A fixed depth hierarchy is a series of many-to-one relationships, such as product to brand to category to department.
+A fixed depth hierarchy represents a chain of many-to-one associations, exemplified by relationships such as product to brand to category to department. When hierarchical depth remains constant and level names are standardized, these hierarchy tiers should be represented as distinct positional attributes within the dimension table.
 
-When a fixed depth hierarchy is defined and the hierarchy levels have agreed upon names, the hierarchy levels should appear as separate positional attributes in a dimension table.
+_Example: Standardized levels (e.g., Product → Brand → Category → Department)_
 
-_Example: Defined levels (e.g., Product → Brand → Category → Department)_
-
-A fixed depth hierarchy is by far the easiest to understand and navigate as long as the above criteria are met. It also delivers predictable and fast query performance.
-
-When the hierarchy is not a series of many-to-one relationships or the number of levels varies such that the levels do not have agreed upon names, a ragged hierarchy technique must be used.
+Fixed depth hierarchies offer optimal comprehensibility and navigation efficiency when the above conditions are satisfied. They consistently deliver reliable and optimal query execution times. When hierarchical relationships deviate from many-to-one patterns or level counts fluctuate without standardized naming conventions, irregular hierarchy methodologies become necessary.
 
 ## Slightly Ragged/Variable Depth Hierarchies
 
-Slightly ragged hierarchies don’t have a fixed number of levels, but the range in depth is small.
-
-Geographic hierarchies often range in depth from perhaps three levels to six levels.
+Slightly ragged hierarchies lack uniform level counts but maintain limited depth variation ranges. Geographic hierarchies typically span between three and six hierarchical tiers.
 
 _Example: Region Name → Country → State → City_
 
-Rather than using the complex machinery for unpredictably variable hierarchies, you can force-fit **slightly ragged hierarchies** into **a fixed depth positional design** with separate dimension attributes for the maximum number of levels, and then populate the attribute value based on rules from the business.
+Instead of implementing sophisticated mechanisms for unpredictably variable structures, **slightly ragged hierarchies** can be adapted into **fixed depth positional frameworks** using distinct dimension attributes for maximum level counts, populated according to established business logic.
 
 ## Ragged/Variable Depth Hierarchies
 
-Ragged hierarchies of indeterminate depth are difficult to model and query in a relational database.
+Irregular hierarchies with undefined depth present significant modeling and querying challenges in relational database environments.
 
-_For instance, one category might consist of three levels (e.g., Country → State → City), while another may only have two levels (e.g., Country → City)._
+_Consider scenarios where one classification branch contains three tiers (e.g., Country → State → City), while another encompasses only two levels (e.g., Country → City)._
 
-Although SQL extensions and OLAP access languages provide some support for recursive parent/ child relationships, these approaches have limitations.
-
-→ With SQL extensions, alternative ragged hierarchies cannot be substituted at query time, shared ownership structures are not supported, and time varying ragged hierarchies are not supported.
-
-All these objections can be overcome in relational databases by modeling a ragged hierarchy with a specially constructed bridge table.
+While SQL extensions and OLAP query languages offer partial support for recursive parent-child associations, these solutions impose notable constraints. SQL extensions prevent runtime substitution of alternative irregular hierarchies, lack shared ownership capability, and cannot accommodate time-dependent hierarchical changes. These limitations can be addressed in relational databases by representing irregular hierarchies through purposefully designed bridge table structures.
 
 ### Bridge Table
 

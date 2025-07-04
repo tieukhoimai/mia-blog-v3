@@ -15,12 +15,7 @@ _The thumbnail is sourced from [Modeling: relational to graph](https://neo4j.com
 
 ## 1. Relational Database Management System (RDBMS)
 
-- An RDBMS is a database management system based on the relational model
-  - A relational data model makes it possible to graphically represent the requirements and data organization of a company
-- In general, the minimum requirements for which a system can be called an RDBMS are
-  - Display data to the user in the form of relation
-  - It must provide relational operators to manipulate data in tabular form
-  - The universally known model for "designing" a database is the table
+A **Relational Database Management System (RDBMS)** is a database management system built upon the relational model, which provides a structured approach to organizing and managing data. Key characteristics include the relational data model that enables graphical representation of organizational requirements and data structure, tabular data representation that displays information to users in the form of relations (tables), and relational operators that provide tools to manipulate data in tabular format through operations like selection, projection, and joins. Core requirements for RDBMS classification include data presentation that must display data in relational format (tables with rows and columns), data manipulation that must provide relational operators for processing tabular data, and table-based design that uses the universally recognized table model as the foundation for database design. The table structure serves as the fundamental building block, where data is organized into rows (records) and columns (attributes), establishing relationships between different data entities.
 
 ## 2. Core Functions of RDBMS
 
@@ -129,8 +124,6 @@ A relation is a set of tuples, where each element $d_j$ is a member of domain $D
 
 **Definition:** Attribute B of relation R is functionally dependent on attribute A of R if, at every instant of time, each value in A has no more than one value in B associated with it under R.
 
-![Functional Dependency](/static/images/resource/relational-database-management-system/functional-dependency.png)
-
 **Notation:**
 
 - $R.A \rightarrow R.B$: if $R.B$ is functionally dependent on attribute $A$ in $R$
@@ -141,41 +134,11 @@ The definition given above can be extended to **collections of attributes**: If 
 
 ## 5. Database Modeling and Normalization
 
-A database is a tool for grouping and managing information of various kinds through the use of tables, in which the data is related to each other
+Database normalization addresses the fundamental challenge of organizing data efficiently within relational database systems. While databases serve as powerful tools for grouping and managing information through interconnected tables, a single table approach presents significant problems including the risk of data redundancy, failure to highlight relationships between data subsets in a timely manner, and the presence of duplicated and redundant information. Normalization provides the solution through a gradual process of progressive optimization that begins with non-normalized relations and systematically reaches higher levels of normalization to effectively eliminate redundancy and improve data integrity.
 
-**Problems with Single Table Approach:**
+A **primary key** is a set of one or more attributes that uniquely identifies each record in a table while maintaining non-redundancy, meaning that removing any attribute from the key would result in loss of uniqueness. When designing primary keys, it's recommended to use fewer attributes when possible, prioritize attributes that are frequently used in relational operations for efficiency, and ensure stability by selecting values that won't change frequently over time.
 
-- Risk of data redundancy
-- Does not highlight relationships between data subsets in a timely manner
-- Duplicated and redundant information
-
-**Solution - Normalization:**
-
-- A **gradual process** of progressive optimization
-- Starts from non-normalized relations
-- Reaches a certain level of normalization
-- Eliminates redundancy effectively
-
-## 6. Primary Key Concepts
-
-### 6.1. Primary Key Definition
-
-A set of one or more attributes can be defined as a primary key if it has the following characteristics:
-
-- **Unique Identification**: The set uniquely defines a record
-- **Non-redundancy**: Removing any attribute from the set (key) causes loss of uniqueness
-
-### 6.2. Choosing a Primary Key
-
-**Best Practices:**
-
-- Keys composed of fewer attributes are preferable
-- For efficiency reasons, prefer keys with attributes frequently used in relational operations
-- Ensure stability - primary key values should not change frequently
-
-## 7. Foreign Key Relationships
-
-### 7.1. Foreign Key Definition
+## 7. Foreign Key Relations
 
 A **foreign key** is a column (or set of columns) in one table that connects to the primary key data in another table.
 
@@ -187,22 +150,11 @@ A **foreign key** is a column (or set of columns) in one table that connects to 
 
 ![Foreign Key and Primary Key Example](/static/images/resource/relational-database-management-system/primary-foreign-key-example.png)
 
-### 7.2. Foreign Key Benefits
-
-- Establishes and enforces links between tables
-- Maintains data consistency across related tables
-- Prevents orphaned records
-- Supports referential integrity
-
 ## 8. Referential Integrity
-
-### 8.1. Definition and Importance
 
 **Referential Integrity** is a property of a database in which all values of all foreign keys are valid.
 
 ![Referential Integrity](/static/images/resource/relational-database-management-system/referential-integrity.png)
-
-### 8.2. Referential Constraints
 
 A **referential constraint** is the rule by which, given a child table, the values of the foreign key are valid only if:
 

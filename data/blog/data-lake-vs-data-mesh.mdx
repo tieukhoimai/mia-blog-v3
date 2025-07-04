@@ -9,22 +9,21 @@ series: 'Database & Data Engineering'
 seriesOrder: 11
 ---
 
+<p className="note">
+  *The thumbnail is sourced from [Data Mesh: The Four Principles of the Distributed
+  Architecture](https://eleks.com/blog/data-mesh-distributed-architecture/).*
+</p>
+
 <TOCInline toc={props.toc} asDisclosure toHeading={4} />
 
 ## Monolithic Data Lake Approach
 
 A monolithic data lake refers to a **large, centralized repository** of raw and structured data that serves as the single source of truth for an organization.
 
-_Monolithic Data Lake = raw + structured data in one centralized location_
-
-### Advantages of Monolithic Data Lakes
-
 - **Consolidated storage**: All data is stored in a single system (often cloud-based like Amazon S3, Azure Data Lake, or HDFS)
 - **Unified architecture**: Managed with one overarching architectural approach
 - **Centralized access**: All consumers (analysts, data scientists, engineers) access data from the same location
 - **Democratized data**: Aims to make data easily accessible to all authorized users
-
-### Challenges of Monolithic Data Lakes
 
 Despite their widespread adoption, centralized data lakes face several significant challenges:
 
@@ -33,42 +32,7 @@ Despite their widespread adoption, centralized data lakes face several significa
 - **Slow response to change**: Centralized governance can create bureaucracy that impedes rapid adaptation
 - **Overburdened central teams**: Data engineering teams become overwhelmed with requests from across the organization
 
-**Implication:** These challenges hinder the ability to derive timely and actionable insights from data.
-
-### Workflow in a Monolithic Data Lake
-
-To illustrate the practical implications of a monolithic approach, consider this typical scenario:
-
-**\*Scenario:** A marketing team wants a report on customer churn over the last 12 months, broken down by region and product usage.\*
-
-1. **Business Request Submitted**: Marketing submits a ticket to the central data team requesting a churn report
-2. **Data Understanding & Scoping** (by central team)
-   - Data engineers must understand the request (e.g., defining "churn")
-   - Identify relevant data sources (customer records, product logs, billing)
-3. **Data Discovery & Access**
-   - Navigate the centralized, often undocumented data lake
-   - Request access to restricted buckets or tables
-   - Handle schema inconsistencies or missing fields
-4. **Data Wrangling & Transformation**
-   - Use Spark/Hive/PySpark jobs to extract, clean, and join data
-   - Create intermediate datasets (usage patterns, cancellation events)
-5. **Validation & Business Rule Mapping**
-   - Confirm logic with marketing (e.g., is 30 days of inactivity considered churn?)
-   - Iterate if interpretations differ
-6. **Pipeline Development**
-   - Build an ETL job to generate the churn dataset
-   - Store output in a curated table
-7. **Report Generation**
-   - Pass data to a BI tool (e.g., Power BI, Tableau)
-   - Create dashboards or export to CSV files
-8. **Delivery & Feedback Loop**
-   - Present the report to stakeholders
-   - Handle change requests (e.g., different date ranges)
-   - Repeat steps 2–7 as needed
-
-### Pain Points in the Monolithic Approach
-
-This workflow reveals several challenges that organizations commonly face:
+This reveals several challenges that organizations commonly face:
 
 - **Slow turnaround**: Every new request goes through a centralized pipeline with many dependencies
 - **Lack of domain context**: Data engineers may misinterpret business logic without domain expertise
@@ -77,9 +41,9 @@ This workflow reveals several challenges that organizations commonly face:
 
 ## Data Mesh Approach
 
-### Introduction to Data Mesh
+### Introduction
 
-**Definition**: - Data mesh is a **decentralized data architecture** and organizational paradigm that **treats data as a product** and **assigns ownership to domain teams**, rather than centralizing all data into a single platform or team. - Introduced by Zhamak Dehghani in 2019, data mesh emerged as a **response to the limitations of monolithic data lakes** and centralized data platforms.
+**Definition**: - Data mesh is a **decentralized data architecture** and organizational paradigm that **treats data as a product** and **assigns ownership to domain teams**, rather than centralizing all data into a single platform or team. Introduced by Zhamak Dehghani in 2019, data mesh emerged as a **response to the limitations of monolithic data lakes** and centralized data platforms.
 
 **Core Idea:** Transition from centralized data lakes to a distributed mesh of domain-oriented data products.
 
@@ -115,7 +79,7 @@ Data mesh is founded on four fundamental principles that guide its implementatio
 
 Other teams can find the data product easily through a central catalog or metadata store.
 
-- Use a data catalog (e.g., DataHub, Amundsen, Collibra, Alation) to index and expose metadata
+- Use a data catalog to index and expose metadata
 - Tag datasets with business-relevant keywords, domain, owner, freshness, and usage
 - Enable searchable metadata APIs or UI portals for users to explore available datasets
 - Maintain data lineage and update metadata on every change
@@ -126,8 +90,8 @@ No more "tribal knowledge" needed to find useful data
 
 The data product has a unique and consistent address, like a URL or path, that consumers can use to reference it.
 
-- Define and follow naming conventions (e.g., org.domain.dataset_name.version)
-- Use stable identifiers or paths for querying (e.g., Delta table names, Iceberg catalog entries, RESTful API endpoints)
+- Define and follow naming conventions
+- Use stable identifiers or paths for querying
 - Expose versioned endpoints or dataset URIs through a catalog or registry
 
 Consumers can programmatically reference the same dataset consistently
@@ -138,7 +102,7 @@ Consumers can rely on the data's quality, security, and governance.
 
 - Apply data quality checks (e.g., null value audits, schema validation) via tools like Great Expectations or Deequ
 - Implement automated tests and CI/CD pipelines for data validation
-- Implement access control and auditing (e.g., via AWS Lake Formation, Unity Catalog, Ranger)
+- Implement access control and auditing
 - Track data lineage and log all transformations to provide transparency
 
 Users can make decisions based on the data without second-guessing its accuracy or integrity
@@ -185,7 +149,7 @@ Different consumers—BI tools, ML pipelines, apps—can use the same data produ
   - Central guidance with local implementation
 - **Result**: Ensures consistency without stifling innovation
 
-## Data Lineage in a Data Mesh
+## Data Lineage
 
 Data lineage refers to **the process of tracking and visualizing** the flow and transformation of data across systems, processes, and stages in its lifecycle. In a data mesh environment, data lineage becomes even more critical for maintaining visibility across distributed data products.
 
@@ -200,93 +164,3 @@ Data lineage typically includes:
 - **Data access**: Who has access to the data at each stage
 
 **Data lineage** is crucial in a data mesh architecture as it provides **transparency** and **clarity** across distributed domain data products, making it easier to debug issues, optimize data processing, and comply with regulations.
-
-## Use Case: University Career Services Data Product
-
-To illustrate the data mesh approach in practice, let's explore how a university could implement a data product within its Career Services department.
-
-### Domain Overview
-
-**_The Career Services department helps students connect with internships and employers._**
-
-The Career Services Department supports students in securing internships and jobs by partnering with employers, hosting career fairs, and offering counseling. It collects data from student applications, employer offers, and post-placement surveys. However, this data is currently siloed and not available for cross-departmental analytics or improvement initiatives.
-
-### Proposed Data Product
-
-- **Dataset**: `student_internship_placements`
-- **Description**: Captures student internship engagement—tracking applications, offers, employers, and fields
-- **Key Questions It Answers**:
-  - Which employers are popular among students?
-  - What percentage of third-year students secured internships?
-  - Which majors perform best in internship placement?
-
-### Schema Design
-
-The data product includes a well-defined schema with fields relevant to tracking student internship experiences:
-
-| Field Name      | Data Type | Description                                      |
-| --------------- | --------- | ------------------------------------------------ |
-| `student_id`    | STRING    | Anonymized student identifier                    |
-| `internship_id` | STRING    | Unique internship entry ID                       |
-| `employer_name` | STRING    | Name of the employer                             |
-| `industry`      | STRING    | Sector (e.g., Finance, Tech, Healthcare)         |
-| `offer_status`  | STRING    | Status: 'Applied', 'Offered', 'Accepted'         |
-| `start_date`    | DATE      | Internship start date                            |
-| `end_date`      | DATE      | Internship end date                              |
-| `major`         | STRING    | Student's declared major                         |
-| `academic_year` | STRING    | Year of study (e.g., Junior, Senior)             |
-| `grade_avg`     | FLOAT     | Student grade average at the time of application |
-
-### Product Attributes Implementation
-
-This data product exemplifies the "data as a product" principles:
-
-- **Discoverability**:
-  - Registered in the university's internal data catalog (Atlan or DataHub)
-  - Tagged with `career_services`, `internship`, `student_outcomes`
-
-- **Addressability**:
-  - Accessible via Snowflake as `career_svc.student_internship_placements`
-  - Consistent versioning and naming conventions
-
-- **Trustworthiness**:
-  - Daily dbt tests for nulls, duplicates, and referential integrity
-  - Version-controlled transformations via Git
-  - PII fields like `student_id` are masked unless a user has proper access roles
-
-- **Interoperability**:
-  - Uses ISO date formats
-  - Standard naming conventions (`snake_case`)
-  - `student_id` follows institutional ID patterns for linkage with other domains
-
-- **Self-describing**:
-  - Full schema metadata available in dbt docs
-  - Field-level lineage tracked with dbt and DataHub integration
-
-### Self-Serve Infrastructure
-
-The data product is supported by a robust infrastructure that enables the domain team to independently manage its data:
-
-- **Ingestion**: Data ingested from Salesforce and custom webforms via Fivetran
-- **Transformation**: Built with dbt models (int, stg, fct layers)
-- **Orchestration**: Scheduled using Airflow
-- **Publishing**: Exposed to consumers via dbt exposures
-- **Monitoring**: Alerts sent to Slack on data quality test failures
-
-### Governance Considerations
-
-Even in a decentralized model, proper governance is essential:
-
-- **Access Control**: Which roles can access what (e.g., students vs. staff)?
-  - Full access: Career Services analysts, data platform team
-  - Masked access: Department leads for reporting
-  - No access: General university community
-
-- **Data Masking**: How will PII be protected?
-  - Snowflake masking policies for sensitive fields like `student_id` and `grade_avg`
-  - Data retention policies aligned with university standards
-
-- **Compliance**: Any regulatory or ethical considerations?
-  - Adherence to university privacy policies
-  - Regular access audits every semester
-  - Documentation of all data sharing agreements

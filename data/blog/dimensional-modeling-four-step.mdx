@@ -11,35 +11,7 @@ seriesOrder: 4
 
 <TOCInline toc={props.toc} asDisclosure toHeading={3} />
 
-## Data Design
-
-### 1. Gather Business Requirements and Data Realities
-
-**Gather the needs of the business:**
-
-- Sessions with business representatives
-- Understand their objectives
-- Compelling business issues
-- Decision-making processes
-- Supporting analytic needs
-
-**Gather the realities of the underlying source data:**
-
-- Meeting with source system experts
-- High-level data profiling to assess data feasibilities
-
-### 2. Collaborative Dimensional Modeling Workshops
-
-Design Data Model in collaboration with subject matter experts and data governance representatives from the business:
-
-- Data modeler/architect manages the design
-- The model should unfold via a series of highly interactive workshops with business representatives
-- These workshops provide another opportunity to flesh out the requirements with the business
-- **Collaboration is critical**
-
-## Four-Step Dimensional Design Process
-
-### Step 1: Select the Business Process
+## Step 1: Select the Business Process
 
 Consider the needs of the business along with the realities of the underlying source data during the collaborative modeling sessions.
 
@@ -50,9 +22,7 @@ Consider the needs of the business along with the realities of the underlying so
 
 Following the **`business process`, `grain`, `dimension`, and `fact declarations`**, the design team determines the table and column names, sample domain values, and business rules.
 
-> Business **data governance representatives** must participate in this **detailed design activity to ensure business buy-in**.
-
-### Step 2: Declare the Grain
+## Step 2: Declare the Grain
 
 - The grain establishes exactly what a single fact table row represents
 - The grain declaration becomes a binding contract on the design
@@ -61,13 +31,13 @@ Following the **`business process`, `grain`, `dimension`, and `fact declarations
 - **`Atomic grain`** refers to the lowest level at which data is captured by a given business process
 - We strongly encourage you to start by focusing on atomic grained data because it withstands the assault of unpredictable user queries
 
-### Step 3: Identify the Dimensions
+## Step 3: Identify the Dimensions
 
 **Dimensions for Descriptive Context:** Dimensions provide the "who, what, where, when, why, and how" context surrounding a business process event.
 
 In Kimball dimensional modeling, the "**7Ws**" refers to a structured approach to identifying business processes and events, focusing on "who, what, when, where, why, how, and what else" to build a data warehouse model, ultimately leading to a better understanding of the business.
 
-#### The 7Ws Process
+### The 7Ws Process
 
 - **Who**: Identifies the actors or entities involved in the business process
 - **What**: Describes the events or actions that occur
@@ -77,17 +47,7 @@ In Kimball dimensional modeling, the "**7Ws**" refers to a structured approach t
 - **How**: Describes the methods or processes used to execute the events
 - **What Else**: Encourages exploration of additional relevant details and context
 
-**Consider a sales process:**
-
-- **Who**: Sale Representatives, Customers
-- **What**: Sale transactions, customer orders
-- **When**: Date and Time of Sales, order fulfillment date
-- **Where**: Location of the sale, customer location
-- **Why**: Customer needs, sales promotions
-- **How**: Phone, online, in-person
-- **What else**: Discount applied, payment method
-
-#### BEAM Method
+### BEAM Method
 
 The 7Ws approach is often used in conjunction with the BEAM method:
 
@@ -107,154 +67,9 @@ The BEAM method uses tools like hierarchy charts, timelines, event matrices, and
 
 Dimension tables contain the **descriptive attributes** used by BI applications for filtering and grouping the facts. Dimension tables are the drivers of the user's BI experience.
 
-### Step 4: Identify the Facts
-
-<div
-  style={{
-    backgroundColor: '#e6f7f5',
-    border: '1px solid #b2e8e0',
-    borderLeft: '4px solid #0d9488',
-    padding: '20px',
-    margin: '20px 0',
-    borderRadius: '8px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-    fontFamily: 'inherit',
-  }}
->
-  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-    <span style={{ fontSize: '24px', marginRight: '12px' }}>💡</span>
-    <strong style={{ fontSize: '18px', color: '#0d9488' }}>
-      Why we need to identify the dimensions before the fact?
-    </strong>
-  </div>
-  <div style={{ paddingLeft: '36px', lineHeight: '1.6' }}>
-    <span>Referential Integrity!</span>
-    <br />
-    <span>Parent first → Children later</span>
-    <br />
-    <span>Dim first → Fact later</span>
-  </div>
-</div>
+## Step 4: Identify the Facts
 
 - Facts are the **measurements** that result from a business process event
 - A single fact table row has a one-to-one relationship to a **measurement event** as described by the fact table's grain
 - **A Fact table** corresponds to **a physical observable event**, and not to the demands of a particular report
 - **Only facts consistent with the declared grain** are allowed
-
-_For example, in a retail sales transaction, the quantity of a product sold and its extended price are good facts, whereas the store manager's salary is disallowed_
-
-## Use Case: Fast Food Outlet Data Model
-
-The right modeling approach to adopt could be divided into 4 Steps:
-
-1. Step 1: Identify the Dimensions
-2. Step 2: Identify the Measures
-3. Step 3: Identify the attributes or properties of dimensions
-4. Step 4: Identify the granularity of the measures
-5. Step 5: History Preservation (Optional)
-
-### Step 0: Gather Business Requirements!
-
-The business objective is to create a data model that can store and report number of burgers and fries sold from a specific FastFood outlet per day.
-
-### Step 1: Identify the Dimensions
-
-> `Dimensions` are the objects or context. That is – dimensions are the 'things' about which something is being spoken.
-
-![Fast Food Dimensions](/static/images/resource/dimensional-modeling-four-step/requirements.png)
-
-- **Food**: which kind of product are sold in McDonalds, for example Burgers and Fries
-- **Day**: the time in which selling takes place for example
-
-  _Information about the time is a typical Dimension table present in a Database._
-
-- **Store**: there are many McDonalds stores in the world, It is important to refer to a specific ones
-
-For each identified Dimension a separate Dimension table will be created.
-
-### Step 2: Identify the Measures
-
-> Measures are the quantifiable subjects and these are often numeric in nature.
-
-In this specific example a `Measure` could be:
-
-- The number of burgers/fries sold (Typical naming convention: Quantity)
-- The price of each burgers/fries (Typical naming convention: Value)
-
-Measures are not stored in Dimension tables, but in Fact tables. When we talk about Measures we ALWAYS refer to Fact tables.
-
-### Step 3: Identify the Attributes or the Properties of the Dimensions
-
-- We'll create a super simplified structure as we are only interested about basic attributes (in a complex scenario, we might need to add tens or hundreds on columns to each dimension table if those attributes are required for reporting)
-- We'll use as a primary key only the Surrogate Key
-
-![Dimension Attributes](/static/images/resource/dimensional-modeling-four-step/dimension-attributes.png)
-
-### Step 4: Identify the Granularity of the Measures
-
-> `Granularity` refers to the lowest (or most granular) level of information stored in any table.
-
-![Granularity Example](/static/images/resource/dimensional-modeling-four-step/granularity.png)
-
-**WHY it is important to know the granularity?**
-
-- _Because this information help us decide what columns are required to be stored in fact table_
-
-For example, since in our case the granularity is food getting sold per store per day, we will need to add key columns from food/store and Day dimensions to the Fact table like below:
-
-![Fact Table Structure](/static/images/resource/dimensional-modeling-four-step/fact-table.png)
-
-_What does the first record of the table mean?_ On day 1/01/2022 in the store Mc Florence a total of 5 French Fries have been sold for a total value of 10 euros
-
-## Topology: Star Schema vs Snowflake Dimensional Topology
-
-### Star Schema
-
-![Star Schema](/static/images/resource/dimensional-modeling-four-step/star-schema.png)
-
-### Snowflake Schema
-
-![Snowflake Schema](/static/images/resource/dimensional-modeling-four-step/snowflake-schema.png)
-
-## Dimension Data Changing
-
-![Dimension Changes Overview](/static/images/resource/dimensional-modeling-four-step/dimension-changes.png)
-
-Some attributes might be rapidly changing. Think about prices of items, they might change rapidly.
-
-### SCD - Type 1
-
-![SCD Type 1](/static/images/resource/dimensional-modeling-four-step/scd-type1.png)
-
-- **Loading table strategy**: **Insert/Update** (Merge SQL Statement)
-- It represents the **latest state** of each records
-- The previous versions of the record is **lost**
-- **No Historical table** involved in this loading Method
-- Generally, in this loading process there are created these following technical fields:
-  - `Insert_date` (or Insert_timestamp): indicates the time in which record is inserted on the table
-  - `Update_date` (or Update_timestamp): indicates the time in which record is updated
-
-### SCD - Type 2
-
-![SCD Type 2](/static/images/resource/dimensional-modeling-four-step/scd-type2.png)
-
-- **Loading table strategy**: **Insert/Update**
-- It collects the **all the images** of each record
-- The previous versions of the record **is still present** on the table
-- **Historical table** are involved in this loading Method
-
-In SCD type 2 there are created these following technical fields:
-
-- `Date_from` (or Timestamp_from or From): indicates the time from which the record is valid
-- `Date_to` (or Timestamp_to or to): indicates the time until which the record is valid
-- `Valid_flag` (or something like that): sometimes it is also created this Boolean field which indicates if record is valid or not
-
-**Primary key is composed by Natural Key's fields and the technical data or timestamp field (e.g "From") which indicates the date from which the record is valid.**
-
-![SCD Type 2 Primary Key](/static/images/resource/dimensional-modeling-four-step/scd-type2-pk.png)
-
-### SCD - Type 3
-
-![SCD Type 3](/static/images/resource/dimensional-modeling-four-step/scd-type3.png)
-
-**Adding a new column to show the previous value**

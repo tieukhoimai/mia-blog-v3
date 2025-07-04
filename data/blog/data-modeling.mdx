@@ -11,72 +11,15 @@ seriesOrder: 3
 
 <TOCInline toc={props.toc} asDisclosure toHeading={3} />
 
-## Data Model
+## Data Modeling
 
-A Data Model is a blueprint that visually communicates how information is organized in customer business. Think of it as the architectural foundation that supports all your business intelligence initiatives.
+**Data modeling** is the **process** of creating a conceptual representation of data and its relationships, which helps us understand how data is stored, accessed, updated, and queried within the database. The **output of that process** is a formal description of the data that has been modeled, which is called a data model. A data model can be compared to a roadmap, an architect's blueprint, or any formal diagram that facilitates a deeper understanding of what is being designed **[[1]](https://www.ibm.com/topics/data-modeling)**
 
-### Key Definitions
+- **A conceptual data model** consists of **highly abstract levels of data elements called entities and relationships** between entities. It presents a high-level overview of the database system through a visual representation of the entities it contains and their relationships to one another. The conceptual model provides the basis for the logical data model.
+- **A logical data model** builds on the conceptual model by **providing a more detailed overview of the entities in their respective relationships**. It identifies the attributes of each entity, defines the primary keys, and specifies the foreign keys. The logical data model serves as an intermediary between the high-level conceptual model and the physical implementation. It describes how the data will be organized in the database and provides a blueprint for building the physical database.
+- **A physical data model** is used to create the **schema** of the database, which is then implemented in the database management system. The physical data model defines the structure of the database, including the data types, constraints, and attributes. It specifies how the data will be stored in the specific database management system being used.
 
-- **A data warehouse data model**
-  - is **the information framework** for **business analytics** and
-  - is one of the first steps towards building the foundation for a robust and flexible DWH
-- **A data model**
-  - is the **framework** for **business intelligence** and
-  - it is the first step towards building the foundation for a robust and flexible DWH
-- **A Logical Data Model** determines the value of the warehouse because it describes the data.
-- If the data needed to answer **critical business questions** _were not included in the warehouse_, the warehouse itself will not provide any value
-
-> **A successful data model** blueprint will allow to "start small" and **grow a data warehouse for different uses over time** without having to refactor.
-
-### Why Data Modeling Matters
-
-Data modeling provides discipline and structure to the complexities inherent in data management. Consider these analogies:
-
-- Building a house without a blueprint?
-- Driving without a map?
-
-It facilitates arriving at a **common understanding** of important business concepts and facilitates communication within the business. It graphically represents the data requirements and data organization of the business through:
-
-- **Entities**: Identifies those things for which it is important to track information
-- **Attributes**: Characteristics of those entities
-- **Relationships**: Connections between different entities
-
-### Benefits of Data Modeling
-
-#### 1. Single Version of the Truth
-
-- Provides common business definitions for all entities
-- Documents business rules at corporate level
-- Supports consistent reporting and analytical results
-- Helps eliminate data redundancy
-
-#### 2. Documents Critical Topics
-
-- Identifies inconsistent business definitions and sources of inaccurate information as a result of customizing the LDM
-- Documents data mappings in ETL process (logical-physical)
-- Helps identify correct sources of data to populate LDM
-
-#### 3. Data Quality Management
-
-- Use common definitions to validate the processing rules at data capture against the agreed definitions
-
-#### 4. New System Development
-
-- LDM forms the design foundation
-- Rigorous technique for stable and reliable database environment
-- Supports faster design and development
-
-### Requirements for Data Modeling
-
-The requirements must be sufficiently clear to describe the following:
-
-- Macro areas of analysis that must be met (e.g. Sales performance, order analysis, analysis of the new accounts, etc...)
-- Historical depth of the data to be analyzed
-- Historization of information – AS-IS vs AS-WAS analysis
-- Frequency of availability of input data and refresh rate
-- Definition of the granularity of the information
-
-![Data Modeling Requirements](/static/images/resource/data-modeling/requirements.png)
+In conclusion, a **conceptual data model** is a high-level view of the database that is used to communicate with stakeholders about the requirements of the database. The **conceptual data model** can then be used to create a **logical data model**, which is a more detailed view of the database that includes the relationships between entities, and the constraints and rules that apply to the data. Finally, the **logical data model** can be used to create **a physical data model**, which is the actual database schema that is implemented in a database management system.
 
 ## Data Warehouse Model (OLTP vs OLAP)
 
@@ -100,63 +43,9 @@ Understanding the difference between OLTP and OLAP models is crucial for effecti
 | Data                   | Raw – detailed data            | Detailed and aggregated data   |
 | Design technique       | ER – 3rd Normal Form 3NF       | Dimensional/other              |
 
-### OLTP Model (On-line Transactional Processing)
-
-OLTP must be efficient in writing events → OLTP must be efficient in extract information about events.
-
-**Design Technique**: ER data model in 3NF is a good fit.
-
-- Remove data redundancy to reduce amount of information to be written in a single transaction
-- Updates in a 3NF database is efficient
-  - Example: customer service – update on a department allocation → 1 row in a 3NF
-    - Avoids anomalies
-    - Data integrity satisfied
-
-### OLAP Model (On-line Analytical Processing)
-
-**Challenges with OLTP Model for Analytics:**
-
-- Complexity of queries
-- Not user friendly – OLAP are made for users to make sense of the data
-- OLTP must work well interacting with other software, not humans
-- Even the simplest BI request could become a challenge
-- Difficult to optimize performance
-- Wrong joins could lead to misinterpretation of the data
-
-**Design Technique**: Dimensional/other
-
-**Topology**: a clear separation between those tables identified as Fact Tables and those one identified as Dimension one.
-
-**Two main different Dimensional Topologies:**
-
-1. **Star Schema**
-2. **Snowflake Schema**
-
 ## From Logical Data Model to Physical Data Model
 
 The transition from a Logical Data Model (LDM) to a Physical Data Model (PDM) is a critical step in database implementation.
-
-![Logical to Physical Model](/static/images/resource/data-modeling/logical-to-physical.png)
-
-When transitioning to a Physical Data Model, several key considerations come into play:
-
-| Field Type                                                                   | Standard Naming Convention          |
-| ---------------------------------------------------------------------------- | ----------------------------------- |
-| Natural code (integer or string)                                             | \_CODE                              |
-| Surrogate key                                                                | \_SK                                |
-| Description                                                                  | \_DESC (or \_NAME)                  |
-| Date                                                                         | \_DATE                              |
-| Time                                                                         | \_TIME                              |
-| Timestamp                                                                    | \_TSTAMP, \_DTIME, \_DT, \_DATETIME |
-| Flag                                                                         | _FLG, IS_, HAS\_                    |
-| Number                                                                       | \_NUM                               |
-| Technical field - Loading session ID (YYYYMMDDHH24MISS, e.g: 20210525181234) | \_\_SESSION_ID                      |
-| Technical field - Timestamp of the insert                                    | \_\_INSERT_TSTAMP                   |
-| Technical field - Timestamp of the update                                    | \_\_UPDATE_TSTAMP                   |
-| Technical field - Logical deletion flag: true = deleted, false = valid       | \_\_DELETE_FLAG, IS_DELETE, DEL_FLG |
-| Quantity Metric Fields                                                       | \_QTY                               |
-| Amount Metric Fields                                                         | \_AMT                               |
-| Value Metric                                                                 | \_VAL                               |
 
 Physical Table Structure Should Include:
 

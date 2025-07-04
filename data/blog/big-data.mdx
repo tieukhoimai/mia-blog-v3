@@ -11,14 +11,6 @@ seriesOrder: 10
 
 <TOCInline toc={props.toc} asDisclosure toHeading={4} />
 
-## Introduction
-
-Big Data technologies emerged as traditional OLTP databases became insufficient to handle the explosive growth in data volume and complexity. The early 2000s witnessed a revolution in data generation from various sources—social media, e-commerce, mobile devices, and sensors—creating an unprecedented demand for new processing and storage paradigms.
-
-This article explores the fundamental concepts of Big Data, the technologies developed to handle these massive datasets, and the architectural patterns that have evolved to address modern data challenges.
-
-![Big Data Overview](/static/images/resource/big-data/01bigdata.png)
-
 ## Core Concepts of Big Data
 
 Big Data is typically characterized by the "4Vs," which describe the challenges that traditional data processing systems struggle to address:
@@ -30,33 +22,13 @@ Big Data is typically characterized by the "4Vs," which describe the challenges 
 | **Variety**    | The diverse formats of data—structured, semi-structured, and unstructured                  |
 | **Veracity**   | The uncertainty, biases, and potential inaccuracies in data requiring verification         |
 
-### Example Use Cases
-
-Big Data technologies are applied across various domains for different types of data processing:
-
-**Transactional Data**
-
-- Fraud detection in financial services
-- Real-time stock market analysis
-- Telecom event processing
-
-**Sub-Transactional Data**
-
-- Weblog analytics
-- Social media sentiment analysis
-- Online behavior tracking
-
-## Hadoop and early days landscape
+## Hadoop
 
 Hadoop emerged as one of the first comprehensive frameworks designed specifically for Big Data processing. Its distributed architecture allows for horizontal scaling by simply adding more commodity hardware nodes.
-
-![Hadoop Ecosystem](/static/images/resource/big-data/02hadoop-architecture.png)
 
 ### HDFS (Hadoop Distributed File System)
 
 HDFS is a fault-tolerant distributed file system designed to run on commodity hardware in cloud environments. It provides high-throughput access to large datasets by splitting files into blocks and distributing them across a cluster.
-
-The architecture consists of:
 
 - **NameNode (Master)**: Manages the file system namespace and regulates access to files
 - **DataNode (Slave)**: Stores and retrieves blocks as directed by the NameNode
@@ -80,8 +52,9 @@ These services work together to optimize execution and resource usage in the Had
 A typical Hadoop cluster consists of three types of nodes, each serving a specific purpose in the distributed processing framework.
 
 ![Hadoop Cluster](/static/images/resource/big-data/03hadoop-hw.png)
+_Image source: [Self Learning Java Tutorial - What is Edge Node in Hadoop](https://self-learning-java-tutorial.blogspot.com/2022/03/what-is-edge-node-in-hadoop.html)_
 
-#### Edge Node – The Gateway
+#### Edge Node
 
 Edge nodes act as the interface between users and the cluster:
 
@@ -89,7 +62,7 @@ Edge nodes act as the interface between users and the cluster:
 - They host client tools and interfaces (e.g., Hue, CLI tools)
 - They ensure secure access to the internal cluster
 
-#### Master Nodes – The Brain of the Cluster
+#### Master Nodes
 
 Master nodes handle coordination and management of resources and tasks:
 
@@ -99,7 +72,7 @@ Master nodes handle coordination and management of resources and tasks:
 
 Multiple master nodes ensure high availability—if one fails, others take over.
 
-#### Worker Nodes – The Muscle
+#### Worker Nodes
 
 Worker nodes store the actual data and perform computations:
 
@@ -127,12 +100,11 @@ Hive consists of two main services:
 - **Metastore**: The table catalog that maintains metadata about tables and partitions
 
 ![Hive Architecture](/static/images/resource/big-data/05HDFS.png)
+_Image source: [Stack Overflow - What is use of HCatalog in Hadoop](https://stackoverflow.com/questions/22533814/what-is-use-of-hcatalog-in-hadoop)_
 
 ### HBase: Distributed NoSQL Database
 
 HBase is a distributed, scalable, big data store designed to support random, real-time read/write access to large datasets.
-
-Key features:
 
 - Data is partitioned based on RowKeys into Regions
 - Each Region contains a range of RowKeys based on their binary order
@@ -148,13 +120,6 @@ Apache Kafka is a distributed streaming platform that provides three key capabil
 2. Storing streams of records in a fault-tolerant way
 3. Processing streams of records as they occur
 
-### Common Use Cases
-
-- **Website Activity Tracking**: Web applications send events such as page views and searches to Kafka, where they become available for real-time processing, dashboards, and offline analytics in Hadoop.
-- **Operational Metrics**: Alerting and reporting on operational metrics for system monitoring.
-- **Log Aggregation**: Collecting logs from multiple services and making them available in a standard format to multiple consumers.
-- **Stream Processing**: Frameworks such as Spark Streaming read data from topics, process it, and write processed data to new topics for consumption by users and applications.
-
 ### 4 Core APIs
 
 | API               | Description                                                                                                             |
@@ -163,24 +128,6 @@ Apache Kafka is a distributed streaming platform that provides three key capabil
 | **Consumer API**  | Enables applications to subscribe to topics and process the streams of records                                          |
 | **Streams API**   | Supports applications acting as stream processors, transforming input streams to output streams                         |
 | **Connector API** | Facilitates building reusable producers or consumers that connect Kafka topics to existing applications or data systems |
-
-<div
-  style={{
-    padding: '1rem',
-    marginBottom: '1rem',
-    border: '1px solid var(--tw-prose-quote-borders)',
-    borderRadius: '0.5rem',
-    backgroundColor: 'var(--tw-prose-quote-bg)',
-  }}
->
-  <p>
-    <strong>Key to Kafka's Performance:</strong> One of the keys to Kafka's high performance is the
-    simplicity of the brokers' responsibilities. Topics consist of one or more partitions that are
-    ordered, immutable sequences of messages. Since writes to a partition are sequential, this
-    design greatly reduces the number of hard disk seeks. Additionally, Kafka brokers are not
-    responsible for tracking message consumption—that responsibility falls on the consumers.
-  </p>
-</div>
 
 ## Spark
 
@@ -216,13 +163,9 @@ A Persistent Staging Area (PSA) serves as an intermediate storage layer between 
 - Scalability through adding new nodes to the cluster
 - Parallel processing engine for analyzing any type of data
 
-![PSA Details](/static/images/resource/big-data/08PSA-details.png)
-
 ## Real-time Architecture
 
 Modern Big Data architectures often incorporate real-time processing capabilities to handle data as it arrives, enabling immediate insights and actions.
-
-![Real-time Architecture](/static/images/resource/big-data/09real-time.png)
 
 1. **Real-time Producer**: Devices or sensors that generate raw data
    - Production line aggregators
@@ -233,23 +176,15 @@ Modern Big Data architectures often incorporate real-time processing capabilitie
    - Works as a FIFO buffer to ensure all data is eventually processed
    - Publishers are sensors/devices, subscriber is the real-time engine
 
-3. **Real-time Engine**: Processes incoming data for predictions, alarms, or automated actions
+3. **Engine**: Processes incoming data for predictions, alarms, or automated actions
    - May be implemented as dedicated software, generic frameworks, or custom solutions
 
 4. **Data Lake**: Storage for raw data used for statistical analysis or data warehouse enrichment
    - Typically stores data as object blobs or files
 
-5. **NoSQL Database**: Used for real-time data reading and writing
-
-6. **Real-time Dashboard**: Displays real-time data visualization
-
-7. **External Applications**: Receive alarms and information extracted from raw data
-
 ## Search Engine Integration
 
 Search engines provide powerful capabilities for finding and analyzing data across the Big Data ecosystem.
-
-![Search Engine Architecture](/static/images/resource/big-data/10search-engine.png)
 
 - Creates a "virtual" single repository by fusing structured, unstructured, and federated data
 - Provides secure and granular access to all applications and data stores

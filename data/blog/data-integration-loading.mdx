@@ -11,10 +11,6 @@ seriesOrder: 9
 
 <TOCInline toc={props.toc} asDisclosure toHeading={3} />
 
-In [Part 1](/blog/data-integration-etl-pushdown), we explored ETL vs. ELT approaches and pushdown optimization techniques. This second article builds on those concepts by examining how data is loaded into target systems, how changes are tracked and captured, and how data is organized within a modern data warehouse architecture.
-
-Effective loading strategies are crucial for maintaining data freshness, minimizing processing overhead, and ensuring system reliability. These strategies must balance competing requirements like timeliness, resource utilization, and data consistency.
-
 ## Loading Methods
 
 There are two primary methods for loading data into target systems: batch loading and stream loading. Each has distinct characteristics and use cases.
@@ -78,78 +74,64 @@ There are 3 most popular CDC techniques applicable in DBMS environments:
 
 ### Timestamp-based Capture
 
-It is performed by adding a timestamp column to each table of interest. These timestamps provide the selection criteria for the capture change of record.
+This approach involves **adding timestamp columns** (such as `created_date`, `modified_date`) to source tables to track when records are created or updated.
 
-Points of attention:
+1. Each table includes timestamp columns that are automatically updated when records change
+2. ETL processes query for records where the timestamp is greater than the last extraction time
+3. Only records modified since the last run are captured and processed
 
-- You need an added column for each table of interest
-- It is not possible to capture intermediate states of data, so if a record changed state more than once since the last ETL run, only the last state would be available
-  _If a record was updated multiple times between runs → only the latest version is captured_
+However, if a record is updated multiple times between ETL runs, only the latest version is captured
 
 ### Trigger-based Capture
 
-A change (e.g., insert/update/delete) occurs in a source table.
-
-This approach involves triggers to track changes in the source database. Whenever **a modification takes place in the source database**, a corresponding log record is written into a dedicated log table. These dedicated log tables serve to **determine rows changed since the last ETL processing**. The statements that are executed when a trigger is fired maintain a timestamp column. The set and granularity of the events and conditions that cause a trigger to fire are database specific. This approach enables capturing all types of events (INSERT, UPDATE, DELETE).
-
-Summary:
+This technique uses **database triggers** to automatically capture changes as they occur in the source system.
 
 1. A change (e.g., insert/update/delete) occurs in a source table.
 2. A trigger writes a log entry to a dedicated log table.
 3. During ETL processes, system reads the log table to find out which rows have changed
 4. When the trigger logs a change, it **adds a timestamp** to the log record
 
-Disadvantage: It might affect performance on the source systems. This technique imposes a considerable operational overhead at the source system.
-
-In simple terms: while triggers help you track every change in real time ↔ they can **slow down your database**
-
 ### Transaction Log Capture
 
 This technique employs the logging and recovery capabilities of a DBMS. Since **transaction logs** are utilized by DBMS to store transaction information for logging and recovery, these logs contain all information required to capture changed data.
 
-A specialized vendor-specific application must be written to monitor the log files and capture the data of interest.
-
 You can't just read the transaction logs manually — they are often stored in a binary, proprietary format, which is not human-readable. So, a special application/tool (usually provided by the database vendor or third parties) must be used (Example: SQL Server - Change Data Capture built-in)
-
-Transaction logs have to be available until the changes of interest are captured.
-
-A problem can occur when the recycling of the transaction log takes place because it's reused by the DBMS.
 
 Many databases automatically reuse (overwrite) old parts of the transaction log to save space — this is called log recycling.
 
-## Data Warehouse Layers - How to organize the data in a database?
+## Data Warehouse Layers
+
+Modern data warehouse architectures organize data into distinct layers, each serving specific purposes in the data processing pipeline. These layers follow Ralph Kimball's dimensional modeling principles for structured data warehouse design.
 
 Different layers in a database will have different scopes:
 
-1. **Ingest**: raw data from various sources.
-2. **Clean and transform**: the data to ensure its quality and consistency.
-3. **Organize**: the data into a structured relational format.
-4. **Present**: the data in a way that is easily consumed and understood by different users and applications.
+1. **Extract**: raw data from various sources.
+2. **Stage**: the data temporarily for processing and transformation.
+3. **Transform**: the data to ensure its quality and consistency.
+4. **Present**: the data in dimensional models for business analysis.
 
-### Raw Layer (or Bronze Layer)
+### Staging Area
 
-This is the initial layer where data is ingested from various sources in its original format, without any transformation. **It's a repository of raw data,** often stored in its native format (e.g., JSON, CSV) or in a compressed format like Parquet. The data in this layer is typically immutable, ensuring a historical record of the original data.
+This is the initial layer where data is temporarily stored after extraction from source systems. The staging area serves as a **work area for ETL processes**, where data is held in its original format before transformation. According to Kimball's methodology:
 
-### Staging Layer (or Silver Layer)
+- Data is stored temporarily and typically **purged after successful processing**
+- **No business users access** the staging area directly
+- Data structures **mirror the source systems** with minimal modification
+- Primary purpose is to **facilitate the ETL process** and provide restart capabilities
 
-This layer **processes the data** from the raw layer, performing basic cleaning, validation, and transformation tasks. The goal is to **prepare the data for the next stages**, making it suitable for further processing and analysis. This layer might involve tasks like:
+### Data Presentation Area
 
-- **Data Cleaning**: Handling missing values, inconsistencies, and errors.
-- **Data Transformation**: Standardizing formats, converting data types, and resolving inconsistencies.
-- **Data Validation**: Ensuring data integrity and adherence to defined rules.
+This layer contains the **dimensional models** designed for business analysis and reporting. Following Kimball's approach, this area includes:
 
-### Normalized Layer (or Conformed Layer)
+- **Fact Tables**: Contain measurable business events with foreign keys to dimensions
+- **Dimension Tables**: Provide descriptive context for facts, often denormalized for query performance
+- **Conformed Dimensions**: Shared dimensions that ensure consistency across multiple fact tables and data marts
 
-This layer applies relational database principles to organize and store the data. It involves creating **a structured schema** with well-defined tables, relationships, and primary keys. This layer aims to:
+The presentation area is organized into **data marts** - subject-oriented collections of dimensional models that serve specific business processes or departments.
 
-- **Ensure Data Consistency**: Establishing a consistent and standardized format across different datasets.
-- **Support Complex Queries**: Enabling efficient and accurate data retrieval for various analytical needs.
-- **Facilitate Data Modeling**: Providing a foundation for building more complex data models for specialized use cases.
+Kimball's methodology emphasizes:
 
-### Mart Layer (or Gold Layer)
-
-This is the final layer, where **data is tailored** to the specific needs of different business users and applications. It involves creating **data marts** or **subject-oriented databases** that are optimized for specific analytical purposes. This layer might involve:
-
-- **Data Denormalization**: Optimizing data for performance in specific applications, potentially sacrificing some data consistency.
-- **Data Aggregation**: Summarizing data at different granularities to facilitate reporting and analysis.
-- **Data Presentation**: Designing user interfaces and dashboards for easy data consumption.
+- **Business Process Focus**: Dimensional models are designed around specific business processes
+- **Conformed Dimensions**: Ensure consistency and enable drill-across analysis
+- **Grain Definition**: Each fact table represents events at a specific level of detail
+- **Slowly Changing Dimensions**: Handle changes in dimension attributes over time

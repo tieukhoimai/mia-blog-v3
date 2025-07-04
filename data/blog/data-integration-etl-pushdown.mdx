@@ -11,11 +11,7 @@ seriesOrder: 8
 
 <TOCInline toc={props.toc} asDisclosure toHeading={3} />
 
-## Introduction
-
-Data integration is the **process** of combining data from multiple sources into a single, unified view for easier analysis and decision-making. It involves extracting, transforming, and loading data from various systems and formats, ensuring **consistency** and **accuracy**.
-
-This process allows organizations to gain a more comprehensive understanding of their data and make better-informed decisions.
+Data integration is the **process of combining data from multiple sources** into a unified, consistent, and accessible format. This fundamental practice in data management involves collecting information from various databases, applications, and systems, then transforming and consolidating it to create a **single source of truth** for analysis and decision-making. The primary goal of data integration is to provide organizations with a **comprehensive view** of their data landscape, enabling better insights, improved operational efficiency, and more informed strategic decisions.
 
 ## ETL vs ELT
 
@@ -48,8 +44,6 @@ ETL refers to the processes to gather data and present it to the final user.
 | Data Warehouse | Structured         | Analytical processing & reporting | Mostly structured                     |
 | Data Lake      | Unstructured/mixed | Storing raw data for future use   | All types (structured → unstructured) |
 
-The choice of target system significantly impacts ETL design decisions. While databases require rigidly structured data for operational efficiency, data warehouses need organized but analytics-optimized structures, and data lakes accept virtually any data format for future processing. These different requirements drive both the transformation approach and loading strategy in ETL pipelines.
-
 ### ELT
 
 - **Extract-Load-Transform** is a more widely adopted practice in recent years.
@@ -60,27 +54,9 @@ The choice of target system significantly impacts ETL design decisions. While da
 - Sometimes the only way to process a large amount of data is to first load the data in a loosely defined and unconstrained table and then manipulate it once the data is already loaded.
 - **ELT components (Input, Mapper and Output)** are useful for bulk loading the tables by **pushing** processing overhead to the database rather than **iterating through the resultset** in memory.
 
-<div
-  style={{
-    padding: '1rem',
-    marginBottom: '1rem',
-    border: '1px solid var(--tw-prose-quote-borders)',
-    borderRadius: '0.5rem',
-    backgroundColor: 'var(--tw-prose-quote-bg)',
-  }}
->
-  <p>
-    <strong>Key Difference:</strong> ETL performs transformations before loading data into the
-    target system, while ELT loads raw data first and then leverages the target system's processing
-    power for transformations.
-  </p>
-</div>
-
 ## Pushdown
 
-**Query pushdown** is a database optimization technique where the processing of a query, or parts of it, is pushed down to the data source (e.g., a database) for execution.
-
-This means that operations like filtering, aggregation, or other transformations are performed at the source instead of being done by the client application or a middle layer.
+**Query pushdown** is a database optimization technique where the processing of a query, or parts of it, is pushed down to the data source (e.g., a database) for execution. This means that operations like filtering, aggregation, or other transformations are performed at the source instead of being done by the client application or a middle layer.
 
 **Pushdown** is available when **source table and/or target are the same database instance.**
 
@@ -135,8 +111,6 @@ In this scenario, the ETL tool is a simple **orchestrator** without any operativ
 
 ## Data Orchestrator
 
-A data orchestrator is **a tool or system** that **manages and automates the flow of data** between different systems and applications.
-
-It's essentially **a central conductor** that coordinates the movement, transformation, and integration of data from various sources into a usable format for analysis.
+A data orchestrator is **a tool or system** that **manages and automates the flow of data** between different systems and applications. It's essentially **a central conductor** that coordinates the movement, transformation, and integration of data from various sources into a usable format for analysis.
 
 ![Data Orchestrator Overview](/static/images/resource/data-integration-etl-pushdown/data-orchestrator.png)
