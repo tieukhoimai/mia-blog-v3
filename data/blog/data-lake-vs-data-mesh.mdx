@@ -76,9 +76,7 @@ Data mesh is founded on four fundamental principles that guide its implementatio
 
 **Product Mindset**: Domain teams must delight their data consumers (data scientists, ML engineers, analysts) by providing exceptional user experience.
 
-#### Essential Product Characteristics
-
-##### 1. Discoverable
+#### 1. Discoverable
 
 **What it means**: Other teams can find the data product easily through catalogs or metadata stores.
 
@@ -91,7 +89,7 @@ Data mesh is founded on four fundamental principles that guide its implementatio
 
 **Outcome**: Eliminates "tribal knowledge" requirements for finding useful data
 
-##### 2. Addressable
+#### 2. Addressable
 
 **What it means**: Data products have unique, stable identifiers that consumers can programmatically reference.
 
@@ -104,7 +102,7 @@ Data mesh is founded on four fundamental principles that guide its implementatio
 
 **Outcome**: Enables reliable, programmatic access to datasets
 
-##### 3. Trustworthy
+#### 3. Trustworthy
 
 **What it means**: Consumers can rely on data quality, security, and governance standards.
 
@@ -117,7 +115,7 @@ Data mesh is founded on four fundamental principles that guide its implementatio
 
 **Outcome**: Users can make confident decisions without questioning data integrity
 
-##### 4. Self-Describing
+#### 4. Self-Describing
 
 **What it means**: Data products include comprehensive metadata and documentation for autonomous consumption.
 
@@ -130,7 +128,7 @@ Data mesh is founded on four fundamental principles that guide its implementatio
 
 **Outcome**: Reduces onboarding time and prevents misuse
 
-##### 5. Interoperable
+#### 5. Interoperable
 
 **What it means**: Data products work seamlessly across tools, teams, and platforms.
 
@@ -186,47 +184,26 @@ Data mesh is founded on four fundamental principles that guide its implementatio
 
 ## Data Lineage in a Mesh Architecture
 
-Data lineage becomes even more critical in a distributed data mesh environment, providing transparency across autonomous domain data products.
+Data lineage becomes critical in distributed data mesh environments, providing transparency across autonomous domain data products.
 
 ![Data Lineage](/static/images/resource/data-mesh/data-lineage.png)
 
-**Enhanced Importance in Data Mesh**:
+Data lineage provides three key benefits in decentralized environments: simplified root-cause analysis, managing cross-domain dependencies, and stakeholder transparency [4].
 
-- **Cross-domain transparency**: Track data flow between autonomous domain products
-- **Distributed debugging**: Identify issues across decentralized data products
-- **Compliance assurance**: Maintain audit trails in a federated governance model
-- **Impact analysis**: Understand downstream effects of changes in domain data products
+### Root Cause Analysis
 
-**Implementation Considerations**:
+When pipeline breaks span multiple domains, comprehensive lineage helps teams trace issues across domain boundaries and coordinate fixes between autonomous data products.
 
-- **Automated tracking**: Capture lineage information as part of data product creation
-- **Federated visualization**: Provide unified views across distributed domains
-- **Standardized metadata**: Ensure consistent lineage information across all domains
+### Cross-Domain Impact Management
 
-## Key Implementation Considerations
+Lineage enables domain teams to visualize downstream dependencies before making schema changes or deprecating fields, preventing accidental impacts on other domains.
 
-### Organizational Transformation
+### Distributed Transparency
 
-- **Cultural shift**: Foster product mindset among data teams
-- **Skill development**: Invest in cross-functional capabilities combining domain expertise with data engineering
-- **Team structure**: Form domain-oriented teams with embedded data product owners and engineers
-- **Career pathways**: Create development paths from generalist to data engineering roles
+- **Shared Understanding**: Stakeholders gain visibility into data flow across the entire mesh, not just within their domain
+- **Optimization Opportunities**: Visual representation helps identify redundant transformations and unnecessary cross-domain dependencies
 
-### Technical Evolution
-
-- **Incremental adoption**: Start with pilot domains to validate approach before full-scale implementation
-- **Platform investment**: Build robust self-serve infrastructure before distributing ownership
-- **Standards definition**: Establish interoperability standards early in the transformation
-- **Tool selection**: Choose platforms that support distributed data management patterns
-
-### Success Metrics
-
-- **Lead time reduction**: Time from data product conception to consumer availability
-- **Consumer satisfaction**: Data product adoption rates and user feedback
-- **Domain autonomy**: Reduced dependencies on central teams
-- **Data quality**: Improved accuracy and trustworthiness metrics across domains
-
-The data mesh paradigm represents more than a technological shift—it's a fundamental reimagining of how organizations can scale data capabilities while maintaining agility and domain expertise. By treating data as a product and embracing distributed ownership, enterprises can break free from the limitations of monolithic approaches and create truly scalable, domain-driven data architectures.
+Data lineage serves as the connective tissue that makes distributed data mesh observable and manageable.
 
 ## References
 
@@ -234,4 +211,6 @@ The data mesh paradigm represents more than a technological shift—it's a funda
 
 [2] [Data Mesh: The Four Principles of the Distributed Architecture](https://eleks.com/blog/data-mesh-distributed-architecture/)
 
-[3] Dehghani, Z. (2019). _How to Move Beyond a Monolithic Data Lake to a Distributed Data Mesh_. Martin Fowler's Blog.
+[3] [How to Move Beyond a Monolithic Data Lake to a Distributed Data Mesh](https://martinfowler.com/articles/data-monolith-to-mesh.html)
+
+[4] [Getting started with data lineage](https://www.getdbt.com/blog/getting-started-with-data-lineage)
