@@ -138,8 +138,6 @@ Database normalization addresses the fundamental challenge of organizing data ef
 
 A **primary key** is a set of one or more attributes that uniquely identifies each record in a table while maintaining non-redundancy, meaning that removing any attribute from the key would result in loss of uniqueness. When designing primary keys, it's recommended to use fewer attributes when possible, prioritize attributes that are frequently used in relational operations for efficiency, and ensure stability by selecting values that won't change frequently over time.
 
-## 7. Foreign Key Relations
-
 A **foreign key** is a column (or set of columns) in one table that connects to the primary key data in another table.
 
 **Key Terminology:**
@@ -150,7 +148,7 @@ A **foreign key** is a column (or set of columns) in one table that connects to 
 
 ![Foreign Key and Primary Key Example](/static/images/resource/relational-database-management-system/primary-foreign-key-example.png)
 
-## 8. Referential Integrity
+## 6. Referential Integrity
 
 **Referential Integrity** is a property of a database in which all values of all foreign keys are valid.
 
@@ -160,3 +158,8 @@ A **referential constraint** is the rule by which, given a child table, the valu
 
 - They appear as values of a parent key
 - Null values are usually allowed (depending on business rules)
+
+## References
+
+- Lecture notes from Business Analytics course, Prof. Paolo Menna, University of Verona 2024-2025
+- [Neo4j. "Modeling: relational to graph"](https://neo4j.com/docs/getting-started/data-modeling/relational-to-graph-modeling/)

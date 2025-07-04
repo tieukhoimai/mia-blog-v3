@@ -111,3 +111,7 @@ A database is in **3NF** (3rd normal form) if it is:
 2. **All non-key attributes depend on the key only** (no transitive dependencies)
 
 This means there should be no non-key attributes that depend on other non-key attributes. For example, to eliminate transitive dependencies, you should move attributes like `City`, `State`, and `Zip` into a separate `Location` table, so that each non-key attribute depends only on the primary key, not on other non-key attributes.
+
+## References
+
+- Lecture notes from Business Analytics course, Prof. Paolo Menna, University of Verona 2024-2025

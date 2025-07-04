@@ -162,3 +162,7 @@ Another approach involves placing both the surrogate and the natural key directl
 <p style={{ textAlign: 'center' }}>**Fig 11.** SCD Type 7</p>
 
 For instance, consider a situation where you're monitoring `Product Price` . In this case, a Type 2 product dimension would handle historical changes over time. To enhance this approach, a Type 7 fact table could link to the product dimension using two keys: one key for tracking historical changes and another known as a durable key which remains constant even when attributes change. This durable key ensures consistent reference to the product, unaffected by attribute modifications.
+
+## References
+
+- Lecture notes from Business Analytics course, Prof. Paolo Menna, University of Verona 2024-2025
