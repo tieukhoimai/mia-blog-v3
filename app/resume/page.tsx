@@ -15,12 +15,47 @@ export default function Page() {
       >
         <header className="flex flex-col gap-4">
           <h1 className="inline-flex gap-2 text-4xl font-bold">
-            <span className="text-gray-900 dark:text-gray-100"> Mai TIEU Khoi</span>
+            <span className="text-gray-900 dark:text-gray-100"> Mai Khoi TIEU</span>
           </h1>
         </header>
         {/* -- */}
         <section className="flex flex-col gap-4">
           <h2 className="text-xl font-bold flex flex-col text-teal-500">Experience</h2>
+          {/* --- */}
+          <div className="flex flex-col gap-1">
+            <h3 className="inline-flex items-center gap-2 text-base font-bold text-gray-900 dark:text-gray-200">
+              <span>{'Research Intern'}</span>
+              <span> / </span>
+              <Link
+                href="https://www.sintef.no"
+                className="group m-0 p-0 inline-flex items-center gap-1  hover:underline hover:decoration-slate-300 hover:decoration-wavy hover:decoration-1 hover:underline-offset-4"
+              >
+                <div className="relative">
+                  <Image
+                    src="/static/cv/sintef.png"
+                    alt="SINTEF"
+                    width={600}
+                    height={600}
+                    className="h-6 w-auto grayscale group-hover:grayscale-0"
+                  />
+                </div>
+                <span>{'SINTEF'}</span>
+              </Link>
+            </h3>
+            <div className="group inline-flex gap-2 text-xs uppercase text-gray-500 dark:text-gray-400">
+              Apr 2025 - Present, Norway
+            </div>
+            <ul className="ml-2 mt-2 list-disc pl-5 text-sm">
+              <li className="mt-1">
+                Contribute to the enhancement of the SINDIT platform, a knowledge graph-based
+                Digital Twin (DT).
+              </li>
+              <li className="mt-1">
+                Develop an LLM-enhanced multi-agent system on a DT platform for real-time monitoring
+                and human-in-the-loop assistance.
+              </li>
+            </ul>
+          </div>
           {/* --- */}
           <div className="flex flex-col gap-1">
             <h3 className="inline-flex items-center gap-2 text-base font-bold text-gray-900 dark:text-gray-200">
