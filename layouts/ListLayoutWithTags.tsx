@@ -139,6 +139,7 @@ export default function ListLayoutWithTags({
                                 <Link href={`/${path}`}>{title}</Link>
                               </h2>
                               <div className="flex flex-wrap gap-2">
+                                {/* prettier-ignore */}
                                 {tags?.map((tag) => (
                                   <Tag key={tag} text={tag} />
                                 ))}

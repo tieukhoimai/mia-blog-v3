@@ -132,6 +132,7 @@ export default function ListLayout({
                         </Link>
                       </h3>
                       <div className="flex flex-wrap">
+                        {/* prettier-ignore */}
                         {tags?.map((tag) => (
                           <Tag key={tag} text={tag} />
                         ))}
