@@ -35,7 +35,7 @@
     },
     {
       "title": "Dimensional Modeling - Part 0: 4-Step Design Process",
-      "date": "2025-07-02",
+      "date": "2025-07-01",
       "summary": "This article outlines a structured approach to Data Design, detailing essential steps for creating effective data models that align with business needs. It covers gathering business requirements, conducting collaborative workshops, and following the Four-Step Dimensional Design Process. The article also features a use case for modeling data in a Fast Food outlet and discusses managing changes in dimension data using Slowly Changing Dimensions (SCDs).",
       "slug": "dimensional-modeling-four-step",
       "image": "/static/images/resource/dimensional-modeling-four-step/thumbnail.png",
@@ -90,7 +90,7 @@
     },
     {
       "title": "Data Integration - Part 2: Loading Strategies, Change Data Capture and Data Layers",
-      "date": "2025-07-04",
+      "date": "2025-07-02",
       "summary": "This article explores data loading methodologies, including batch and streaming approaches, and various loading strategies such as full and incremental loads. It also examines Change Data Capture (CDC) techniques and the layered architecture of modern data warehouses, from raw data ingestion to presentation marts.",
       "slug": "data-integration-loading",
       "image": "/static/images/resource/data-integration-loading/thumbnail.png",
@@ -101,7 +101,7 @@
     },
     {
       "title": "Big Data: Concepts, Architecture, and Technologies",
-      "date": "2025-07-04",
+      "date": "2025-07-03",
       "summary": "This article explores the world of Big Data, covering core concepts like the 4Vs (Volume, Velocity, Variety, Veracity), key technologies including Hadoop, Kafka, and Spark, and modern architectures such as Persistent Staging Areas and real-time processing systems. It provides a comprehensive overview of the technologies that emerged to address the challenges of modern data growth beyond traditional database capabilities.",
       "slug": "big-data",
       "image": "/static/images/resource/big-data/thumbnail.png",
@@ -112,7 +112,7 @@
     },
     {
       "title": "Monolithic Data Lake vs Data Mesh",
-      "date": "2025-07-05",
+      "date": "2025-07-04",
       "summary": "This article compares monolithic data lake architecture with the decentralized data mesh approach. While data lakes centralize data for easier access, they face scalability challenges. Data mesh treats data as a product owned by domain teams, enhancing agility through four key principles: domain-oriented ownership, data as a product, self-serve infrastructure, and federated governance.",
       "slug": "data-lake-vs-data-mesh",
       "image": "/static/images/resource/data-mesh/thumbnail.png",
@@ -126,7 +126,7 @@
     {
       "title": "From Transformer to LLMs",
       "date": "2024-12-12",
-      "summary": "This article explores the evolution from Transformers to Large Language Models (LLMs), detailing the mechanisms of self-attention and multi-head attention, the role of position embeddings, various types of transformer models, and the training and fine-tuning processes of LLMs.",
+      "summary": "This article explores the evolution from Transformers to Large Language Models (LLMs), detailing the mechanisms of self-attentiBut greedy decoding is **short-sighted** - Can get trapped in local minima (good \"local\" choice of token, but poor text at the end, with no way to backtrack)n and multi-head attention, the role of position embeddings, various types of transformer models, and the training and fine-tuning processes of LLMs.",
       "slug": "from-transformer-to-llm",
       "image": "/static/images/resource/from-transformer-to-llm/thumbnail-board-room-attention.png",
       "series": "LLMs",
