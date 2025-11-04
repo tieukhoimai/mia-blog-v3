@@ -20,6 +20,20 @@ The transformer is a neural network with a specific structure that includes a me
 
 # I. The Transformer
 
+The Transformer is the standard architecture for building LLMs. The original Transformer, introduced in the seminal paper "Attention is All You Need" (Vaswani et al., 2017), was designed for translating English-to-French and English-to-German. As illustrated in the figure below, the Transformer architecture consists of two main components: the **encoder** and the **decoder**.
+
+- The **encoder** is responsible for understanding and extracting relevant information from the input text. It processes the input sequence and produces a continuous representation (embedding) that encapsulates the semantic meaning of the source text. This continuous representation is then passed to the decoder.
+- The **decoder** generates the translated text (target language) based on the continuous representation received from the encoder, using its own attention mechanism to focus on the relevant parts of the input as it creates the output.
+
+<img
+  src="/static/images/resource/from-transformer-to-llm/transformer_architecture.png"
+  alt="The original Transformer Architecture proposed by Vaswani et al. (2017)"
+  className="w-[80%] mx-auto h-auto"
+  loading="lazy"
+/>
+
+At the core of the Transformer is the attention mechanism, specifically multi-head attention. This allows the model to create rich contextual representations of a token's meaning by integrating information from surrounding tokens, effectively capturing relationships over long distances.
+
 ## 1. Attention
 
 ### 1.1. Self-attention
@@ -175,16 +189,44 @@ Self-attention allows the model to weigh the importance of different tokens in t
   - Such as Adam (Adaptive Moment Estimation).
   - **Distributed training** setup using many GPUs.
 
-## 3. Types of LLMs
+## 3. Dominant LLMs Architectures
 
-- Encoder-only
-  - **Masked language modeling**: These models predict missing words in a sentence.
-  - **Smaller & older models**: Despite being less complex, they are still effective for information extraction (IE) tasks.
-- Decoder-only:
-  - **Dominant approach to LLMs**: These models generate text by predicting the next word in a sequence.
-- Encoder-decoder
-  - **Self-attention and cross-attention**: These models use both mechanisms to process input and output sequences.
-  - **Employed for tasks such as machine translation (MT)**: They are effective for tasks that require understanding and generating text in different languages.
+<div className="my-6 rounded-lg border-l-4 border-primary-500 bg-gray-50 p-6 dark:bg-gray-800">
+  <h4 className="mb-4 text-lg font-bold text-primary-600 dark:text-primary-400">📝 Quick Recap</h4>-
+  Encoder-only - **Masked language modeling**: These models predict missing words in a sentence. -
+  **Smaller & older models**: Despite being less complex, they are still effective for information
+  extraction (IE) tasks. - Decoder-only: - **Dominant approach to LLMs**: These models generate text
+  by predicting the next word in a sequence. - Encoder-decoder - **Self-attention and
+  cross-attention**: These models use both mechanisms to process input and output sequences. -
+  **Employed for tasks such as machine translation (MT)**: They are effective for tasks that require
+  understanding and generating text in different languages.
+</div>
+
+### Encoder-Only
+
+For these models, attention layers can access all the words in the input sentence, allowing the model to process the entire sequence simultaneously and encode it into a comprehensive context vector. This type of model is well-suited for tasks that require an understanding of the full sequence, such as sentence classification, named entity recognition, and question answering.
+
+A prominent example of an encoder-only model is **BERT** (Bidirectional Encoder Representations from Transformers), proposed in 2018. BERT is pre-trained on a large corpus of text using two primary tasks: masked language modeling (MLM) and next-sentence prediction (NSP).
+
+- **Masked Language Model (MLM)**: specific words in a sentence are randomly masked, and the model learns to predict these missing words based on the context provided by the remaining words.
+- **Next Sentence Prediction (NSP)**: helps BERT determine whether a sentence is contextually related to the preceding sentence. This allows BERT to better understand the relationships between sentences and the context of each individual sentence.
+
+Other techniques, such as Word2Vec, FastText, and GloVe, generate word representations based on their common contexts. However, the contexts in natural data can be diverse. While models like Word2Vec and FastText produce a single vector representation for each word derived from a large dataset, they do not capture the richness of different contexts. In contrast, creating representations of each word based on the other words in the sentence yields more meaningful results. BERT improves upon earlier methods by generating context-dependent representations that take into account words both before and after a target word, resulting in a language model with richer semantics.
+
+### Decoder-Only
+
+For these models, attention layers can only access tokens to the left of the current position, leading to a focus primarily on preceding words. Consequently, tokens that are further away receive less attention. These models are often referred to as auto-regressive models because their pretraining is typically formulated around the task of predicting the next word (or token) in a sequence. Decoder-only architectures excel in tasks involving text generation, making them a key focus in the development of large language models (LLMs) today.
+
+These models are trained in an unsupervised manner on vast amounts of unlabeled data, and their architecture has been optimized as model sizes have scaled significantly. GPT (Generative Pre-trained Transformer) models are prominent examples of this model category.
+
+### Encoder-Decoder
+
+For these models, the attention layers of the encoder can access all words in the initial input sentence, while the attention layers of the decoder only consider the words that precede a given word in the output sequence. These models are typically pretrained using the objectives suitable for either the encoder or the decoder, enabling them to perform both understanding and text generation tasks.
+
+However, several factors contribute to the relative infrequency of scaling encoder-decoder architectures into large language models (LLMs):
+
+- **Training Complexity**: Training a model with an encoder-decoder architecture requires data to be in the form of input-output pairs, which makes the preparation of training data quite costly and time-consuming. The need for paired data can limit the availability of suitable datasets for certain tasks. The encoder-decoder model operates in two steps. In contrast, encoder-only or decoder-only models can perform inference in a single step, which simplifies the process and can lead to quicker generation times.
+- **Task Specificity**: The encoder-decoder architecture is specifically designed for certain tasks, such as machine translation, where there is a clear correspondence between input sentences and output sentences. In contrast, the goal of LLMs is to handle a wide variety of generative tasks like text completion and question-answering. LLMs need to be flexible enough to adapt to different types of prompts and generate coherent text without supervision.
 
 ## 4. Model Alignment
 
@@ -298,3 +340,4 @@ The `creativity` of the generation can be controlled by the temperature
 - [Lecture 7 - NN2](https://www.uio.no/studier/emner/matnat/ifi/IN4080/h24/slides/07-nn2.pdf), IN4080, Autumn 2024, University of Oslo
 - [Lecture 8 - NN2](https://www.uio.no/studier/emner/matnat/ifi/IN4080/h24/slides/in4080---2024---llms.pdf), IN4080, Autumn 2024, University of Oslo
 - Speech and Language Processing. Daniel Jurafsky & James H. Martin. Copyright © 2024. Draft of August 20, 2024. CHAPTER 9, The Transformer
+- [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/abs/1810.04805), Jacob Devlin, Ming-Wei Chang, Kenton Lee, Kristina Toutanova, 2018
