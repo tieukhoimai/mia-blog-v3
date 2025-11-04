@@ -1,0 +1,153 @@
+---
+title: Digital Twins
+date: '2025-11-04'
+tags: ['Digital Twins', 'Knowledge Graphs', 'Human-in-the-Loop']
+draft: false
+summary: 'An exploration of Digital Twin technologies, their evolution, and the integration of Knowledge Graphs for enhanced capabilities in smart manufacturing and Industry 5.0 applications.'
+image: '/static/images/resource/digital-twins/dt-def.png'
+---
+
+<TOCInline toc={props.toc} asDisclosure toHeading={3} />
+
+## Definition and Existing Framework
+
+The concept of Digital Twins (DT) has gained popularity over the past two decades due to its potential application in smart manufacturing and Industry 4.0, and is now extending its role in supporting the human-centric goals of Industry 5.0 [[1]](#ref-1).
+
+The conceptual model of the Digital Twin was first introduced in the early 2000s during the executive PLM courses at the University of Michigan, where it was initially referred to as the Mirrored Spaces Model for the establishment of a Product Lifecycle Management center by Grieves [[2]](#ref-2). Early references to the concept appeared in [[3]](#ref-3), where it was still termed the Information Mirroring Model, and continued in subsequent works such as [[4]](#ref-4) and [[5]](#ref-5).
+
+The formal definitions of the term DT emerged in 2013 [[6]](#ref-6), building on earlier conceptual models and providing a theoretical foundation that enabled practical implementation as enabling technologies such as IoT, cloud computing, and advanced simulation matured. This formulation consolidated the core elements of a DT: (i) the real space, (ii) the virtual space, (iii) a data flow link from the real space to the virtual space, and (iv) an information flow link from the virtual space back to the real space and among virtual sub-spaces.
+
+More recently, the [Digital Twin Consortium](https://www.digitaltwinconsortium.org/) describes DT as _"a virtual representation of real-world entities and processes, synchronized at a specified frequency and fidelity"_. By continuously reflecting the state and behavior of physical assets, DTs enable real-time monitoring, data-driven decision-making, and predictive analytics. They serve as a bridge between the physical and digital realms, combining sensor data, domain knowledge, and computational models to provide insights into the performance, status, and future behavior of the system. This capability is critical in various domains, including manufacturing, energy, and healthcare.
+
+<div className="flex justify-center my-8">
+  <Image
+    alt="Basic interaction loop between Physical Twin and Digital Twin"
+    src="/static/images/resource/digital-twins/dt-def.png"
+    width={650}
+    height={400}
+  />
+</div>
+<div className="text-center text-sm text-gray-600 -mt-4 mb-8">
+  Basic interaction loop between Physical Twin and Digital Twin
+</div>
+
+A Digital Twin (DT) platform serves as the foundational infrastructure for creating, managing, and operating DTs as well as DT-based applications. Several existing DT software solutions have been identified and evaluated in [[8]](#ref-8). Among commercial offerings, some notable platforms include:
+
+- **Ansys Twin Builder** [[9]](#ref-9): provides comprehensive support for the full lifecycle of DT development, including planning, creation, verification, validation, and deployment.
+- **MathWorks MATLAB/Simulink** [[10]](#ref-10): offers an integrated environment for modeling, validating, and optimizing digital twins.
+- **Microsoft Azure Digital Twins** [[11]](#ref-11): delivers IoT platform capabilities for creating rich and complex digital environment models.
+- **Oracle Cloud** [[12]](#ref-12): provides scalable and secure infrastructure through its global data center network for hosting, processing, and analyzing DT data.
+- **Bosch IoT Suite** [[13]](#ref-13): offers cloud services and software packages tailored to IoT projects, enabling end-to-end digital twin deployments.
+
+In parallel, the open-source DT ecosystem provides alternative approaches to platform development, with several prominent solutions offering distinct capabilities:
+
+- **Eclipse Ditto** [[14]](#ref-14): specializes in modeling digital twins of connected devices, supporting device state management and fine-grained access control.
+- **OpenTwins** [[15]](#ref-15): an open-source framework for DT design, development, and integration, featuring enhanced data analysis, 3D visualization, and streaming machine learning support.
+- **FIWARE** [[16]](#ref-16): an established IoT platform that has evolved from research initiatives to commercial deployments, demonstrating a clear maturation pathway for open-source DT solutions.
+
+## Knowledge Graph-based Digital Twins
+
+A knowledge graph is a graph-based data structure that focuses on establishing context by interlinking metadata, making it a powerful paradigm for representing and integrating data from multiple sources. Unlike traditional data models, knowledge graphs offer significant advantages for modeling, structuring, managing, and analyzing heterogeneous and complex datasets with dynamic relationships [[17]](#ref-17).
+
+Recent studies [[18]](#ref-18), [[19]](#ref-19), [[20]](#ref-20), [[21]](#ref-21), [[22]](#ref-22) highlight that knowledge graphs are particularly well-suited for supporting digital twins. Their integration enables DTs not only to mirror physical assets in real time but also to infer new insights, optimize processes, and facilitate decision-making across a wide range of domains.
+
+Early work on Knowledge Graph-based Digital Twins (KG-DTs) was introduced by Banerjee et al. in 2017 [[18]](#ref-18), who proposed an interpretation focused on formalizing knowledge from industrial production line sensor data using knowledge graphs. Their approach followed a four-stage pipeline: feature extraction, ontology-based manipulation, knowledge graph generation, and semantic relation extraction. Using Bosch production line data, they developed an ontology encompassing the main classes of Facility, Process, Object, Operation, and Organizational Unit. This study demonstrated the potential for automated knowledge extraction from large-scale industrial datasets. Ramonell et al. [[20]](#ref-20) proposed a system for seamlessly integrating heterogeneous data into digital twins of built assets. Their framework leverages a knowledge graph to achieve modularity, flexibility, and interoperability in DT data integration. Similarly, Stavropoulou et al. [[21]](#ref-21) advanced the concept by developing highly autonomous and adaptive DTs that exploit semantic knowledge stored in KGs to enable more sophisticated functionalities and decision support.
+
+Waszak et al. [[19]](#ref-19) introduced the SINTEF Digital Twin (SINDIT), a rapid prototyping framework and architectural proposal built on knowledge graphs represented as labeled property graphs. Building on this foundation, Lam et al. [[22]](#ref-22) extended the concept into a comprehensive architecture specifically designed for smart manufacturing applications.
+
+## Human Roles - Human-in-the-Loop
+
+Industry 5.0 focuses on three interrelated basic principles: human-centricity, sustainability, and resilience [[23]](#ref-23). The human-centric approach prioritizes fundamental human needs and interests in the production process, transitioning from technology-driven advancement to a human-centric and society-centric approach.
+
+In this context, Digital Twins (DTs) are evolving into intelligent platforms that go beyond mirroring physical assets to actively support human-in-the-loop (HITL) scenarios and adaptive control systems. Knowledge Graphs (KGs) are increasingly employed to provide the cognitive backbone of these systems, enabling semantic reasoning, contextual awareness, and explainability. Human-centricity thus emerges as a key principle in the development of next-generation DTs, particularly within the framework of Industry 5.0.
+
+A recent state-of-the-art review on Human-Centric Digital Twins (HCDTs) [[24]](#ref-24) highlights that most current DT literature remains focused on modeling physical assets of cyber-physical systems (CPS), often neglecting the role of human operators. Addressing this shortcoming requires the development of HCDTs that explicitly incorporate human expertise, judgment, and adaptability into the twin ecosystem.
+
+The COGNIMAN architecture addresses this gap by embedding HITL principles as a core design feature, moving beyond purely automated systems to establish collaborative human–machine environments [[1]](#ref-1). This approach acknowledges that human operators contribute irreplaceable contextual knowledge, intuition, and oversight, especially in manufacturing scenarios.
+
+To this end, AI-based multi-agent systems operating on top of DTs play a transformative role. These agents augment the DT's capabilities by autonomously interpreting data, retrieving relevant contextual knowledge, and suggesting corrective or adaptive actions. Modern DT implementations further rely on semantic models and knowledge graphs to achieve interoperability, seamless data integration, and explainability. The integration of AI methods, particularly learning agents and generative models, enables DTs to evolve from passive monitoring tools into proactive, adaptive, and continuously improving systems.
+
+## References
+
+<span id="ref-1">1.</span> Belbachir, A., Ortiz, A. M., Belbachir, A. N., Mallouli, W., Lam, A. N.,
+Srivastava, A. K., & Hemmer, M. (2025). COGNIMAN Digital Twin Architecture for Flexible
+Manufacturing. *Journal of Intelligent Manufacturing*, 1-16.
+
+<span id="ref-2">2.</span> Grieves, M. (2002). Conceptual ideal for PLM. *Presentation for the
+Product Lifecycle Management (PLM) center, University of Michigan*.
+
+<span id="ref-3">3.</span> Grieves, M. W. (2005). Product lifecycle management: the new paradigm for
+enterprises. *International Journal of Product Development*, 2(1-2), 71-84.
+
+<span id="ref-4">4.</span> Grieves, M. (2006). Product lifecycle management: driving the next
+generation of lean thinking.
+
+<span id="ref-5">5.</span> Grieves, M. (2011). *Virtually perfect: driving innovative and lean
+products through product lifecycle management* (Vol. 11). Space Coast Press Cocoa Beach.
+
+<span id="ref-6">6.</span> Grieves, M. (2014). Digital twin: manufacturing excellence through
+virtual factory replication. *White paper*, 1(2014), 1-7.
+
+<span id="ref-7">7.</span> ISO. (2023). ISO/IEC AWI 30173 - Digital twin - Concepts and terminology.
+https://www.iso.org/standard/81442.html
+
+<span id="ref-8">8.</span> Tang, Z., Zhuang, D., & Zhang, J. (2025). Evaluation framework for
+domain-specific digital twin platforms. *Scientific Reports*, 15(1), 10544.
+
+<span id="ref-9">9.</span> Ansys Inc. (2025). Ansys Twin Builder.
+https://www.ansys.com/products/digital-twin/ansys-twin-builder
+
+<span id="ref-10">10.</span> MathWorks. (2025). Digital Twin with MATLAB and Simulink.
+https://www.mathworks.com/discovery/digital-twin.html
+
+<span id="ref-11">11.</span> Microsoft Corporation. (2025). Azure Digital Twins.
+https://azure.microsoft.com/en-us/products/digital-twins
+
+<span id="ref-12">12.</span> Oracle Corporation. (2025). Oracle Cloud Infrastructure.
+https://www.oracle.com/cloud/
+
+<span id="ref-13">13.</span> Bosch Software Innovations GmbH. (2025). Bosch IoT Suite.
+https://www.bosch-iot-suite.com/
+
+<span id="ref-14">14.</span> Eclipse Foundation. (2025). Eclipse Ditto - Digital Twin Framework.
+https://www.eclipse.org/ditto/
+
+<span id="ref-15">15.</span> Robles, J., Martín, C., & Díaz, M. (2023). OpenTwins: An open-source
+framework for the development of next-gen compositional digital twins. *Computers in Industry*, 152,
+104007.
+
+<span id="ref-16">16.</span> Cirillo, F., Solmaz, G., Berz, E. L., Bauer, M., Cheng, B., & Kovacs,
+E. (2020). A standard-based open source IoT platform: FIWARE. *IEEE Internet of Things Magazine*,
+2(3), 12-18.
+
+<span id="ref-17">17.</span> Hogan, A., Blomqvist, E., Cochez, M., d'Amato, C., Melo, G. D.,
+Gutierrez, C., ... & others. (2021). Knowledge graphs. *ACM Computing Surveys (CSUR)*, 54(4), 1-37.
+
+<span id="ref-18">18.</span> Banerjee, A., Dalal, R., Mittal, S., Joshi, K. P., & others. (2017).
+Generating digital twin models using knowledge graphs for industrial production lines. In *Workshop
+on Industrial Knowledge Graphs, co-located with the 9th International ACM Web Science Conference
+2017*.
+
+<span id="ref-19">19.</span> Waszak, M., Lam, A. N., Hoffmann, V., Elvesæter, B., Mogos, M. F., &
+Roman, D. (2022). Let the asset decide: digital twins with knowledge graphs. In *2022 IEEE 19th
+International Conference on Software Architecture Companion (ICSA-C)* (pp. 35-39). IEEE.
+
+<span id="ref-20">20.</span> Ramonell, C., Chacón, R., & Posada, H. (2023). Knowledge graph-based
+data integration system for digital twins of built assets. *Automation in Construction*, 156,
+105109.
+
+<span id="ref-21">21.</span> Stavropoulou, G., Tsitseklis, K., Mavraidi, L., Chang, K. I.,
+Zafeiropoulos, A., Karyotis, V., & Papavassiliou, S. (2024). Digital Twin Meets Knowledge Graph for
+Intelligent Manufacturing Processes. *Sensors*, 24(8), 2618.
+
+<span id="ref-22">22.</span> Lam, A. N., Svaland, G. B., Barcelona, M. Á., Keaveney, S., Mallouli,
+W., Nguyen, L., ... & Belbachir, A. N. (2024). SINDIT: A Framework for Knowledge Graph-Based Digital
+Twins in Smart Manufacturing. In *IFIP International Internet of Things Conference* (pp. 33-52).
+Springer.
+
+<span id="ref-23">23.</span> Xu, X., Lu, Y., Vogel-Heuser, B., & Wang, L. (2021). Industry 4.0 and
+Industry 5.0—Inception, conception and perception. *Journal of Manufacturing Systems*, 61, 530-535.
+
+<span id="ref-24">24.</span> Asad, U., Khan, M., Khalid, A., & Lughmani, W. A. (2023). Human-centric
+digital twins in industry: A comprehensive review of enabling technologies and implementation
+strategies. *Sensors*, 23(8), 3938.
