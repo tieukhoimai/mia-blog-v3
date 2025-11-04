@@ -135,6 +135,28 @@
       "tags": ["LLMs", "Language Models", "Transformer", "Fine-tuning", "RAG"]
     },
     {
+      "title": "Preference Alignment: RLHF and DPO",
+      "date": "2025-11-04",
+      "summary": "An in-depth exploration of preference alignment techniques for LLMs, including Reinforcement Learning from Human Feedback (RLHF) and Direct Preference Optimization (DPO).",
+      "slug": "llms-preference-alignment",
+      "image": "/static/images/resource/llms/DPO.png",
+      "series": "LLMs",
+      "path": "blog/llms-preference-alignment",
+      "seriesOrder": 2,
+      "tags": ["LLMs", "RLHF", "DPO", "Preference Alignment"]
+    },
+    {
+      "title": "LLM-based Agents: Single and Multi-Agent Systems",
+      "date": "2025-11-04",
+      "summary": "Overview of LLM-based agents, including single-agent and multi-agent systems, core components (planning, memory, tool use), and common coordination and planning patterns.",
+      "slug": "llms-based-agents",
+      "image": "/static/images/resource/llms/agent-classifications.png",
+      "series": "LLMs",
+      "path": "blog/llms-based-agents",
+      "seriesOrder": 3,
+      "tags": ["LLMs", "Agents", "Multi-Agent", "Autonomous Agents"]
+    },
+    {
       "title": "LLMs in LangChain - Part 1. Conceptual",
       "date": "2024-06-30",
       "summary": "This article provides an overview of Large Language Models (LLMs), LLMs evolution and the core concepts of LangChain - an open source framework for building applications based on LLMs.",
@@ -142,7 +164,7 @@
       "image": "/static/images/resource/llms/part-1.png",
       "series": "LLMs",
       "path": "blog/llms-part-1",
-      "seriesOrder": 2,
+      "seriesOrder": 5,
       "tags": ["LLMs", "Language Models", "LangChain"]
     },
     {
@@ -153,7 +175,7 @@
       "image": "/static/images/resource/llms/chat_models.png",
       "series": "LLMs",
       "path": "blog/llms-part-2",
-      "seriesOrder": 3,
+      "seriesOrder": 5,
       "tags": ["LLMs", "Language Models", "LangChain"]
     }
   ],

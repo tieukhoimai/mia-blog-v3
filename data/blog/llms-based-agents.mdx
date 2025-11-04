@@ -1,0 +1,103 @@
+---
+title: 'LLM-based Agents: Single and Multi-Agent Systems'
+date: '2025-11-04'
+tags: ['LLMs', 'Agents', 'Multi-Agent', 'Autonomous Agents']
+draft: false
+summary: 'Overview of LLM-based agents, including single-agent and multi-agent systems, core components (planning, memory, tool use), and common coordination and planning patterns.'
+image: '/static/images/resource/llms/agent-classifications.png'
+series: 'LLMs'
+seriesOrder: 3
+---
+
+<TOCInline toc={props.toc} asDisclosure toHeading={3} />
+
+An agent is any entity that perceives its environment and takes actions autonomously to achieve specific goals, and can be categorized into five types: simple reflex agents, model-based reflex agents, goal-based agents, utility-based agents, and learning agents [[1]](#ref-1). Language Model-based agents (LLM-based agents) are a subtype of the broader category of learning agents [[2]](#ref-2).
+
+The Large Language Model (LLM) serves as the agent’s cognitive core in an LLM-powered autonomous agent system. LLM-based agents offer significant advantages over alternative agents [[2]](#ref-2):
+
+- Powerful Natural Language Processing and Comprehensive Knowledge: Leveraging exceptional language comprehension and generation capabilities developed during training on extensive textual data, LLM-based agents possess substantial common-sense knowledge, domain-specific expertise, and factual information.
+- Zero-Shot or Few-Shot Learning: LLMs often require minimal labeled samples to excel in novel tasks thanks to strong generalization.
+- Organic Human–Computer Interaction: LLM-based agents can understand and generate natural language text, facilitating intuitive, user-centric interaction.
+
+LLM-based agents are typically classified into single-agent and multi-agent systems.
+
+## LLM-based Single-Agent System
+
+A single-agent system (often denoted as an LLM-based agent $V$) integrates three fundamental components: planning, memory, and tool use [[3]](#ref-3).
+
+<img
+  src="/static/images/resource/llms/LLMsAgent.png"
+  alt="Overview of an LLM-powered agent system"
+  className="w-[100%] mx-auto h-auto"
+  loading="lazy"
+/>
+
+These components interact to form a cohesive system capable of handling complex tasks and facilitating human–computer interaction.
+
+- **Planning** enables the agent to break down large tasks into manageable subgoals. Reflection and refinement (self-criticism over past actions) help improve future steps and outcomes.
+- **Memory** is divided into short-term and long-term:
+  - Short-term memory encompasses in-context learning, e.g., prompt engineering to enhance immediate responses.
+  - Long-term memory retains and recalls information over extended periods, often via external knowledge stores and fast retrieval mechanisms.
+- **Tool Use** allows the agent to extend capabilities beyond model weights by calling external APIs to execute code, retrieve data, and access proprietary sources. This keeps knowledge current when model weights are expensive to update.
+
+By combining planning, memory, and tool use with LLM strengths, single-agent systems can tackle complex tasks, adapt to new situations, and provide a seamless interface for human users.
+
+## LLM-based Multi-Agent System
+
+A multi-agent system (MAS) consists of multiple interacting intelligent agents. Each agent typically holds specialized topic knowledge, making MAS well-suited for activities spanning diverse domains.
+
+A graph $G(V, E)$ can illustrate the relationships among various LLM-based agents. Here, $V$ is the set of nodes where $V_i$ identifies a specific agent, and $E$ is the set of edges with $E_{ij}$ indicating communication between agents $V_i$ and $V_j$.
+
+Cheng et al. [[2]](#ref-2) present a classification that considers these aspects:
+
+<img
+  src="/static/images/resource/llms/mas_category.png"
+  alt="The relationship between LLM-based agents"
+  className="w-[100%] mx-auto h-auto"
+  loading="lazy"
+/>
+
+- **Multi-Role Coordination**: focuses on inter-agent relationships
+  - Cooperative: agents collaborate to achieve shared objectives via role allocation and collaborative decision-making. MetaGPT [[4]](#ref-4) and CAMEL [[5]](#ref-5) exemplify role-playing for task completion.
+  - Competitive: agents pursue individual goals, often debating or competing to enhance performance. ChatEval [[6]](#ref-6) enables multi-agent debate to improve evaluation.
+  - Mixed: agents balance cooperation and competition contextually. Corex [[7]](#ref-7) incorporates debate, review, and retrieval modes to improve reasoning fidelity.
+  - Hierarchical: agents collaborate using hierarchical control, information routing, and task decomposition. AutoGen [[8]](#ref-8) is a framework for building LLM applications with parent–child agent interactions and human-in-the-loop features (see https://github.com/microsoft/autogen).
+- **Planning Type**: focuses on strategic coordination approaches
+  - Centralized Planning, Decentralized Execution (CPDE): a centralized LLM considers the needs and resources of all agents, optimizing global performance. AutoAgents [[9]](#ref-9) implement CPDE by using a central coordinator to generate specialized agents, which then execute independently.
+  - Decentralized Planning and Decentralized Execution (DPDE): each agent independently formulates plans based on its objectives and local information, coordinating via communication and negotiation. MetaGPT [[4]](#ref-4) exemplifies this with a global memory pool for collaboration while preserving decentralized execution.
+
+## References
+
+<span id="ref-1">1.</span> Russell, S. J., & Norvig, P. (2016). Artificial intelligence: A modern
+approach. Pearson.
+
+<span id="ref-2">2.</span> Cheng, Y., Zhang, C., Zhang, Z., Meng, X., Hong, S., Li, W., Wang, Z.,
+Wang, Z., Yin, F., Zhao, J., et al. (2024). Exploring Large Language Model based Intelligent Agents:
+Definitions, Methods, and Prospects. *arXiv preprint arXiv:2401.03428*.
+
+<span id="ref-3">3.</span> Weng, L. (2023). LLM-powered Autonomous Agents. *lilianweng.github.io*.
+https://lilianweng.github.io/posts/2023-06-23-agent/
+
+<span id="ref-4">4.</span> Hong, S., Zheng, X., Chen, J., Cheng, Y., Zhang, J., Wang, C., Wang, Z.,
+Yau, S. K. S., Lin, Z., Zhou, L., et al. (2023). MetaGPT: Meta Programming for Multi-Agent
+Collaborative Framework. *arXiv preprint arXiv:2308.00352*.
+
+<span id="ref-5">5.</span> Li, G., Hammoud, H. A. K., Itani, H., Khizbullin, D., & Ghanem, B.
+(2023). CAMEL: Communicative Agents for "Mind" Exploration of Large Scale Language Model Society.
+*arXiv preprint arXiv:2303.17760*.
+
+<span id="ref-6">6.</span> Chen, C.-M., Chen, H.-y., Tsai, H., Lee, H.-H., & Chen, H.-H. (2023).
+ChatEval: Towards Better LLM-based Evaluators through Multi-Agent Debate. *arXiv preprint
+arXiv:2308.07201*.
+
+<span id="ref-7">7.</span> Sun, Q., Yin, Z., Li, X., Wu, Z., Qiu, X., & Kong, L. (2023). Corex:
+Pushing the boundaries of complex reasoning through multi-model collaboration. *arXiv preprint
+arXiv:2310.00280*.
+
+<span id="ref-8">8.</span> Wu, Q., Bansal, G., Zhang, J., Wu, Y., Zhang, S., Zhu, E., Li, B., Jiang,
+L., Zhang, X., & Wang, C. (2023). AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent
+Conversation Framework. *arXiv preprint arXiv:2308.08155*.
+
+<span id="ref-9">9.</span> Chen, G., Dong, S., Shu, Y., Zhang, G., Sesay, J., Karlsson, B. F., Fu,
+J., & Shi, Y. (2023). AutoAgents: A Framework for Automatic Agent Generation. *arXiv preprint
+arXiv:2309.17288*.
