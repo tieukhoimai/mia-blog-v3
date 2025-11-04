@@ -1,5 +1,5 @@
 ---
-title: Digital Twins
+title: 'Digital Twins: Definition, Knowledge Graph Integration and Human Roles'
 date: '2025-11-04'
 tags: ['Digital Twins', 'Knowledge Graphs', 'Human-in-the-Loop']
 draft: false
@@ -53,7 +53,15 @@ Recent studies [[18]](#ref-18), [[19]](#ref-19), [[20]](#ref-20), [[21]](#ref-21
 
 Early work on Knowledge Graph-based Digital Twins (KG-DTs) was introduced by Banerjee et al. in 2017 [[18]](#ref-18), who proposed an interpretation focused on formalizing knowledge from industrial production line sensor data using knowledge graphs. Their approach followed a four-stage pipeline: feature extraction, ontology-based manipulation, knowledge graph generation, and semantic relation extraction. Using Bosch production line data, they developed an ontology encompassing the main classes of Facility, Process, Object, Operation, and Organizational Unit. This study demonstrated the potential for automated knowledge extraction from large-scale industrial datasets. Ramonell et al. [[20]](#ref-20) proposed a system for seamlessly integrating heterogeneous data into digital twins of built assets. Their framework leverages a knowledge graph to achieve modularity, flexibility, and interoperability in DT data integration. Similarly, Stavropoulou et al. [[21]](#ref-21) advanced the concept by developing highly autonomous and adaptive DTs that exploit semantic knowledge stored in KGs to enable more sophisticated functionalities and decision support.
 
-Waszak et al. [[19]](#ref-19) introduced the SINTEF Digital Twin (SINDIT), a rapid prototyping framework and architectural proposal built on knowledge graphs represented as labeled property graphs. Building on this foundation, Lam et al. [[22]](#ref-22) extended the concept into a comprehensive architecture specifically designed for smart manufacturing applications.
+Waszak et al. [[19]](#ref-19) introduced the SINTEF Digital Twin (SINDIT), a rapid prototyping framework and architectural proposal built on knowledge graphs represented as labeled property graphs. Building on this foundation, Lam et al. [[22]](#ref-22) extended the concept into a comprehensive architecture specifically designed for smart manufacturing applications. The SINDIT framework is organized into a four-layer modular architecture, ensuring flexibility, scalability, and interoperability:
+
+- **Data Layer**: connects physical twins (e.g., sensors, machines, processes) to their digital counterparts. It integrates heterogeneous data sources through streaming protocols (MQTT, OPC-UA, REST) and databases (e.g., InfluxDB for time-series, MinIO for objects). Standardized data connectors and importers ensure modularity and extensibility for new protocols and formats.
+
+- **Digital Twin Representation Layer**: uses a knowledge graph (SINDITKG) as the semantic backbone to unify metadata, asset descriptions, and interrelationships. Built with the [Eclipse Semantic Modelling Framework (ESMF)](https://eclipse-esmf.github.io/), this layer enables semantic interoperability, standardized vocabularies (IEC 61360, [ECLASS](https://eclass.eu/)), and efficient querying while decoupling historical data storage from real-time monitoring.
+
+- **Service Layer**: provides modular cognitive services such as analytics, simulations, graph-based reasoning, monitoring, and control. By leveraging the knowledge graph, this layer enables anomaly detection, predictive maintenance, optimization, and rule-based decision-making.
+
+- **User Interface Layer**: facilitates human-in-the-loop interaction through dashboards and APIs. It supports visualization of real-time sensor data, configuration of simulations, access to analytics, and direct control of physical devices. Case studies demonstrate its role in enabling anomaly detection pipelines with user feedback to improve learning over time.
 
 ## Human Roles - Human-in-the-Loop
 
