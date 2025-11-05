@@ -2,7 +2,7 @@ import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 
 import { IBM_Plex_Sans } from 'next/font/google'
-import { SearchProvider, SearchConfig } from 'pliny/search'
+import ClientSearchProvider from '@/components/SearchProvider'
 import Header from '@/components/Header'
 import SectionContainer from '@/components/SectionContainer'
 import Footer from '@/components/Footer'
@@ -88,10 +88,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
           <SectionContainer>
             <div className="flex h-screen flex-col justify-between font-sans">
-              <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
+              <ClientSearchProvider>
                 <Header />
                 <main className="mb-auto">{children}</main>
-              </SearchProvider>
+              </ClientSearchProvider>
               <Footer />
             </div>
           </SectionContainer>

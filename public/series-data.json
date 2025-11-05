@@ -164,7 +164,7 @@
       "image": "/static/images/resource/llms/part-1.png",
       "series": "LLMs",
       "path": "blog/llms-part-1",
-      "seriesOrder": 5,
+      "seriesOrder": 4,
       "tags": ["LLMs", "Language Models", "LangChain"]
     },
     {

@@ -10,6 +10,7 @@ function allCoreContent(posts) {
     tags: post.tags || [],
     summary: post.summary || '',
     image: post.image || '',
+    content: post.content || '', // Include full content for search
   }))
 }
 
@@ -53,6 +54,7 @@ function createSearchIndex() {
           summary: frontmatter.summary || '',
           image: frontmatter.image || '',
           path: `blog/${slug}`,
+          content: content, // Include the full MDX content
         })
       }
     } catch (error) {
@@ -61,7 +63,35 @@ function createSearchIndex() {
   })
 
   // Create search index (assuming kbar search configuration)
-  const searchData = allCoreContent(sortPosts(allBlogs))
+  const searchData = allBlogs.map((post) => {
+    // Clean content by removing JSX/HTML tags and excessive whitespace
+    let cleanContent = (post.content || '')
+      // Remove JSX/HTML tags
+      .replace(/<[^>]+>/g, ' ')
+      // Remove markdown image syntax
+      .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
+      // Remove markdown link syntax but keep the text
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      // Remove code blocks
+      .replace(/```[\s\S]*?```/g, ' ')
+      // Remove inline code
+      .replace(/`[^`]+`/g, ' ')
+      // Remove markdown headers (#)
+      .replace(/^#{1,6}\s+/gm, '')
+      // Remove excessive whitespace
+      .replace(/\s+/g, ' ')
+      .trim()
+
+    return {
+      slug: post.slug,
+      title: post.title,
+      date: post.date,
+      tags: post.tags || [],
+      summary: post.summary || '',
+      image: post.image || '',
+      content: cleanContent,
+    }
+  })
 
   // Write to public directory for client-side search
   writeFileSync('public/search.json', JSON.stringify(searchData))
