@@ -219,21 +219,40 @@ However, several factors contribute to the relative infrequency of scaling encod
 
 <div className="rounded-lg border-l-4 border-primary-500 bg-gray-50 p-2 dark:bg-gray-800">
   <h4 className="text-lg font-bold text-primary-600 dark:text-primary-400">Quick Recap</h4>
-
-**Encoder-only:**
-
-- **Masked language modeling**: These models predict missing words in a sentence.
-- **Smaller & older models**: Despite being less complex, they are still effective for information extraction (IE) tasks.
-
-**Decoder-only:**
-
-- **Dominant approach to LLMs**: These models generate text by predicting the next word in a sequence.
-
-**Encoder-decoder:**
-
-- **Self-attention and cross-attention**: These models use both mechanisms to process input and output sequences.
-- **Employed for tasks such as machine translation (MT)**: They are effective for tasks that require understanding and generating text in different languages.
-  </div>
+  <ul className="list-disc pl-5 space-y-2">
+    <li>
+      <strong>Encoder-only</strong>
+      <ul className="list-[circle] pl-5 space-y-1">
+        <li>
+          <strong>Masked language modeling:</strong> Predicts masked tokens in a sentence.
+        </li>
+        <li>
+          <strong>Smaller & older models:</strong> Still effective for information extraction tasks.
+        </li>
+      </ul>
+    </li>
+    <li>
+      <strong>Decoder-only</strong>
+      <ul className="list-[circle] pl-5 space-y-1">
+        <li>
+          <strong>Dominant LLM approach:</strong> Auto-regressive next-token generation.
+        </li>
+      </ul>
+    </li>
+    <li>
+      <strong>Encoder-decoder</strong>
+      <ul className="list-[circle] pl-5 space-y-1">
+        <li>
+          <strong>Self- & cross-attention:</strong> Combines both for input→output mapping.
+        </li>
+        <li>
+          <strong>Machine translation & structured tasks:</strong> Suited for paired input-output
+          data.
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
 
 ## 4. Model Alignment
 
