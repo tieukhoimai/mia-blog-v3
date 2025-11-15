@@ -119,7 +119,16 @@ $$
 
 At this stage, we have an equation that compares the probabilities between the old policy $\pi_{\text{ref}}$ and the new policy $\pi_\theta$ for a selected response $y_w$ and a non-selected response $y_l$. Our task is to optimize the probabilities such that $y_w$ is favored, indicating that the policies are improving in their ability to produce the preferred responses compared to those that are not preferred.
 
-In conclusion, DPO offers several advantages over RLHF. By eliminating the need for a separate reward model, DPO relies on high-quality data to effectively differentiate between favorable and unfavorable responses. This simplification not only conserves valuable time and resources but also facilitates swift adaptation to new data, thus avoiding the need for retraining. Additionally, DPO enables the model to learn not only which responses are desirable but also to recognize and steer clear of undesirable ones. This dual focus enhances the model's ability to refine its interactions, ultimately resulting in improved performance in generating contextually relevant and appropriate responses, making DPO a robust approach for optimizing language model behavior.
+<div className="rounded-lg border-l-4 border-primary-500 bg-gray-50 p-2 dark:bg-gray-800">
+  In conclusion, DPO offers several advantages over RLHF. - By eliminating the need for a separate
+  reward model, DPO relies on high-quality data to effectively differentiate between favorable and
+  unfavorable responses. This simplification not only conserves valuable time and resources but also
+  facilitates swift adaptation to new data, thus avoiding the need for retraining. - Additionally,
+  DPO enables the model to learn not only which responses are desirable but also to recognize and
+  steer clear of undesirable ones. This dual focus enhances the model's ability to refine its
+  interactions, ultimately resulting in improved performance in generating contextually relevant and
+  appropriate responses, making DPO a robust approach for optimizing language model behavior.
+</div>
 
 ## References
 

@@ -191,17 +191,6 @@ Self-attention allows the model to weigh the importance of different tokens in t
 
 ## 3. Dominant LLMs Architectures
 
-<div className="my-6 rounded-lg border-l-4 border-primary-500 bg-gray-50 p-6 dark:bg-gray-800">
-  <h4 className="mb-4 text-lg font-bold text-primary-600 dark:text-primary-400">📝 Quick Recap</h4>-
-  Encoder-only - **Masked language modeling**: These models predict missing words in a sentence. -
-  **Smaller & older models**: Despite being less complex, they are still effective for information
-  extraction (IE) tasks. - Decoder-only: - **Dominant approach to LLMs**: These models generate text
-  by predicting the next word in a sequence. - Encoder-decoder - **Self-attention and
-  cross-attention**: These models use both mechanisms to process input and output sequences. -
-  **Employed for tasks such as machine translation (MT)**: They are effective for tasks that require
-  understanding and generating text in different languages.
-</div>
-
 ### Encoder-Only
 
 For these models, attention layers can access all the words in the input sentence, allowing the model to process the entire sequence simultaneously and encode it into a comprehensive context vector. This type of model is well-suited for tasks that require an understanding of the full sequence, such as sentence classification, named entity recognition, and question answering.
@@ -227,6 +216,17 @@ However, several factors contribute to the relative infrequency of scaling encod
 
 - **Training Complexity**: Training a model with an encoder-decoder architecture requires data to be in the form of input-output pairs, which makes the preparation of training data quite costly and time-consuming. The need for paired data can limit the availability of suitable datasets for certain tasks. The encoder-decoder model operates in two steps. In contrast, encoder-only or decoder-only models can perform inference in a single step, which simplifies the process and can lead to quicker generation times.
 - **Task Specificity**: The encoder-decoder architecture is specifically designed for certain tasks, such as machine translation, where there is a clear correspondence between input sentences and output sentences. In contrast, the goal of LLMs is to handle a wide variety of generative tasks like text completion and question-answering. LLMs need to be flexible enough to adapt to different types of prompts and generate coherent text without supervision.
+
+<div className="rounded-lg border-l-4 border-primary-500 bg-gray-50 p-2 dark:bg-gray-800">
+  <h4 className="text-lg font-bold text-primary-600 dark:text-primary-400">Quick Recap</h4>-
+  Encoder-only - **Masked language modeling**: These models predict missing words in a sentence. -
+  **Smaller & older models**: Despite being less complex, they are still effective for information
+  extraction (IE) tasks. - Decoder-only: - **Dominant approach to LLMs**: These models generate text
+  by predicting the next word in a sequence. - Encoder-decoder - **Self-attention and
+  cross-attention**: These models use both mechanisms to process input and output sequences. -
+  **Employed for tasks such as machine translation (MT)**: They are effective for tasks that require
+  understanding and generating text in different languages.
+</div>
 
 ## 4. Model Alignment
 
