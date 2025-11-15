@@ -42,9 +42,14 @@ export default function Home({ posts }) {
                               {title}
                             </Link>
                           </h2>
-                          <div className="flex flex-wrap">
+                          <div
+                            className="flex flex-wrap gap-2"
+                            aria-label={`Tags: ${tags?.join(', ')}`}
+                          >
                             {/* prettier-ignore */}
-                            {tags?.map((tag) => <Tag key={tag} text={tag} />)}
+                            {tags?.map((tag) => (
+                              <Tag key={tag} text={tag} variant="chip" />
+                            ))}
                           </div>
                         </div>
                         <p className="text-gray-600 dark:text-gray-300">{summary}</p>

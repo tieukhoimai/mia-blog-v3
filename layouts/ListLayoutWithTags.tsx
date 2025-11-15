@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 'use client'
 
+import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { slug } from 'github-slugger'
 import { formatDate } from 'pliny/utils/formatDate'
@@ -73,6 +74,7 @@ export default function ListLayoutWithTags({
   const tagCounts = tagData as Record<string, number>
   const tagKeys = Object.keys(tagCounts)
   const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
+  const [mobileTagsOpen, setMobileTagsOpen] = useState(false)
 
   const displayPosts = initialDisplayPosts.length > 0 ? initialDisplayPosts : posts
 
@@ -117,6 +119,41 @@ export default function ListLayoutWithTags({
               </div>
             </aside>
 
+            {/* Mobile: All tags section */}
+            <div className="md:hidden">
+              <div className="space-y-3">
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between rounded-md border border-gray-200 px-3 py-2 text-left text-sm font-medium dark:border-gray-700"
+                  aria-expanded={mobileTagsOpen}
+                  onClick={() => setMobileTagsOpen((s) => !s)}
+                >
+                  <span className="uppercase tracking-wider text-gray-600 dark:text-gray-300">
+                    Filter by tag
+                  </span>
+                  <svg
+                    className={`h-4 w-4 transform transition-transform ${mobileTagsOpen ? 'rotate-180' : ''}`}
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+                {mobileTagsOpen && (
+                  <div className="flex flex-wrap gap-2">
+                    {sortedTags.map((tag) => (
+                      <Tag key={tag} text={tag} variant="chip" count={tagCounts[tag]} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
             {/* Posts List */}
             <div className="min-w-0 flex-1">
               <ul className="divide-y divide-gray-200 dark:divide-gray-800">
@@ -138,9 +175,14 @@ export default function ListLayoutWithTags({
                               <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
                                 <Link href={`/${path}`}>{title}</Link>
                               </h2>
-                              <div className="flex flex-wrap gap-2">
+                              <div
+                                className="flex flex-wrap gap-2"
+                                aria-label={`Tags: ${tags?.join(', ')}`}
+                              >
                                 {/* prettier-ignore */}
-                                {tags?.map((tag) => <Tag key={tag} text={tag} />)}
+                                {tags?.map((tag) => (
+                                  <Tag key={tag} text={tag} variant="chip" />
+                                ))}
                               </div>
                             </div>
                             <p className="text-gray-600 dark:text-gray-300">{summary}</p>
