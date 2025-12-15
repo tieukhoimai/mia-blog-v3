@@ -2,7 +2,7 @@
 const siteMetadata = {
   title: 'm a i',
   author: 'Tieu Khoi Mai (Mia)',
-  headerTitle: "m a i",
+  headerTitle: 'm a i',
   description:
     'this is my /maɪ/ blog. The world is a messy place but at least now I have a way of structuring queries about it. And let me share with you my own story or all I known about my career - technical and non-technical in the most naive way.',
   language: 'en-us',
@@ -10,7 +10,7 @@ const siteMetadata = {
   siteUrl: 'https://tieukhoimai.me/',
   siteRepo: 'https://github.com/tieukhoimai/mia-blog-v3',
   siteLogo: '/static/images/logo.png',
-  socialBanner: '/static/images/banner-card.png',
+  // socialBanner: '/static/images/banner-card.png',
   email: 'tieukhoimai@gmail.com',
   github: 'https://github.com/tieukhoimai',
   linkedin: 'https://www.linkedin.com/in/tieukhoimai/',
