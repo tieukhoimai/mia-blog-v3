@@ -337,17 +337,37 @@ function PublicationsList({ items }: { items?: NonNullable<ResumeData['publicati
 
 function AwardsList({ items }: { items?: NonNullable<ResumeData['awards']> }) {
   if (!items?.length) return null
+
   return (
-    <ul className="list-disc pl-5 text-sm leading-relaxed">
-      {items.map((a, i) => (
-        <li key={i} className="mt-1 transition hover:text-teal-800 dark:hover:text-teal-200">
-          <span className="font-semibold text-gray-900 dark:text-gray-100 print:font-bold">
-            {a.title}
-          </span>
-          {a.year ? ` — ${a.year}` : ''}
-        </li>
-      ))}
-    </ul>
+    <div className="space-y-2">
+      <div className="h-px w-full bg-gray-200" aria-hidden="true" />
+      <ul className="text-sm leading-relaxed">
+        {items.map((a, i) => {
+          const titleParts = a.title.split(' — ')
+          const awardTitle = titleParts[0].trim()
+          const organization = titleParts.length > 1 ? titleParts.slice(1).join(' — ').trim() : ''
+
+          return (
+            <li key={i} className="mt-1">
+              <div className="grid grid-cols-[70px_1fr] items-baseline gap-3">
+                <span className="text-xs font-semibold uppercase text-gray-600">{a.year}</span>
+                <div className="text-gray-900 dark:text-gray-100">
+                  <span className="font-semibold print:font-bold">{awardTitle}</span>
+                  {organization && (
+                    <>
+                      {' — '}
+                      <span className="italic font-semibold text-teal-700 dark:text-teal-400 print:font-bold">
+                        {organization}
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+            </li>
+          )
+        })}
+      </ul>
+    </div>
   )
 }
 
@@ -546,7 +566,12 @@ export default function ResumeClient({ data }: { data: ResumeData }) {
         <footer className="mt-8 border-t pt-4 text-xs text-gray-500 print:mt-6 print:pt-3">
           <div className="grid gap-3 text-center sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:text-left">
             <span className="justify-self-start">
-              Last updated: {new Date(data.meta?.generated_at).toLocaleDateString()}
+              Last updated:{' '}
+              {new Date(data.meta?.generated_at).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              })}
             </span>
             <Link
               href="https://tieukhoimai.github.io/mia-resume-builder/cv.pdf"
@@ -558,7 +583,7 @@ export default function ResumeClient({ data }: { data: ResumeData }) {
               href="https://github.com/tieukhoimai/mia-resume-builder"
               className="justify-self-end text-gray-500 underline underline-offset-4 hover:text-teal-700"
             >
-              Built by mia-resume-builder
+              Sourced from mia-resume-builder
             </Link>
           </div>
         </footer>
