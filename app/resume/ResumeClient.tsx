@@ -188,7 +188,7 @@ function ExperienceItem({
         aria-hidden="true"
       />
 
-      <div className="flex flex-col text-xs font-semibold uppercase text-gray-600">
+      <div className="flex flex-col text-sm font-semibold uppercase text-gray-600">
         <span>{start}</span>
         <span>{end}</span>
       </div>
@@ -237,7 +237,7 @@ function ExperienceItem({
                 {tag}
               </span>
             ))}
-            {hasMoreTags && <span className="text-xs text-gray-500">…</span>}
+            {hasMoreTags && <span className="text-sm text-gray-500">…</span>}
           </div>
         )}
 
@@ -294,7 +294,7 @@ function EducationItem({ item }: { item: NonNullable<ResumeData['education']>[nu
           </>
         )}
       </h3>
-      <div className="text-xs uppercase text-gray-500">{item.dates}</div>
+      <div className="text-sm uppercase text-gray-500">{item.dates}</div>
     </div>
   )
 }
@@ -305,7 +305,7 @@ function SkillsList({ items }: { items: NonNullable<ResumeData['skills']> }) {
       {items?.map((group, i) => (
         <p
           key={i}
-          className="text-sm text-gray-900 dark:text-gray-100 print:font-bold transition-colors hover:text-teal-800 dark:hover:text-teal-200"
+          className="text-base text-gray-900 dark:text-gray-100 print:font-bold transition-colors hover:text-teal-800 dark:hover:text-teal-200"
         >
           <span className="font-semibold">{group.category}:</span>{' '}
           <span className="font-normal text-gray-700 dark:text-gray-200">
@@ -320,7 +320,7 @@ function SkillsList({ items }: { items: NonNullable<ResumeData['skills']> }) {
 function PublicationsList({ items }: { items?: NonNullable<ResumeData['publications']> }) {
   if (!items?.length) return null
   return (
-    <ul className="list-disc pl-5 text-sm leading-relaxed">
+    <ul className="list-disc pl-5 text-base leading-relaxed">
       {items.map((p, i) => (
         <li key={i} className="mt-1 transition hover:text-teal-800 dark:hover:text-teal-200">
           <span className="font-semibold text-gray-900 dark:text-gray-100 print:font-bold">
@@ -341,7 +341,7 @@ function AwardsList({ items }: { items?: NonNullable<ResumeData['awards']> }) {
   return (
     <div className="space-y-2">
       <div className="h-px w-full bg-gray-200" aria-hidden="true" />
-      <ul className="text-sm leading-relaxed">
+      <ul className="text-base leading-relaxed">
         {items.map((a, i) => {
           const titleParts = a.title?.split(' — ') || []
           const awardTitle = titleParts[0]?.trim() || ''
@@ -350,7 +350,7 @@ function AwardsList({ items }: { items?: NonNullable<ResumeData['awards']> }) {
           return (
             <li key={i} className="mt-1">
               <div className="grid grid-cols-[70px_1fr] items-baseline gap-3">
-                <span className="text-xs font-semibold uppercase text-gray-600">{a.year}</span>
+                <span className="text-sm uppercase text-gray-600">{a.year}</span>
                 <div className="text-gray-900 dark:text-gray-100">
                   <span className="font-semibold print:font-bold">{awardTitle}</span>
                   {organization && (
@@ -384,7 +384,7 @@ function ProjectsList({ items }: { items?: NonNullable<ResumeData['projects']> }
             <p className="text-base font-semibold text-gray-900 dark:text-gray-100 print:font-bold">
               {p.title}
             </p>
-            {p.dates && <span className="text-xs uppercase text-gray-500">{p.dates}</span>}
+            {p.dates && <span className="text-sm uppercase text-gray-500">{p.dates}</span>}
           </div>
           {p.description && (
             <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">
@@ -450,7 +450,7 @@ export default function ResumeClient({ data }: { data: ResumeData }) {
             <span className="h-0.5 w-16 rounded-full bg-teal-600" aria-hidden="true" />
           </div>
           {data.headline && (
-            <p className="text-base leading-relaxed text-gray-700 dark:text-gray-200 max-w-2xl">
+            <p className="text-base leading-relaxed text-gray-700 dark:text-gray-200 text-justify">
               {data.headline}
             </p>
           )}
