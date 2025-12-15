@@ -343,8 +343,8 @@ function AwardsList({ items }: { items?: NonNullable<ResumeData['awards']> }) {
       <div className="h-px w-full bg-gray-200" aria-hidden="true" />
       <ul className="text-sm leading-relaxed">
         {items.map((a, i) => {
-          const titleParts = a.title.split(' — ')
-          const awardTitle = titleParts[0].trim()
+          const titleParts = a.title?.split(' — ') || []
+          const awardTitle = titleParts[0]?.trim() || ''
           const organization = titleParts.length > 1 ? titleParts.slice(1).join(' — ').trim() : ''
 
           return (
