@@ -2,7 +2,16 @@
 
 import Link from 'next/link'
 import { useEffect, useState, type ReactNode } from 'react'
+import Image from '@/components/Image'
 import { ResumeData } from './types'
+
+type ResumeSectionKey =
+  | 'experience'
+  | 'education'
+  | 'publications'
+  | 'skills'
+  | 'projects'
+  | 'awards'
 
 function BriefcaseIcon() {
   return (
@@ -114,6 +123,52 @@ function LinkIcon() {
       <path d="M10.5 13.5 9 15a3 3 0 0 1-4.24-4.24l3-3A3 3 0 0 1 12 8.76" strokeLinecap="round" />
       <path d="M13.5 10.5 15 9a3 3 0 0 1 4.24 4.24l-3 3A3 3 0 0 1 12 15.24" strokeLinecap="round" />
       <path d="M9.75 14.25 14.25 9.75" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function LinkedInIcon() {
+  return (
+    <svg className="h-4 w-4 text-teal-700" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+    </svg>
+  )
+}
+
+function GitHubIcon() {
+  return (
+    <svg className="h-4 w-4 text-teal-700" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+    </svg>
+  )
+}
+
+function EmailIcon() {
+  return (
+    <svg
+      className="h-4 w-4 text-teal-700"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3 7 9 6 9-6" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function UserIcon() {
+  return (
+    <svg
+      className="h-4 w-4 text-teal-700"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <circle cx="12" cy="8" r="4" />
+      <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" strokeLinecap="round" />
     </svg>
   )
 }
@@ -339,29 +394,28 @@ function AwardsList({ items }: { items?: NonNullable<ResumeData['awards']> }) {
   if (!items?.length) return null
 
   return (
-    <div className="space-y-2">
-      <div className="h-px w-full bg-gray-200" aria-hidden="true" />
-      <ul className="text-base leading-relaxed">
+    <div className="space-y-3">
+      <ul className="text-base leading-relaxed space-y-3">
         {items.map((a, i) => {
           const titleParts = a.title?.split(' — ') || []
           const awardTitle = titleParts[0]?.trim() || ''
           const organization = titleParts.length > 1 ? titleParts.slice(1).join(' — ').trim() : ''
 
           return (
-            <li key={i} className="mt-1">
-              <div className="grid grid-cols-[70px_1fr] items-baseline gap-3">
-                <span className="text-sm uppercase text-gray-600">{a.year}</span>
-                <div className="text-gray-900 dark:text-gray-100">
-                  <span className="font-semibold print:font-bold">{awardTitle}</span>
-                  {organization && (
-                    <>
-                      {' — '}
-                      <span className="italic font-semibold text-teal-700 dark:text-teal-400 print:font-bold">
-                        {organization}
-                      </span>
-                    </>
-                  )}
-                </div>
+            <li key={i} className="flex gap-3 items-baseline">
+              <span className="text-sm uppercase text-gray-600 dark:text-gray-400 min-w-[70px]">
+                {a.year}
+              </span>
+              <div className="text-gray-900 dark:text-gray-100">
+                <span className="text-sm font-semibold print:font-bold">{awardTitle}</span>
+                {organization && (
+                  <>
+                    {' — '}
+                    <span className="text-sm italic font-semibold text-teal-700 dark:text-teal-400 print:font-bold">
+                      {organization}
+                    </span>
+                  </>
+                )}
               </div>
             </li>
           )
@@ -378,7 +432,7 @@ function ProjectsList({ items }: { items?: NonNullable<ResumeData['projects']> }
       {items.map((p, i) => (
         <div
           key={i}
-          className="flex flex-col gap-1 rounded-lg transition hover:bg-gray-50 dark:hover:bg-gray-800 p-2 -m-2"
+          className="flex flex-col gap-2 rounded-xl border border-gray-200/80 bg-white/70 p-4 shadow-sm shadow-gray-100/70 transition hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900/60 dark:shadow-none"
         >
           <div className="flex items-baseline justify-between gap-2">
             <p className="text-base font-semibold text-gray-900 dark:text-gray-100 print:font-bold">
@@ -404,7 +458,16 @@ function ProjectsList({ items }: { items?: NonNullable<ResumeData['projects']> }
               ))}
           </div>
           {p.tech && p.tech.length > 0 && (
-            <p className="text-xs uppercase text-gray-500">{p.tech.join(' · ')}</p>
+            <div className="flex flex-wrap gap-2">
+              {p.tech.map((tech, idx) => (
+                <span
+                  key={idx}
+                  className="rounded-full bg-teal-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-teal-800 dark:bg-teal-900/60 dark:text-teal-100"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
           )}
         </div>
       ))}
@@ -412,14 +475,19 @@ function ProjectsList({ items }: { items?: NonNullable<ResumeData['projects']> }
   )
 }
 
-export default function ResumeClient({ data }: { data: ResumeData }) {
+export default function ResumeClient({
+  data,
+  sections,
+  hideHero = false,
+  heroImage,
+}: {
+  data: ResumeData
+  sections?: ResumeSectionKey[]
+  hideHero?: boolean
+  heroImage?: { src: string; alt?: string }
+}) {
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
   const [expandedExp, setExpandedExp] = useState<Record<number, boolean>>({})
-  const [heroVisible, setHeroVisible] = useState(false)
-
-  useEffect(() => {
-    setHeroVisible(true)
-  }, [])
 
   const toggleSection = (id: string) => {
     setCollapsed((prev) => ({ ...prev, [id]: !prev[id] }))
@@ -429,164 +497,218 @@ export default function ResumeClient({ data }: { data: ResumeData }) {
     setExpandedExp((prev) => ({ ...prev, [idx]: !prev[idx] }))
   }
 
+  const isSectionEnabled = (key: ResumeSectionKey) => !sections || sections.includes(key)
+
   return (
     <main
-      className="container relative mx-auto scroll-my-12 overflow-auto p-4 print:p-10 md:p-14 bg-white dark:bg-gray-900 dark:text-white"
+      className="container relative mx-auto scroll-my-12 overflow-auto p-3 print:p-8 md:p-10"
       id="main-content"
     >
       <section
-        className="mx-auto w-full max-w-3xl space-y-8 print:space-y-6"
+        className="mx-auto w-full max-w-5xl space-y-8 print:space-y-6"
         aria-label="Resume Content"
       >
-        <header
-          className={`flex flex-col gap-2 print:gap-1 transition-all duration-500 ease-out ${
-            heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-          } print:opacity-100 print:translate-y-0`}
-        >
-          <div className="flex flex-col gap-2">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
-              {data.name}
-            </h1>
-            <span className="h-0.5 w-16 rounded-full bg-teal-600" aria-hidden="true" />
-          </div>
-          {data.headline && (
-            <p className="text-base leading-relaxed text-gray-700 dark:text-gray-200 text-justify">
-              {data.headline}
-            </p>
-          )}
-          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-teal-700">
-            {data.socials &&
-              Object.values(data.socials).map((s, i) => (
-                <Link
-                  key={i}
-                  href={s.url}
-                  className="underline underline-offset-4 hover:text-teal-500 transition-colors"
-                >
-                  {s.display || s.url}
-                </Link>
-              ))}
-          </div>
-        </header>
-
-        {data.experience && data.experience.length > 0 && (
-          <section id="experience" className="flex flex-col gap-4">
-            <SectionHeader
-              title="Work Experience"
-              onToggle={() => toggleSection('experience')}
-              collapsed={!!collapsed['experience']}
-              icon={<BriefcaseIcon />}
-              anchorId="experience"
-            />
-            {!collapsed['experience'] && (
-              <div className="space-y-4">
-                {data.experience.map((item, idx) => (
-                  <ExperienceItem
-                    key={idx}
-                    item={item}
-                    expanded={expandedExp[idx] ?? true}
-                    onToggle={() => toggleExperience(idx)}
+        {!hideHero && (
+          <header className="flex flex-col gap-4 print:gap-2 p-0 print:p-0">
+            <div className="flex flex-col items-center gap-4 md:grid md:gap-6 md:grid-cols-[1fr_160px] md:items-start">
+              <div className="flex justify-center md:order-2">
+                {heroImage ? (
+                  <Image
+                    src={heroImage.src}
+                    alt={heroImage.alt || data.name}
+                    width={140}
+                    height={140}
+                    className="h-32 w-32 md:h-[140px] md:w-[140px] rounded-full object-cover shadow-sm dark:shadow-none"
                   />
+                ) : (
+                  <div className="flex h-32 w-32 md:h-[140px] md:w-[140px] items-center justify-center rounded-full bg-teal-50 text-3xl font-bold text-teal-700 dark:bg-gray-800">
+                    {data.name?.[0] || '?'}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-2 items-center text-center md:items-start md:text-left md:order-1">
+                <h1 className="text-3xl font-bold tracking-tight text-black dark:text-white">
+                  {data.name}
+                </h1>
+                <p className="text-base font-medium text-gray-700 dark:text-gray-300">
+                  Data Scientist | Analytics Engineer
+                </p>
+                <div className="mt-2 flex flex-col gap-1.5 text-sm text-gray-700 dark:text-gray-300">
+                  {data.socials && Object.keys(data.socials).length > 0 ? (
+                    Object.values(data.socials).map((s, i) => (
+                      <Link
+                        key={i}
+                        href={s.url}
+                        className="flex items-center gap-2 hover:text-teal-700 transition-colors"
+                      >
+                        <span className="text-teal-700">▸</span>
+                        <span>{s.display || s.url}</span>
+                      </Link>
+                    ))
+                  ) : (
+                    <>
+                      <Link
+                        href="https://linkedin.com/in/tieukhoimai"
+                        className="flex items-center gap-2 hover:text-teal-700 transition-colors"
+                      >
+                        <LinkedInIcon />
+                        <span>linkedin.com/in/tieukhoimai</span>
+                      </Link>
+                      <Link
+                        href="https://github.com/tieukhoimai"
+                        className="flex items-center gap-2 hover:text-teal-700 transition-colors"
+                      >
+                        <GitHubIcon />
+                        <span>github.com/tieukhoimai</span>
+                      </Link>
+                      <Link
+                        href="mailto:tieukhoimai@gmail.com"
+                        className="flex items-center gap-2 hover:text-teal-700 transition-colors"
+                      >
+                        <EmailIcon />
+                        <span>tieukhoimai@gmail.com</span>
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {data.headline && (
+              <div className="mt-4 text-[15px] leading-[1.65] text-gray-700 text-justify dark:text-gray-300">
+                {data.headline.split('\n').map((para, idx) => (
+                  <p key={idx} className="mb-3 last:mb-0">
+                    {para.trim()}
+                  </p>
                 ))}
               </div>
             )}
-          </section>
+          </header>
         )}
 
-        {data.education && data.education.length > 0 && (
-          <section id="education" className="flex flex-col gap-4">
-            <SectionHeader
-              title="Education"
-              onToggle={() => toggleSection('education')}
-              collapsed={!!collapsed['education']}
-              icon={<GraduationIcon />}
-              anchorId="education"
-            />
-            {!collapsed['education'] && (
-              <div className="space-y-3">
-                {data.education.map((item, idx) => (
-                  <EducationItem key={idx} item={item} />
-                ))}
-              </div>
+        <div className="space-y-8 mt-8">
+          {isSectionEnabled('education') && data.education && data.education.length > 0 && (
+            <section id="education" className="flex flex-col gap-3 p-0">
+              <SectionHeader
+                title="Education"
+                onToggle={() => toggleSection('education')}
+                collapsed={!!collapsed['education']}
+                icon={<GraduationIcon />}
+                anchorId="education"
+              />
+              {!collapsed['education'] && (
+                <div className="space-y-3">
+                  {data.education.map((item, idx) => (
+                    <EducationItem key={idx} item={item} />
+                  ))}
+                </div>
+              )}
+            </section>
+          )}
+
+          {isSectionEnabled('experience') && data.experience && data.experience.length > 0 && (
+            <section id="experience" className="flex flex-col gap-3 p-0">
+              <SectionHeader
+                title="Work Experience"
+                onToggle={() => toggleSection('experience')}
+                collapsed={!!collapsed['experience']}
+                icon={<BriefcaseIcon />}
+                anchorId="experience"
+              />
+              {!collapsed['experience'] && (
+                <div className="space-y-4">
+                  {data.experience.map((item, idx) => (
+                    <ExperienceItem
+                      key={idx}
+                      item={item}
+                      expanded={expandedExp[idx] ?? idx === 0}
+                      onToggle={() => toggleExperience(idx)}
+                    />
+                  ))}
+                </div>
+              )}
+            </section>
+          )}
+
+          {isSectionEnabled('publications') &&
+            data.publications &&
+            data.publications.length > 0 && (
+              <section id="publications" className="flex flex-col gap-3 break-inside-avoid p-0">
+                <SectionHeader
+                  title="Publications"
+                  onToggle={() => toggleSection('publications')}
+                  collapsed={!!collapsed['publications']}
+                  icon={<BookIcon />}
+                  anchorId="publications"
+                />
+                {!collapsed['publications'] && <PublicationsList items={data.publications} />}
+              </section>
             )}
-          </section>
-        )}
 
-        {data.publications && data.publications.length > 0 && (
-          <section id="publications" className="flex flex-col gap-3 break-inside-avoid">
-            <SectionHeader
-              title="Publications"
-              onToggle={() => toggleSection('publications')}
-              collapsed={!!collapsed['publications']}
-              icon={<BookIcon />}
-              anchorId="publications"
-            />
-            {!collapsed['publications'] && <PublicationsList items={data.publications} />}
-          </section>
-        )}
+          {isSectionEnabled('skills') && data.skills && data.skills.length > 0 && (
+            <section id="skills" className="flex flex-col gap-3 p-0">
+              <SectionHeader
+                title="Skills"
+                onToggle={() => toggleSection('skills')}
+                collapsed={!!collapsed['skills']}
+                icon={<WrenchIcon />}
+                anchorId="skills"
+              />
+              {!collapsed['skills'] && <SkillsList items={data.skills} />}
+            </section>
+          )}
 
-        {data.skills && data.skills.length > 0 && (
-          <section id="skills" className="flex flex-col gap-3">
-            <SectionHeader
-              title="Skills"
-              onToggle={() => toggleSection('skills')}
-              collapsed={!!collapsed['skills']}
-              icon={<WrenchIcon />}
-              anchorId="skills"
-            />
-            {!collapsed['skills'] && <SkillsList items={data.skills} />}
-          </section>
-        )}
+          {isSectionEnabled('projects') && data.projects && data.projects.length > 0 && (
+            <section id="projects" className="flex flex-col gap-3 break-inside-avoid p-0">
+              <SectionHeader
+                title="Projects"
+                onToggle={() => toggleSection('projects')}
+                collapsed={!!collapsed['projects']}
+                icon={<LightbulbIcon />}
+                anchorId="projects"
+              />
+              {!collapsed['projects'] && <ProjectsList items={data.projects} />}
+            </section>
+          )}
 
-        {data.projects && data.projects.length > 0 && (
-          <section id="projects" className="flex flex-col gap-3 break-inside-avoid">
-            <SectionHeader
-              title="Projects"
-              onToggle={() => toggleSection('projects')}
-              collapsed={!!collapsed['projects']}
-              icon={<LightbulbIcon />}
-              anchorId="projects"
-            />
-            {!collapsed['projects'] && <ProjectsList items={data.projects} />}
-          </section>
-        )}
-
-        {data.awards && data.awards.length > 0 && (
-          <section id="awards" className="flex flex-col gap-3 break-inside-avoid">
-            <SectionHeader
-              title="Awards"
-              onToggle={() => toggleSection('awards')}
-              collapsed={!!collapsed['awards']}
-              icon={<AwardIcon />}
-              anchorId="awards"
-            />
-            {!collapsed['awards'] && <AwardsList items={data.awards} />}
-          </section>
-        )}
-
-        <footer className="mt-8 border-t pt-4 text-xs text-gray-500 print:mt-6 print:pt-3">
-          <div className="grid gap-3 text-center sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:text-left">
-            <span className="justify-self-start">
-              Last updated:{' '}
-              {new Date(data.meta?.generated_at).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              })}
-            </span>
-            <Link
-              href="https://tieukhoimai.github.io/mia-resume-builder/cv.pdf"
-              className="justify-self-center text-gray-500 underline underline-offset-4 hover:text-teal-700 print:hidden"
-            >
-              Download CV (PDF)
-            </Link>
-            <Link
-              href="https://github.com/tieukhoimai/mia-resume-builder"
-              className="justify-self-end text-gray-500 underline underline-offset-4 hover:text-teal-700"
-            >
-              Sourced from mia-resume-builder
-            </Link>
-          </div>
-        </footer>
+          {isSectionEnabled('awards') && data.awards && data.awards.length > 0 && (
+            <section id="awards" className="flex flex-col gap-3 break-inside-avoid p-0">
+              <SectionHeader
+                title="Awards"
+                onToggle={() => toggleSection('awards')}
+                collapsed={!!collapsed['awards']}
+                icon={<AwardIcon />}
+                anchorId="awards"
+              />
+              {!collapsed['awards'] && <AwardsList items={data.awards} />}
+            </section>
+          )}
+          <footer className="mt-4 border-t pt-4 text-xs text-gray-500 print:mt-6 print:pt-3">
+            <div className="flex flex-col items-center gap-2 md:grid md:gap-3 md:grid-cols-[1fr_auto_1fr] md:items-center md:text-left">
+              <span className="md:justify-self-start">
+                Last updated:{' '}
+                {new Date(data.meta?.generated_at).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </span>
+              <Link
+                href="https://tieukhoimai.github.io/mia-resume-builder/cv.pdf"
+                className="w-full md:w-auto rounded-lg bg-teal-700 px-6 py-3 md:py-2 text-center text-white font-semibold hover:bg-teal-800 transition-colors print:hidden md:justify-self-center order-first md:order-none"
+              >
+                Download CV (PDF)
+              </Link>
+              <Link
+                href="https://github.com/tieukhoimai/mia-resume-builder"
+                className="text-gray-500 underline underline-offset-4 hover:text-teal-700 md:justify-self-end"
+              >
+                Sourced from mia-resume-builder
+              </Link>
+            </div>
+          </footer>
+        </div>
       </section>
     </main>
   )
