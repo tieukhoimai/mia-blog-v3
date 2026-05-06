@@ -23,14 +23,26 @@ LLM-based agents are typically classified into single-agent and multi-agent syst
 
 ## LLM-based Single-Agent System
 
+More precisely, an agent is any entity that:
+
+- **Perceives** its environment — through tools, memory, and input
+- **Acts autonomously** — by planning, reflecting, and executing actions
+
+$\Rightarrow$ To achieve specific goals via a **well-designed cycle** that continuously improves toward its objectives.
+
 A single-agent system (often denoted as an LLM-based agent $V$) integrates three fundamental components: planning, memory, and tool use [[3]](#ref-3).
 
-<img
-  src="/static/images/resource/llms/LLMsAgent.png"
-  alt="Overview of an LLM-powered agent system"
-  className="w-[100%] mx-auto h-auto"
-  loading="lazy"
-/>
+<figure>
+  <img
+    src="/static/images/resource/llms/LLMsAgent.png"
+    alt="Overview of an LLM-powered agent system"
+    className="w-[100%] mx-auto h-auto"
+    loading="lazy"
+  />
+  <figcaption className="text-center text-sm text-gray-500 mt-2">
+    Overview of an LLM-powered agent system. (Image source: [[3]](#ref-3))
+  </figcaption>
+</figure>
 
 These components interact to form a cohesive system capable of handling complex tasks and facilitating human–computer interaction.
 
@@ -40,7 +52,24 @@ These components interact to form a cohesive system capable of handling complex 
   - Long-term memory retains and recalls information over extended periods, often via external knowledge stores and fast retrieval mechanisms.
 - **Tool Use** allows the agent to extend capabilities beyond model weights by calling external APIs to execute code, retrieve data, and access proprietary sources. This keeps knowledge current when model weights are expensive to update.
 
-By combining planning, memory, and tool use with LLM strengths, single-agent systems can tackle complex tasks, adapt to new situations, and provide a seamless interface for human users.
+The Generative Agents architecture [[3]](#ref-3) offers a concrete illustration of how these components operate as a continuous cycle:
+
+<figure>
+  <img
+    src="/static/images/resource/llms/GenerativeAgentMemory.png"
+    alt="The generative agent memory architecture"
+    className="w-[100%] mx-auto h-auto"
+    loading="lazy"
+  />
+  <figcaption className="text-center text-sm text-gray-500 mt-2">
+    The generative agent memory architecture. (Image source: [Park et al.
+    2023](https://arxiv.org/abs/2304.03442))
+  </figcaption>
+</figure>
+
+The agent **perceives** the environment and stores experiences in a **memory stream**. When acting, it **retrieves** past memories to guide decisions. It can **plan** and **reflect** on these experiences to improve behavior. Finally, it **acts** on the environment — and the cycle repeats.
+
+The goal of designing an agent is not just to add more components, but to create **effective loops** — loops that allow the agent to perceive, remember, plan, and act in a way that consistently drives it toward achieving its objectives.
 
 ## LLM-based Multi-Agent System
 
@@ -50,12 +79,17 @@ A graph $G(V, E)$ can illustrate the relationships among various LLM-based agent
 
 Cheng et al. [[2]](#ref-2) present a classification that considers these aspects:
 
-<img
-  src="/static/images/resource/llms/mas_category.png"
-  alt="The relationship between LLM-based agents"
-  className="w-[100%] mx-auto h-auto"
-  loading="lazy"
-/>
+<figure>
+  <img
+    src="/static/images/resource/llms/mas_category.png"
+    alt="Classification of LLM-based multi-agent systems"
+    className="w-[100%] mx-auto h-auto"
+    loading="lazy"
+  />
+  <figcaption className="text-center text-sm text-gray-500 mt-2">
+    Classification of LLM-based multi-agent systems. (Image source: [[2]](#ref-2))
+  </figcaption>
+</figure>
 
 - **Multi-Role Coordination**: focuses on inter-agent relationships
   - Cooperative: agents collaborate to achieve shared objectives via role allocation and collaborative decision-making. MetaGPT [[4]](#ref-4) and CAMEL [[5]](#ref-5) exemplify role-playing for task completion.
