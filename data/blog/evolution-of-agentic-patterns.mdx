@@ -4,14 +4,16 @@ date: '2026-05-07'
 tags: ['Agentic AI', 'Prompt Engineering', 'Context Engineering', 'Harness Engineering']
 draft: false
 summary: "From typing the right words to building the right system — how the field's central question has shifted three times in four years."
-image: '/static/images/resource/agentic-patterns/timelines.png'
+image: '/static/images/resource/agentic-patterns/layers.png'
 ---
 
 <TOCInline toc={props.toc} asDisclosure toHeading={2} />
 
 When ChatGPT went mainstream in late 2022, most of us interacted with large language models the same way: by typing questions and marveling at the answers. That interaction was the beginning of a discipline — and over the following four years, that discipline grew substantially in scope, rigor, and infrastructure. What started as an art of clever phrasing has evolved into full system architecture. This post traces that journey across three generations of thinking: Prompt Engineering, Context Engineering, and Harness Engineering.
 
-## Prompt engineering — "what should I say?"
+![The timeline of AI engineering evolution](/static/images/resource/agentic-patterns/timelines.png)
+
+## 1. Prompt engineering — "what should I say?"
 
 From 2022 through most of 2024, the central challenge was figuring out how to talk to a model. LLMs are trained on vast corpora of human knowledge — books, code, papers, conversations — and that knowledge gets compressed into billions of parameters. If the knowledge is already inside the model, then the only variable left is how you phrase your request. Write the right words, in the right structure, and you unlock the right answer.
 
@@ -19,42 +21,143 @@ So we started doing the one thing we could do: we wrote to it. We typed prompts.
 
 And for a while, it worked remarkably well. Techniques like Chain-of-Thought ("let's think step by step"), few-shot examples, and role prompting produced genuinely impressive results. Prompt engineering became a discipline, then a job title, then almost a mythology.
 
-> "The hottest new programming language is English." — Andrej Karpathy, 2023.
+> The hottest new programming language is English
+> — Andrej Karpathy, 2023
 
-But LLMs are frozen in time. Their knowledge ends at a training cutoff. They don't know what your company shipped last week, what your company's internal policy says, or what error your system threw five minutes ago. They hallucinate when asked about things outside their training. And no matter how cleverly you phrase a question, the model cannot answer accurately from knowledge it simply doesn't have. So we realized we needed to attach a knowledge space to it — we needed to feed it _context_.
+```python
+system_prompt = """
+You are a coding assistant.
+Rules:
+- Return JSON only
+- Never skip edge cases
+- Use snake_case
+"""
 
-## Context engineering — "what info should I feed?"
+response = openai.chat(
+    model="gpt-4",
+    messages=[
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": query}
+    ]
+)
+# No memory. Every call starts from scratch.
+```
 
-Context engineering emerged roughly toward the end of 2023, driven by one uncomfortable realization: writing a better prompt wasn't enough if the model was operating blind. You needed to think carefully about what information you were loading into the context window — the full composition of everything the model sees before it generates a response.
+But LLMs are frozen in time. Their knowledge ends at a training cutoff. They don't know what your company shipped last week, what your company's internal policy says, or what error your system threw five minutes ago. They hallucinate when asked about things outside their training. And no matter how cleverly you phrase a question, the model cannot answer accurately from knowledge it simply doesn't have. So we realized we needed to supply external information — we needed to feed it _context_.
+
+![prompting-problem](/static/images/resource/agentic-patterns/prompting-problem.png)
+
+## 2. Context engineering — "what info should I feed?"
+
+Context engineering emerged toward the end of 2023, driven by one uncomfortable realization: writing a better prompt wasn't enough if the model was operating blind. You needed to think carefully about what information you were loading into the context window — the full composition of everything the model sees before it generates a response.
 
 And where does that context come from? Think about how agentic systems work — the model operates in a loop, and at each turn, more information gets assembled into the prompt:
 
-- **Conversation history** — Previous turns in the dialogue
-- **Knowledge retrieval** — Relevant documents pulled from external sources via RAG
-- **Tool results** — Outputs from MCP tools the agent has called, including failures it can learn from
+1. **Conversation history**: Previous turns in the dialogue
 
-What changes at this layer is the nature of the prompt itself. It's no longer just a static instruction you write once — it becomes a **context window composition**: a dynamic assembly that gets rebuilt on every single turn. The prompt grows, shifts, and accumulates — and grows harder to control.
+2. **Knowledge retrieval**: Relevant documents pulled from external sources via RAG
+
+3. **Tool results**: Outputs from MCP tools the agent has called, including failures it can learn from
+
+What changes at this layer is the nature of the prompt itself. It's no longer just a static instruction you write once — it becomes a **context window composition**: a dynamic assembly that gets rebuilt on every single turn. The prompt grows, shifts, and accumulates — and becomes harder to control.
 
 > The problem is that context windows have a hard limit. And this is the challenge the whole field is wrestling with right now: how do you manage what goes in?
 
-Techniques like compaction and summarization help — but they introduce their own problems. When a model summarizes its own conversation history, it becomes biased toward whatever it chose to remember. Important details get quietly dropped. This opens up a whole set of sub-problems: code-mode compaction, dynamic tool selection to keep your MCP context lean, RAG as a way to pull in only what's relevant on demand. All of it is essentially the same question: how do you keep the context window useful without letting it explode?
+Two techniques emerged to fight it, with very different trade-offs:
 
-## Harness engineering — "what system should I build?"
+1. **Compaction (reversible):** Strip out information that already exists in the environment. If the agent wrote a 500-line file, store only the path — the agent can re-read it if needed. Signal stays intact. Anthropic's Claude Code implements this by compressing context and keeping the five most recently accessed files.
+
+2. **Summarization (lossy):** Use an LLM to rewrite history into natural language. High compression, human-readable — but permanently lossy. A detail summarized away is gone forever.
+
+> Prefer **raw context > compaction > summarization**. Use lossy compression only as a last resort.
+
+But they introduce their own problems. When a model summarizes its own conversation history, it becomes biased toward whatever it chose to remember. Important details get quietly dropped. This opens up a whole set of sub-problems: code-mode compaction, dynamic tool selection to keep your MCP context lean, RAG as a way to pull in only what's relevant on demand. All of it is essentially the same question: how do you keep the context window useful without letting it explode?
+
+## 3. Harness engineering — "what system should I build?"
 
 Then, toward late 2025 going into 2026, a blog post started circulating that put a name to where things were heading. Mitchell Hashimoto — co-founder of HashiCorp — wrote [_My AI Adoption Journey_](https://mitchellh.com/writing/my-ai-adoption-journey), and in it he introduced the term harness engineering.
 
-> Every time the agent makes a mistake, change the system so that mistake structurally cannot recur.
+![harness-engineering-mitchell](/static/images/resource/agentic-patterns/harness-engineering-mitchell.png)
 
-Not the prompt. Not the context. The system.
+What Hashimoto described wasn't prompt tuning. It was a fundamentally different relationship to failure: mistakes aren't quietly absorbed — they get encoded as permanent constraints on the system. Hashimoto describes two concrete forms this takes:
 
-This gave a name to what forward-thinking teams had been quietly building: Harness Engineering — the design of the full infrastructure surrounding the model. Tools, memory, sandboxes, orchestration, error recovery, evaluation loops, security guardrails.
+1. **Better implicit prompting via AGENTS.md.** A constraint file where each line represents a real bad agent behavior that has been observed and prevented. Simple, durable, accumulates correctness over time.
 
-After that, you started hearing it everywhere — teams building serious AI products, LangChain shipping their [Open Deep Research](https://blog.langchain.com/open-deep-research/) project on LangGraph, companies rethinking their entire infrastructure.
+2. **Actual programmed tools.** Scripts, type checkers, verification harnesses. If an agent keeps calling an API incorrectly, write code that requires API calls to pass type checking. Encode human judgment into system constraints that the agent can't bypass.
+
+```
+# AGENTS.md — accumulated constraints from real failures
+## Rules
+- Never modify migration files
+- All DB writes must go through the service layer
+- Run tests before marking any task complete
+- Never delete files without confirmation
+```
+
+Not the prompt. Not the context. The system. This gave a name to what forward-thinking teams had been quietly building: **Harness Engineering** — the design of the full infrastructure surrounding the model. Tools, memory, sandboxes, orchestration, error recovery, evaluation loops, security guardrails. After Hashimoto's post circulated, you started hearing the term everywhere — teams building serious AI products, LangChain shipping their [Open Deep Research](https://blog.langchain.com/open-deep-research/) project on LangGraph, companies rethinking their entire infrastructure.
 
 The rigor has quietly shifted from prompt text toward **system architecture**. The question is no longer "how do I write a good prompt?" — it's "what do I actually want to build?"
 
-### Each level wraps the previous one
+LangChain captured it cleanly in March 2026:
 
-![The three layers of AI engineering — each level encompasses the previous one](/static/images/resource/agentic-patterns/layers.png)
+> **Agent = Model + Harness**
 
-This is the part worth sitting with: none of these generations made the previous one obsolete. A weak prompt inside a well-engineered harness still produces weak output. A perfectly crafted prompt with a bloated, poorly managed context window still hallucinates. And a beautifully composed context window with no surrounding system falls apart the moment something unexpected happens. The nesting is the point. Prompt text is the foundation. Context window composition is the layer that connects the model to the world. The harness is the system that makes it all reliable enough to ship.
+The model contains the intelligence and the harness makes that intelligence useful. The harness is every piece of code, configuration, and execution logic that isn't the model itself. The model provides stateless token prediction. The harness provides everything that makes that useful: memory, tools, constraints, sandboxing, orchestration, feedback.
+
+A harness has six layers, flowing from user interface down to the model:
+
+![the-anatomy-of-an-agent-harness](/static/images/resource/agentic-patterns/the-anatomy-of-an-agent-harness.png)
+
+### Serving Layer (Channels)
+
+How the agent receives input and delivers output across surfaces. OpenClaw — one of the most architecturally studied harnesses of 2026 — serves the same agent across CLI, web UI, desktop apps, Slack, and Telegram via a centralized Gateway using a typed WebSocket protocol. Codex evolved from a simple terminal tool to an App Server using JSON-RPC over stdin/stdout. The interface contract between the agent and the outside world is the serving layer's responsibility.
+
+### Orchestration
+
+![orchestration](/static/images/resource/agentic-patterns/orchestration.png)
+
+The main agent execution pattern today is a ReAct loop (Yao et al., Princeton-Google, October 2022): the model **reasons** about the current state, **acts** via a tool call, **observes** the result, then reasons again. Repeat until done.
+
+For complex tasks, this extends to the Orchestrator-Worker pattern: an orchestrator decomposes a task and delegates to specialized workers, each running in their own isolated context window. The Plan Agent reads but doesn't edit. The Build Agent can edit. The orchestrator coordinates and collects results.
+
+### Sandbox
+
+The execution environment where agent code runs. Allow-lists restrict which commands can execute. Network isolation prevents unintended external calls. Credentials are stored in a vault — never reachable from the sandbox where agent-generated code runs.
+
+Anthropic learned this the hard way in an early coupled design, where untrusted code ran in the same container as credentials. One prompt injection was all it took to read the environment. The structural fix: **the tokens must never be reachable from the sandbox where Claude's generated code runs.**
+
+Sandboxes also unlock scale — environments created on demand, fanned out across parallel tasks, torn down when work is done.
+
+### Memory
+
+Three tiers:
+
+- **Short-term:** The context window — what the model sees right now
+- **Long-term:** File-based memory directory, AGENTS.md injected on start, MEMORY.md index pointing to topic files
+- **Episodic:** claude-progress.txt + git history, bridging across sessions
+
+Anthropic's long-running agent pattern: an _initializer agent_ runs on the first session, writes a progress file, makes an initial git commit. Every subsequent session reads that file first — a form of continual learning where the agent durably stores knowledge from one session and injects it into the next.
+
+### Context / Compaction
+
+The harness manages what enters the context window on every invocation. This isn't the same as the context engineering phase — it's now a _component_ within the harness, engineered deliberately:
+
+- **Skills** address tool overload via progressive disclosure — only load the tools needed for the current task
+- **Tool call offloading** keeps the head and tail of large outputs while storing the full content to the filesystem
+- Claude Code implements five distinct compaction strategies, choosing based on available token budget
+- Live repo context (CLAUDE.md, current git branch, recent commits) is re-read on every single turn
+
+### Tools
+
+The hands of the agent. Bash plus code execution as a general-purpose tool means models can design their own tools on the fly — writing and executing code to solve problems rather than being constrained to a fixed pre-configured set. Beyond bash: FileReadTool, WebFetchTool, LSP integration for language-server queries, browser automation for end-to-end testing without human intervention.
+
+Each tool carries a permission scope. The harness enforces what the agent can touch.
+
+## References
+
+- [Evolution of AI Agentic Patterns - Bits Bytes NN](https://bits-bytes-nn.github.io/insights/agentic-ai/2026/04/05/evolution-of-ai-agentic-patterns-en.html)
+- [My AI Adoption Journey - Mitchell Hashimoto](https://mitchellh.com/writing/my-ai-adoption-journey)
+- [Agentic Harness Engineering - Decoding AI](https://www.decodingai.com/p/agentic-harness-engineering)
+- [The Anatomy of an Agent Harness](https://www.langchain.com/blog/the-anatomy-of-an-agent-harness)
+- [Harness Engineering for Coding Agents](https://martinfowler.com/articles/harness-engineering.html), martinfowler.com (Apr 2, 2026)
+- [Decode the Buzzword: Why Harness Engineering Matters Now](https://nextsignalprediction.substack.com/p/decode-the-buzzword-why-harness-engineering) (Mar 2026)
