@@ -9,7 +9,6 @@ import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog } from 'contentlayer/generated'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
-import Image from '@/components/Image'
 import siteMetadata from '@/data/siteMetadata'
 import tagData from 'app/tag-data.json'
 
@@ -31,10 +30,10 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
   const nextPage = currentPage + 1 <= totalPages
 
   return (
-    <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-      <nav className="flex justify-between">
+    <div className="pt-8 pb-4">
+      <nav className="flex justify-between text-[13px] text-gray-500 dark:text-gray-400">
         {!prevPage && (
-          <button className="cursor-auto disabled:opacity-50" disabled={!prevPage}>
+          <button className="cursor-auto opacity-40" disabled>
             Previous
           </button>
         )}
@@ -46,11 +45,11 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
             Previous
           </Link>
         )}
-        <span>
-          {currentPage} of {totalPages}
+        <span className="font-mono text-[11px] text-gray-400">
+          {currentPage} / {totalPages}
         </span>
         {!nextPage && (
-          <button className="cursor-auto disabled:opacity-50" disabled={!nextPage}>
+          <button className="cursor-auto opacity-40" disabled>
             Next
           </button>
         )}
@@ -71,144 +70,209 @@ export default function ListLayoutWithTags({
   pagination,
 }: ListLayoutProps) {
   const pathname = usePathname()
+  const [tagFilter, setTagFilter] = useState('')
+  const [mobileOpen, setMobileOpen] = useState(false)
   const tagCounts = tagData as Record<string, number>
   const tagKeys = Object.keys(tagCounts)
   const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
-  const [mobileTagsOpen, setMobileTagsOpen] = useState(false)
+  const filteredTags = tagFilter
+    ? sortedTags.filter((t) => t.toLowerCase().includes(tagFilter.toLowerCase()))
+    : sortedTags
+  const totalPosts = Object.values(tagCounts).reduce((a, b) => a + b, 0)
 
   const displayPosts = initialDisplayPosts.length > 0 ? initialDisplayPosts : posts
 
+  const isAllPosts = pathname === '/blog'
+
   return (
-    <>
-      {/* <div className="mx-auto max-w-4xl px-4 sm:px-6 xl:px-0"> */}
-      <div className="space-y-8 pb-12 pt-16">
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 sm:text-4xl">
-            {title}
-          </h1>
-        </div>
+    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-8">
+      {/* Page heading */}
+      <div className="mb-10">
+        <p className="mb-1 text-[10.5px] tracking-[0.13em] text-gray-400 dark:text-gray-600">
+          — blog
+        </p>
+        <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
+          {title}
+        </h1>
+      </div>
 
-        <div className="flex flex-col gap-8 md:flex-row">
-          {/* Tags Sidebar */}
-          <aside className="hidden md:block md:w-64">
-            <div className="sticky top-24 space-y-8">
-              <div className="space-y-4">
-                <h2 className="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-300">
-                  Filter by tag
-                </h2>
-                <nav className="flex flex-col space-y-3">
-                  {sortedTags.map((tag) => (
-                    <Link
-                      key={tag}
-                      href={`/tags/${slug(tag)}`}
-                      className={`text-sm uppercase ${
-                        pathname === `/tags/${slug(tag)}`
-                          ? 'font-extrabold text-primary-600 dark:text-primary-400'
-                          : 'text-gray-600 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400'
-                      }`}
-                      aria-label={`View posts tagged ${tag}`}
-                    >
-                      {tag}
-                      <span className="ml-2 text-gray-400 dark:text-gray-400">
-                        ({tagCounts[tag]})
-                      </span>
-                    </Link>
-                  ))}
-                </nav>
-              </div>
-            </div>
-          </aside>
-
-          {/* Mobile: All tags section */}
-          <div className="md:hidden">
-            <div className="space-y-3">
-              <button
-                type="button"
-                className="flex w-full items-center justify-between rounded-md border border-gray-200 px-3 py-2 text-left text-sm font-medium dark:border-gray-700"
-                aria-expanded={mobileTagsOpen}
-                onClick={() => setMobileTagsOpen((s) => !s)}
-              >
-                <span className="uppercase tracking-wider text-gray-600 dark:text-gray-300">
-                  Filter by tag
-                </span>
-                <svg
-                  className={`h-4 w-4 transform transition-transform ${mobileTagsOpen ? 'rotate-180' : ''}`}
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
+      <div className="flex gap-12 xl:gap-16">
+        {/* Sidebar — tag filter */}
+        <aside className="hidden w-44 shrink-0 md:block">
+          <div className="sticky top-20">
+            <p className="mb-2 text-[10px] uppercase tracking-[0.15em] text-gray-400 dark:text-gray-600">
+              Filter by tag
+            </p>
+            {/* Desktop search input */}
+            <input
+              type="text"
+              value={tagFilter}
+              onChange={(e) => setTagFilter(e.target.value)}
+              placeholder="Search tags…"
+              className="mb-3 w-full border-b border-gray-100 bg-transparent pb-1.5 text-[12px] text-gray-600 placeholder-gray-300 outline-none transition-colors focus:border-gray-400 dark:border-gray-800 dark:text-gray-400 dark:placeholder-gray-700 dark:focus:border-gray-600"
+            />
+            <nav className="flex flex-col">
+              {!tagFilter && (
+                <Link
+                  href="/blog"
+                  className={`flex justify-between border-b py-1.5 text-[13px] transition-colors ${
+                    isAllPosts
+                      ? 'border-gray-900 text-gray-900 dark:border-gray-100 dark:text-gray-100'
+                      : 'border-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100'
+                  }`}
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-              {mobileTagsOpen && (
-                <div className="flex flex-wrap gap-2">
-                  {sortedTags.map((tag) => (
-                    <Tag key={tag} text={tag} variant="chip" count={tagCounts[tag]} />
-                  ))}
-                </div>
+                  <span>All</span>
+                  <span className="font-mono text-[11px] text-gray-400 dark:text-gray-600">
+                    {totalPosts}
+                  </span>
+                </Link>
               )}
-            </div>
-          </div>
-
-          {/* Posts List */}
-          <div className="min-w-0 flex-1">
-            <ul className="divide-y divide-gray-200 dark:divide-gray-800">
-              {!displayPosts.length && (
-                <li className="py-4">
-                  <p className="text-gray-600 dark:text-gray-300">No posts found.</p>
-                </li>
-              )}
-
-              {displayPosts.map((post) => {
-                const { path, date, title, summary, tags, image } = post
+              {filteredTags.map((tag) => {
+                const tagSlug = slug(tag)
+                const isActive = pathname === `/tags/${tagSlug}`
                 return (
-                  <li key={path} className="py-12 first:pt-0">
-                    <article>
-                      <div className="space-y-8">
-                        <div className="space-y-4">
-                          <div className="flex flex-col gap-4 text-sm text-gray-500 dark:text-gray-300">
-                            <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
-                            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                              <Link href={`/${path}`}>{title}</Link>
-                            </h2>
-                            <div
-                              className="flex flex-wrap gap-2"
-                              aria-label={`Tags: ${tags?.join(', ')}`}
-                            >
-                              {/* prettier-ignore */}
-                              {tags?.map((tag) => (
-                                <Tag key={tag} text={tag} variant="chip" />
-                              ))}
-                            </div>
-                          </div>
-                          <p className="text-gray-600 dark:text-gray-300">{summary}</p>
-                          <Image src={image} width={2548} height={1296} alt="Blog Cover" />
-                        </div>
-                        <Link
-                          href={`/${path}`}
-                          className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                          aria-label={`Read more: "${title}"`}
-                        >
-                          Read more &rarr;
-                        </Link>
-                      </div>
-                    </article>
-                  </li>
+                  <Link
+                    key={tag}
+                    href={`/tags/${tagSlug}`}
+                    className={`flex justify-between border-b py-1.5 text-[13px] transition-colors ${
+                      isActive
+                        ? 'border-gray-900 text-gray-900 dark:border-gray-100 dark:text-gray-100'
+                        : 'border-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100'
+                    }`}
+                    aria-label={`View posts tagged ${tag}`}
+                  >
+                    <span>{tag}</span>
+                    <span className="font-mono text-[11px] text-gray-400 dark:text-gray-600">
+                      {tagCounts[tag]}
+                    </span>
+                  </Link>
                 )
               })}
-            </ul>
+              {filteredTags.length === 0 && (
+                <p className="py-2 text-[12px] text-gray-400 dark:text-gray-600">No tags found.</p>
+              )}
+            </nav>
+          </div>
+        </aside>
 
-            {pagination && pagination.totalPages > 1 && (
-              <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
+        {/* Post list */}
+        <div className="min-w-0 flex-1">
+          {/* Mobile tag filter */}
+          <div className="mb-6 md:hidden">
+            <button
+              onClick={() => setMobileOpen((o) => !o)}
+              className="flex items-center gap-1.5 text-[12px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
+            >
+              <span>{mobileOpen ? '▾' : '▸'}</span>
+              <span>
+                {pathname.startsWith('/tags/')
+                  ? `Tag: ${pathname.replace('/tags/', '')}`
+                  : 'Filter by tag'}
+              </span>
+            </button>
+
+            {mobileOpen && (
+              <div className="mt-3 rounded-lg border border-gray-100 p-4 dark:border-gray-800">
+                <input
+                  type="text"
+                  value={tagFilter}
+                  onChange={(e) => setTagFilter(e.target.value)}
+                  placeholder="Search tags…"
+                  className="mb-3 w-full border-b border-gray-100 bg-transparent pb-1.5 text-[12px] text-gray-600 placeholder-gray-300 outline-none transition-colors focus:border-gray-400 dark:border-gray-800 dark:text-gray-400 dark:placeholder-gray-700 dark:focus:border-gray-600"
+                  ref={(el) => el?.focus()}
+                />
+                <div className="flex max-h-48 flex-col overflow-y-auto">
+                  {!tagFilter && (
+                    <Link
+                      href="/blog"
+                      onClick={() => setMobileOpen(false)}
+                      className={`flex justify-between border-b py-1.5 text-[13px] transition-colors ${
+                        isAllPosts
+                          ? 'border-gray-900 text-gray-900 dark:border-gray-100 dark:text-gray-100'
+                          : 'border-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100'
+                      }`}
+                    >
+                      <span>All</span>
+                      <span className="font-mono text-[11px] text-gray-400 dark:text-gray-600">
+                        {totalPosts}
+                      </span>
+                    </Link>
+                  )}
+                  {filteredTags.map((tag) => {
+                    const tagSlug = slug(tag)
+                    const isActive = pathname === `/tags/${tagSlug}`
+                    return (
+                      <Link
+                        key={tag}
+                        href={`/tags/${tagSlug}`}
+                        onClick={() => setMobileOpen(false)}
+                        className={`flex justify-between border-b py-1.5 text-[13px] transition-colors ${
+                          isActive
+                            ? 'border-gray-900 text-gray-900 dark:border-gray-100 dark:text-gray-100'
+                            : 'border-transparent text-gray-500 hover:text-gray-900 dark:text-gray:400 dark:hover:text-gray-100'
+                        }`}
+                      >
+                        <span>{tag}</span>
+                        <span className="font-mono text-[11px] text-gray-400 dark:text-gray-600">
+                          {tagCounts[tag]}
+                        </span>
+                      </Link>
+                    )
+                  })}
+                  {filteredTags.length === 0 && (
+                    <p className="py-2 text-[12px] text-gray-400 dark:text-gray-600">
+                      No tags found.
+                    </p>
+                  )}
+                </div>
+              </div>
             )}
           </div>
+
+          <ul className="divide-y divide-gray-100 dark:divide-gray-800">
+            {!displayPosts.length && (
+              <li className="py-4">
+                <p className="text-[13px] text-gray-400 dark:text-gray-600">No posts found.</p>
+              </li>
+            )}
+            {displayPosts.map((post) => {
+              const { path, date, title, summary, tags } = post
+              const readingTime = (post as { readingTime?: { text: string } }).readingTime?.text
+              return (
+                <li key={path} className="py-6 first:pt-0">
+                  <article>
+                    <p className="mb-1 text-[11px] tracking-[0.04em] text-gray-400 dark:text-gray-600">
+                      <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                    </p>
+                    <h2 className="mb-1.5 text-[17.5px] font-semibold leading-snug tracking-[-0.025em] text-gray-900 dark:text-gray-100">
+                      <Link href={`/${path}`}>{title}</Link>
+                    </h2>
+                    <div className="mb-2 flex flex-wrap gap-1.5">
+                      {tags?.map((tag) => (
+                        <Tag key={tag} text={tag} variant="chip" />
+                      ))}
+                    </div>
+                    <p className="mb-2 text-[13px] font-light leading-relaxed text-gray-500 dark:text-gray-400">
+                      {summary}
+                    </p>
+                    <Link
+                      href={`/${path}`}
+                      className="text-[12px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
+                      aria-label={`Read more: "${title}"`}
+                    >
+                      {readingTime ?? 'Read more'} →
+                    </Link>
+                  </article>
+                </li>
+              )
+            })}
+          </ul>
+
+          {pagination && pagination.totalPages > 1 && (
+            <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
+          )}
         </div>
       </div>
-      {/* </div> */}
-    </>
+    </div>
   )
 }
