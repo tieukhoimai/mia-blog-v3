@@ -12,7 +12,7 @@ export default function Home({ posts }: { posts: Post[] }) {
   const [featuredPost, ...recentPosts] = posts.slice(0, MAX_DISPLAY)
 
   return (
-    <div className="space-y-10 px-4 py-10 sm:px-6 xl:px-8">
+    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-8">
       {/* Section label */}
       <p className="text-xs tracking-widest text-gray-400 dark:text-gray-500">— latest</p>
 
@@ -44,8 +44,8 @@ export default function Home({ posts }: { posts: Post[] }) {
       <ul className="divide-y divide-gray-100 dark:divide-gray-800">
         {recentPosts.map((post) => (
           <li key={post.slug} className="py-5 first:pt-0 last:pb-0">
-            <article className="grid grid-cols-1 gap-1 sm:grid-cols-[1fr_auto] sm:items-start sm:gap-4">
-              <div className="space-y-1">
+            <article className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_auto] sm:items-start sm:gap-4">
+              <div className="space-y-2">
                 <p className="text-xs text-gray-400 dark:text-gray-500">
                   <time dateTime={post.date}>{formatDate(post.date, siteMetadata.locale)}</time>
                 </p>
