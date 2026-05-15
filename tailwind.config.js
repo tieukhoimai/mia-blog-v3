@@ -31,6 +31,9 @@ module.exports = {
       typography: ({ theme }) => ({
         DEFAULT: {
           css: {
+            fontSize: '0.90rem', // 15px — one step below default 16px
+            lineHeight: '1.75',
+            p: { marginTop: '1em', marginBottom: '1em' },
             a: {
               color: theme('colors.primary.700'),
               '&:hover': {
@@ -45,8 +48,12 @@ module.exports = {
             h3: {
               fontWeight: '600',
             },
+            h4: {
+              fontWeight: '600',
+            },
             code: {
               color: theme('colors.indigo.500'),
+              fontSize: '0.875em',
             },
           },
         },
