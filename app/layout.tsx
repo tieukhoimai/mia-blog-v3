@@ -4,16 +4,16 @@ import 'pliny/search/algolia.css'
 import { IBM_Plex_Sans } from 'next/font/google'
 import ClientSearchProvider from '@/components/SearchProvider'
 import Header from '@/components/Header'
-import SectionContainer from '@/components/SectionContainer'
 import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
+import IdentityPanel from '@/components/IdentityPanel'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import Script from 'next/script'
 import * as gtag from 'gtag'
 
 const plex_sans = IBM_Plex_Sans({
-  weight: ['400'],
+  weight: ['300', '400', '600'],
   subsets: ['latin'],
   variable: '--font-ibm-plex-sans',
 })
@@ -64,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
       <link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
       <link rel="manifest" href="/static/favicons/site.webmanifest" />
-      <link rel="mask-icon" href="/static/favicons/safari-pinned-tab.svg" color="#5bbad5" />
+      <link rel="mask-icon" href="/static/favicons/safari-pinned-tab.svg" color="#6b7280" />
       <meta name="msapplication-TileColor" content="#000000" />
       <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
       <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
@@ -81,20 +81,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-      
+
                 gtag('config', '${gtag.GA_MEASUREMENT_ID}');
               `}
             </Script>
           </div>
-          <SectionContainer>
-            <div className="flex h-screen flex-col justify-between font-sans">
-              <ClientSearchProvider>
-                <Header />
-                <main className="mb-auto">{children}</main>
-              </ClientSearchProvider>
-              <Footer />
+
+          <div className="flex min-h-screen flex-col font-sans">
+            {/* Full-width sticky header */}
+            <ClientSearchProvider>
+              <Header />
+            </ClientSearchProvider>
+
+            {/* Body: identity panel (home only) + content */}
+            <div className="flex flex-1">
+              <IdentityPanel />
+              <div className="flex min-w-0 flex-1 flex-col">
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
             </div>
-          </SectionContainer>
+          </div>
         </ThemeProviders>
       </body>
     </html>

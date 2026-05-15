@@ -25,21 +25,21 @@ module.exports = {
         sans: ['var(--font-ibm-plex-sans)', ...fontFamily.sans],
       },
       colors: {
-        primary: colors.teal,
+        primary: colors.neutral,
         gray: colors.gray,
       },
       typography: ({ theme }) => ({
         DEFAULT: {
           css: {
             a: {
-              color: theme('colors.primary.600'),
+              color: theme('colors.primary.700'),
               '&:hover': {
-                color: `${theme('colors.primary.700')}`,
+                color: `${theme('colors.primary.900')}`,
               },
-              code: { color: theme('colors.primary.500') },
+              code: { color: theme('colors.primary.600') },
             },
             'h1,h2': {
-              fontWeight: '700',
+              fontWeight: '600',
               letterSpacing: theme('letterSpacing.tight'),
             },
             h3: {
@@ -53,11 +53,11 @@ module.exports = {
         invert: {
           css: {
             a: {
-              color: theme('colors.primary.700'),
+              color: theme('colors.primary.300'),
               '&:hover': {
-                color: `${theme('colors.primary.600')}`,
+                color: `${theme('colors.primary.100')}`,
               },
-              code: { color: theme('colors.primary.500') },
+              code: { color: theme('colors.primary.400') },
             },
             'h1,h2,h3,h4,h5,h6': {
               color: theme('colors.gray.100'),
