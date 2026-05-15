@@ -28,14 +28,14 @@ function SectionHeader({
     <div className="flex items-center justify-between border-b border-gray-100 pb-2 dark:border-gray-800">
       <h2
         id={anchorId}
-        className="text-[10.5px] uppercase tracking-[0.13em] text-gray-400 dark:text-gray-600"
+        className="text-2xs uppercase tracking-[0.13em] text-gray-400 dark:text-gray-600"
       >
         {title}
       </h2>
       <button
         type="button"
         onClick={onToggle}
-        className="text-[12px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100 print:hidden"
+        className="text-xs text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100 print:hidden"
         aria-label={collapsed ? `Expand ${title}` : `Collapse ${title}`}
       >
         {collapsed ? '+ show' : '− hide'}
@@ -75,7 +75,7 @@ function ExperienceItem({
         aria-hidden="true"
       />
 
-      <div className="flex flex-col font-mono text-[11px] text-gray-400 dark:text-gray-600">
+      <div className="flex flex-col font-mono text-xs text-gray-400 dark:text-gray-600">
         <span>{start}</span>
         <span>{end}</span>
       </div>
@@ -88,15 +88,15 @@ function ExperienceItem({
           aria-expanded={expanded}
         >
           <div className="flex flex-col leading-tight">
-            <span className="text-[15px] font-semibold text-gray-900 dark:text-gray-100">
+            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
               {item.role}
             </span>
-            <span className="text-[13px] text-gray-500 dark:text-gray-400">{item.company}</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">{item.company}</span>
             {item.location && (
-              <span className="text-[13px] text-gray-400 dark:text-gray-600">{item.location}</span>
+              <span className="text-xs text-gray-400 dark:text-gray-600">{item.location}</span>
             )}
           </div>
-          <span className="mt-0.5 text-[13px] text-gray-400">{expanded ? '−' : '+'}</span>
+          <span className="mt-0.5 text-sm text-gray-400">{expanded ? '−' : '+'}</span>
         </button>
 
         {expanded && Array.isArray(item.bullets) && item.bullets.length > 0 && (
@@ -104,7 +104,7 @@ function ExperienceItem({
             {item.bullets.map((h, idx) => (
               <li
                 key={idx}
-                className="flex gap-2 text-[13px] font-light leading-relaxed text-gray-500 dark:text-gray-400"
+                className="flex gap-2 text-xs font-light leading-relaxed text-gray-500 dark:text-gray-400"
               >
                 <span className="text-gray-300 dark:text-gray-600">›</span>
                 <span>{h}</span>
@@ -118,12 +118,12 @@ function ExperienceItem({
             {previewTags.map((tag, idx) => (
               <span
                 key={idx}
-                className="rounded-full bg-gray-100 px-2.5 py-0.5 text-[11px] text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400"
               >
                 {tag}
               </span>
             ))}
-            {hasMoreTags && <span className="text-[11px] text-gray-400">…</span>}
+            {hasMoreTags && <span className="text-xs text-gray-400">…</span>}
           </div>
         )}
 
@@ -132,7 +132,7 @@ function ExperienceItem({
             {item.tags.map((tag, idx) => (
               <span
                 key={idx}
-                className="rounded-full bg-gray-100 px-2.5 py-0.5 text-[11px] text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400"
               >
                 {tag}
               </span>
@@ -163,7 +163,7 @@ function EducationItem({ item }: { item: NonNullable<ResumeData['education']>[nu
   const { degree, institution, bracket } = formatEducation(item.details)
   return (
     <div className="flex flex-col gap-0.5 break-inside-avoid">
-      <h3 className="text-[15px] font-semibold leading-snug text-gray-900 dark:text-gray-100">
+      <h3 className="text-sm font-semibold leading-snug text-gray-900 dark:text-gray-100">
         {degree}
         {institution && (
           <span className="font-light text-gray-500 dark:text-gray-400">, {institution}</span>
@@ -172,7 +172,7 @@ function EducationItem({ item }: { item: NonNullable<ResumeData['education']>[nu
           <span className="font-light text-gray-400 dark:text-gray-600"> ({bracket})</span>
         )}
       </h3>
-      <div className="font-mono text-[11px] text-gray-400 dark:text-gray-600">{item.dates}</div>
+      <div className="font-mono text-xs text-gray-400 dark:text-gray-600">{item.dates}</div>
     </div>
   )
 }
@@ -181,7 +181,7 @@ function SkillsList({ items }: { items: NonNullable<ResumeData['skills']> }) {
   return (
     <div className="flex flex-col gap-2">
       {items?.map((group, i) => (
-        <p key={i} className="text-[13px] text-gray-900 dark:text-gray-100">
+        <p key={i} className="text-2xs text-gray-900 dark:text-gray-100">
           <span className="font-semibold">{group.category}:</span>{' '}
           <span className="font-light text-gray-500 dark:text-gray-400">
             {group.items.join(', ')}
@@ -197,7 +197,7 @@ function PublicationsList({ items }: { items?: NonNullable<ResumeData['publicati
   return (
     <ul className="flex flex-col gap-2">
       {items.map((p, i) => (
-        <li key={i} className="flex gap-2 text-[13px] leading-relaxed">
+        <li key={i} className="flex gap-2 text-sm leading-relaxed">
           <span className="text-gray-300 dark:text-gray-600">›</span>
           <span>
             <span className="font-semibold text-gray-900 dark:text-gray-100">{p.title}</span>
@@ -223,15 +223,15 @@ function AwardsList({ items }: { items?: NonNullable<ResumeData['awards']> }) {
         const organization = titleParts.length > 1 ? titleParts.slice(1).join(' — ').trim() : ''
         return (
           <li key={i} className="flex items-baseline gap-4">
-            <span className="w-10 shrink-0 font-mono text-[11px] text-gray-400 dark:text-gray-600">
+            <span className="w-10 shrink-0 font-mono text-xs text-gray-400 dark:text-gray-600">
               {a.year}
             </span>
             <div>
-              <span className="text-[13px] font-semibold text-gray-900 dark:text-gray-100">
+              <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                 {awardTitle}
               </span>
               {organization && (
-                <span className="text-[13px] font-light text-gray-500 dark:text-gray-400">
+                <span className="text-sm font-light text-gray-500 dark:text-gray-400">
                   {' — '}
                   {organization}
                 </span>
@@ -254,15 +254,15 @@ function ProjectsList({ items }: { items?: NonNullable<ResumeData['projects']> }
           className="flex flex-col gap-2 rounded-lg border border-gray-100 p-4 transition-colors hover:border-gray-200 dark:border-gray-800 dark:hover:border-gray-700"
         >
           <div className="flex items-baseline justify-between gap-2">
-            <p className="text-[14px] font-semibold text-gray-900 dark:text-gray-100">{p.title}</p>
+            <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{p.title}</p>
             {p.dates && (
-              <span className="flex-shrink-0 font-mono text-[11px] text-gray-400 dark:text-gray-600">
+              <span className="flex-shrink-0 font-mono text-xs text-gray-400 dark:text-gray-600">
                 {p.dates}
               </span>
             )}
           </div>
           {p.description && (
-            <p className="text-[13px] font-light leading-relaxed text-gray-500 dark:text-gray-400">
+            <p className="text-xs font-light leading-relaxed text-gray-500 dark:text-gray-400">
               {p.description}
             </p>
           )}
@@ -272,7 +272,7 @@ function ProjectsList({ items }: { items?: NonNullable<ResumeData['projects']> }
                 <Link
                   key={idx}
                   href={link.url}
-                  className="text-[12.5px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
+                  className="text-xs text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
                 >
                   {link.display || link.url} →
                 </Link>
@@ -284,7 +284,7 @@ function ProjectsList({ items }: { items?: NonNullable<ResumeData['projects']> }
               {p.tech.map((tech, idx) => (
                 <span
                   key={idx}
-                  className="rounded-full bg-gray-100 px-2.5 py-0.5 text-[11px] text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                  className="rounded-full bg-gray-100 px-2.5 py-0.5 text-2xs text-gray-600 dark:bg-gray-800 dark:text-gray-400"
                 >
                   {tech}
                 </span>
@@ -344,16 +344,16 @@ export default function ResumeClient({
               </div>
 
               <div className="flex flex-col gap-1.5 items-center text-center md:order-1 md:items-start md:text-left">
-                <p className="text-[10.5px] tracking-[0.13em] text-gray-400 dark:text-gray-600">
+                <p className="text-2xs tracking-[0.13em] text-gray-400 dark:text-gray-600">
                   — resume
                 </p>
                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
                   {data.name}
                 </h1>
-                <p className="text-[13px] text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Data Scientist · Analytics Engineer
                 </p>
-                <div className="mt-2 flex flex-col gap-1 text-[13px] text-gray-500 dark:text-gray-400">
+                <div className="mt-2 flex flex-col gap-1 text-sm text-gray-500 dark:text-gray-400">
                   {data.socials && Object.keys(data.socials).length > 0 ? (
                     Object.values(data.socials).map((s, i) => (
                       <Link
@@ -395,7 +395,7 @@ export default function ResumeClient({
             </div>
 
             {data.headline && (
-              <div className="mt-2 text-[13px] font-light leading-relaxed text-gray-500 dark:text-gray-400">
+              <div className="mt-2 text-sm font-light leading-relaxed text-gray-500 dark:text-gray-400">
                 {data.headline.split('\n').map((para, idx) => (
                   <p key={idx} className="mb-3 last:mb-0">
                     {para.trim()}
@@ -500,7 +500,7 @@ export default function ResumeClient({
 
           <footer className="mt-4 border-t border-gray-100 pt-6 dark:border-gray-800">
             <div className="flex flex-col items-center gap-3 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center">
-              <span className="text-[11px] text-gray-400 dark:text-gray-600 md:justify-self-start">
+              <span className="text-xs text-gray-400 dark:text-gray-600 md:justify-self-start">
                 Last updated:{' '}
                 {new Date(data.meta?.generated_at).toLocaleDateString('en-US', {
                   year: 'numeric',
@@ -510,13 +510,13 @@ export default function ResumeClient({
               </span>
               <Link
                 href="https://tieukhoimai.github.io/mia-resume-builder/cv.pdf"
-                className="w-full rounded-lg border border-gray-100 px-5 py-2 text-center text-[13px] text-gray-500 transition-colors hover:border-gray-300 hover:text-gray-900 dark:border-gray-800 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-100 md:w-auto md:justify-self-center print:hidden order-first md:order-none"
+                className="w-full rounded-lg border border-gray-100 px-5 py-2 text-center text-sm text-gray-500 transition-colors hover:border-gray-300 hover:text-gray-900 dark:border-gray-800 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-100 md:w-auto md:justify-self-center print:hidden order-first md:order-none"
               >
                 Download CV →
               </Link>
               <Link
                 href="https://github.com/tieukhoimai/mia-resume-builder"
-                className="text-[11px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100 md:justify-self-end"
+                className="text-xs text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100 md:justify-self-end"
               >
                 mia-resume-builder ↗
               </Link>

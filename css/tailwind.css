@@ -4,6 +4,7 @@
 
 html {
   scroll-padding-top: 80px;
+  zoom: 1.15; /* scales everything uniformly including hardcoded px values */
 }
 
 .task-list-item::before {

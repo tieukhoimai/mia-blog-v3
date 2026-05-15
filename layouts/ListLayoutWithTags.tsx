@@ -33,7 +33,7 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
 
   return (
     <div className="pt-8 pb-4">
-      <nav className="flex justify-between text-[13px] text-gray-500 dark:text-gray-400">
+      <nav className="flex justify-between text-sm text-gray-500 dark:text-gray-400">
         {!prevPage && (
           <button className="cursor-auto opacity-40" disabled>
             Previous
@@ -47,7 +47,7 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
             Previous
           </Link>
         )}
-        <span className="font-mono text-[11px] text-gray-400">
+        <span className="font-mono text-xs text-gray-400">
           {currentPage} / {totalPages}
         </span>
         {!nextPage && (
@@ -94,9 +94,7 @@ export default function ListLayoutWithTags({
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-8">
       {/* Page heading */}
       <div className="mb-8">
-        <p className="mb-1 text-[10.5px] tracking-[0.13em] text-gray-400 dark:text-gray-600">
-          — blog
-        </p>
+        <p className="mb-1 text-2xs tracking-[0.13em] text-gray-400 dark:text-gray-600">— blog</p>
         <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
           {title}
         </h1>
@@ -109,7 +107,7 @@ export default function ListLayoutWithTags({
       >
         <Link
           href="/blog"
-          className={`flex-shrink-0 rounded-full px-3 py-1 text-[12px] transition-colors ${
+          className={`flex-shrink-0 rounded-full px-3 py-1 text-xs transition-colors ${
             isAllPosts
               ? 'bg-gray-900 text-gray-100 dark:bg-gray-100 dark:text-gray-900'
               : 'bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
@@ -124,7 +122,7 @@ export default function ListLayoutWithTags({
             <Link
               key={tag}
               href={`/tags/${tagSlug}`}
-              className={`flex-shrink-0 rounded-full px-3 py-1 text-[12px] transition-colors ${
+              className={`flex-shrink-0 rounded-full px-3 py-1 text-xs transition-colors ${
                 isActive
                   ? 'bg-gray-900 text-gray-100 dark:bg-gray-100 dark:text-gray-900'
                   : 'bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
@@ -137,7 +135,7 @@ export default function ListLayoutWithTags({
         {extraCount > 0 && (
           <Link
             href="/tags"
-            className="flex-shrink-0 rounded-full px-3 py-1 text-[12px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
+            className="flex-shrink-0 rounded-full px-3 py-1 text-xs text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
           >
             +{extraCount} more →
           </Link>
@@ -146,16 +144,14 @@ export default function ListLayoutWithTags({
 
       {/* Archive list — grouped by year */}
       {displayPosts.length === 0 ? (
-        <p className="py-4 text-[13px] text-gray-400 dark:text-gray-600">No posts found.</p>
+        <p className="py-4 text-sm text-gray-400 dark:text-gray-600">No posts found.</p>
       ) : (
         <div className="space-y-10">
           {years.map((year) => (
             <div key={year}>
               {/* Year label */}
               <div className="mb-4 flex items-center gap-4">
-                <span className="font-mono text-[11px] text-gray-400 dark:text-gray-600">
-                  {year}
-                </span>
+                <span className="font-mono text-xs text-gray-400 dark:text-gray-600">{year}</span>
                 <span className="h-px flex-1 bg-gray-100 dark:bg-gray-800" />
               </div>
 
@@ -171,24 +167,24 @@ export default function ListLayoutWithTags({
                         className="group flex items-start gap-4 py-4 transition-opacity hover:opacity-60 sm:gap-6"
                       >
                         {/* Date column */}
-                        <span className="w-14 flex-shrink-0 font-mono text-[11px] text-gray-400 dark:text-gray-600 sm:w-16">
+                        <span className="w-14 flex-shrink-0 font-mono text-xs text-gray-400 dark:text-gray-600 sm:w-16">
                           {shortDate(date)}
                         </span>
 
                         {/* Title + tags */}
                         <div className="min-w-0 flex-1">
-                          <h2 className="text-[14.5px] font-semibold leading-snug tracking-[-0.02em] text-gray-900 dark:text-gray-100">
+                          <h2 className="text-base font-semibold leading-snug tracking-[-0.02em] text-gray-900 dark:text-gray-100">
                             {postTitle}
                           </h2>
                           {tags && tags.length > 0 && (
-                            <p className="mt-0.5 truncate text-[11px] text-gray-400 dark:text-gray-600">
+                            <p className="mt-0.5 truncate text-xs text-gray-400 dark:text-gray-600">
                               {tags.join(' · ')}
                             </p>
                           )}
                         </div>
 
                         {/* Reading time */}
-                        <span className="flex-shrink-0 whitespace-nowrap font-mono text-[11px] text-gray-400 dark:text-gray-600">
+                        <span className="flex-shrink-0 whitespace-nowrap font-mono text-xs text-gray-400 dark:text-gray-600">
                           {readingTime?.replace(' read', '') ?? ''}
                         </span>
                       </Link>

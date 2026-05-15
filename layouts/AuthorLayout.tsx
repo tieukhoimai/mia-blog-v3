@@ -14,9 +14,7 @@ export default function AuthorLayout({ children, content }: Props) {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-8">
       <div className="mb-10">
-        <p className="mb-1 text-[10.5px] tracking-[0.13em] text-gray-400 dark:text-gray-600">
-          — about
-        </p>
+        <p className="mb-1 text-2xs tracking-[0.13em] text-gray-400 dark:text-gray-600">— about</p>
         <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
           About
         </h1>
@@ -38,10 +36,8 @@ export default function AuthorLayout({ children, content }: Props) {
             <h2 className="text-base font-semibold tracking-tight text-gray-900 dark:text-gray-100">
               {name}
             </h2>
-            {occupation && (
-              <p className="text-[13px] text-gray-500 dark:text-gray-400">{occupation}</p>
-            )}
-            {company && <p className="text-[13px] text-gray-500 dark:text-gray-400">{company}</p>}
+            {occupation && <p className="text-sm text-gray-500 dark:text-gray-400">{occupation}</p>}
+            {company && <p className="text-sm text-gray-500 dark:text-gray-400">{company}</p>}
           </div>
           <div className="flex gap-3">
             <SocialIcon kind="mail" href={`mailto:${email}`} size={5} />
@@ -51,9 +47,7 @@ export default function AuthorLayout({ children, content }: Props) {
         </div>
 
         {/* Bio */}
-        <div className="prose min-w-0 flex-1 text-[15px] leading-relaxed dark:prose-invert">
-          {children}
-        </div>
+        <div className="prose min-w-0 flex-1 dark:prose-invert">{children}</div>
       </div>
     </div>
   )
