@@ -4,7 +4,6 @@ import { genPageMetadata } from 'app/seo'
 import Link from '@/components/Link'
 import { formatDate } from 'pliny/utils/formatDate'
 import siteMetadata from '@/data/siteMetadata'
-import Tag from '@/components/Tag'
 
 interface SeriesArticle {
   title: string
@@ -47,36 +46,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const articles = seriesData[params.slug]
 
   if (!articles || articles.length === 0) {
-    return genPageMetadata({
-      title: 'Series Not Found',
-      description: 'The requested series could not be found.',
-    })
+    return genPageMetadata({ title: 'Series Not Found', description: '' })
   }
 
   const seriesTitle = articles[0]?.series || 'Article Series'
-
   return genPageMetadata({
     title: seriesTitle,
-    description: `Complete article series: ${seriesTitle}. ${articles.length} articles covering in-depth topics.`,
+    description: `${articles.length} articles covering ${seriesTitle.toLowerCase()} in depth.`,
   })
 }
 
 export async function generateStaticParams() {
   const seriesData = await getSeriesData()
-  return Object.keys(seriesData).map((slug) => ({
-    slug,
-  }))
+  return Object.keys(seriesData).map((slug) => ({ slug }))
 }
 
 export default async function SeriesPage({ params }: Props) {
   const seriesData = await getSeriesData()
   const articles = seriesData[params.slug]
 
-  if (!articles || articles.length === 0) {
-    notFound()
-  }
+  if (!articles || articles.length === 0) notFound()
 
-  // Sort articles by seriesOrder
   const sortedArticles = [...articles].sort((a, b) => {
     const orderA = a.seriesOrder ?? 999
     const orderB = b.seriesOrder ?? 999
@@ -86,99 +76,67 @@ export default async function SeriesPage({ params }: Props) {
   const seriesTitle = articles[0]?.series || 'Article Series'
 
   return (
-    <div className="divide-y divide-gray-200 dark:divide-gray-700">
-      <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-        <div className="flex items-center gap-4 mb-6">
-          <Link
-            href="/series"
-            className="text-teal-500 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
-          >
-            ← Back to All Series
-          </Link>
-        </div>
+    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-8">
+      {/* Back link */}
+      <Link
+        href="/series"
+        className="mb-8 inline-flex items-center gap-1 text-[12.5px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
+      >
+        ← All series
+      </Link>
 
-        <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-          📚 {seriesTitle}
+      {/* Heading */}
+      <div className="mb-10">
+        <p className="mb-1 text-[10.5px] tracking-[0.13em] text-gray-400 dark:text-gray-600">
+          — series
+        </p>
+        <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
+          {seriesTitle}
         </h1>
-
-        <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-          A comprehensive series of {sortedArticles.length} articles covering{' '}
-          {seriesTitle.toLowerCase()} topics in depth.
+        <p className="mt-1 font-mono text-[11.5px] text-gray-400 dark:text-gray-600">
+          {sortedArticles.length} articles
         </p>
       </div>
 
-      <div className="py-8">
-        <div className="space-y-6">
-          {sortedArticles.map((article, index) => (
-            <article
-              key={article.slug}
-              className="group relative p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-lg transition-all duration-200"
-            >
-              <div className="flex gap-6">
-                {/* Article Number */}
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-teal-500 text-white rounded-full flex items-center justify-center font-bold text-lg">
-                    {index + 1}
-                  </div>
-                </div>
+      {/* Article list */}
+      <ul className="divide-y divide-gray-100 dark:divide-gray-800">
+        {sortedArticles.map((article, index) => (
+          <li key={article.slug} className="py-6 first:pt-0">
+            <div className="flex items-start gap-4">
+              {/* Number */}
+              <span className="mt-0.5 w-6 shrink-0 font-mono text-[11px] text-gray-400 dark:text-gray-600">
+                {String(article.seriesOrder ?? index + 1).padStart(2, '0')}
+              </span>
 
-                {/* Article Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3 mb-2">
-                    <time
-                      dateTime={article.date}
-                      className="text-sm text-gray-500 dark:text-gray-400"
-                    >
-                      {formatDate(article.date, siteMetadata.locale)}
-                    </time>
-                  </div>
-
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
-                    <Link href={`/${article.path}`} className="hover:no-underline">
-                      {article.title}
-                    </Link>
-                  </h2>
-
-                  <p className="text-gray-600 dark:text-gray-300 line-clamp-3 overflow-hidden mb-3">
-                    {article.summary}
-                  </p>
-
-                  {/* Tags */}
-                  {article.tags && article.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {article.tags.map((tag) => (
-                        <Tag key={tag} text={tag} />
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="mt-4">
-                    <Link
-                      href={`/${article.path}`}
-                      className="inline-flex items-center text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-medium transition-colors"
-                    >
-                      Read article
-                      <svg
-                        className="ml-1 w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
+              {/* Content */}
+              <div className="min-w-0 flex-1">
+                <p className="mb-0.5 text-[11px] tracking-[0.04em] text-gray-400 dark:text-gray-600">
+                  <time dateTime={article.date}>
+                    {formatDate(article.date, siteMetadata.locale)}
+                  </time>
+                </p>
+                <h2 className="mb-2 text-[16px] font-semibold leading-snug tracking-[-0.02em] text-gray-900 dark:text-gray-100">
+                  <Link
+                    href={`/${article.path}`}
+                    className="transition-colors hover:text-gray-600 dark:hover:text-gray-400"
+                  >
+                    {article.title}
+                  </Link>
+                </h2>
+                <p className="mb-3 text-[13px] font-light leading-relaxed text-gray-500 dark:text-gray-400">
+                  {article.summary}
+                </p>
+                <Link
+                  href={`/${article.path}`}
+                  className="text-[12px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
+                >
+                  Read article →
+                </Link>
               </div>
-            </article>
-          ))}
-        </div>
-      </div>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }

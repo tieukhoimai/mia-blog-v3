@@ -5,14 +5,10 @@ import Link from '@/components/Link'
 
 interface SeriesArticle {
   title: string
-  date: string
-  summary: string
   slug: string
-  image: string
   series: string
   path: string
   seriesOrder?: number | null
-  tags: string[]
 }
 
 interface SeriesData {
@@ -30,100 +26,78 @@ export default function SeriesNavigation({ currentSeries, currentSlug }: SeriesN
 
   useEffect(() => {
     fetch('/series-data.json')
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then((data: SeriesData) => {
         setSeriesData(data)
         setLoading(false)
       })
-      .catch((error) => {
-        console.error('Error loading series data:', error)
-        setLoading(false)
-      })
+      .catch(() => setLoading(false))
   }, [])
 
-  if (loading || !currentSeries) {
-    return null
-  }
+  if (loading || !currentSeries) return null
 
-  // Find the series slug from the series name
   const seriesSlug = Object.keys(seriesData).find((slug) =>
-    seriesData[slug].some((article) => article.series === currentSeries)
+    seriesData[slug].some((a) => a.series === currentSeries)
   )
 
-  if (!seriesSlug || !seriesData[seriesSlug]) {
-    return null
-  }
+  if (!seriesSlug || !seriesData[seriesSlug]) return null
 
-  const articles = seriesData[seriesSlug].slice().sort((a, b) => {
-    // Sort by seriesOrder if available
-    if (a.seriesOrder != null && b.seriesOrder != null) {
-      return a.seriesOrder - b.seriesOrder
-    }
+  const articles = [...seriesData[seriesSlug]].sort((a, b) => {
+    if (a.seriesOrder != null && b.seriesOrder != null) return a.seriesOrder - b.seriesOrder
     if (a.seriesOrder != null) return -1
     if (b.seriesOrder != null) return 1
     return 0
   })
 
-  const currentIndex = articles.findIndex((article) => article.slug === currentSlug)
-  const previousArticle = currentIndex > 0 ? articles[currentIndex - 1] : null
-  const nextArticle = currentIndex < articles.length - 1 ? articles[currentIndex + 1] : null
-
   return (
-    <div className="my-8 p-6 bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-950/50 dark:to-cyan-950/50 border border-teal-200 dark:border-teal-800 rounded-lg">
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold text-teal-900 dark:text-teal-100 mb-2">
-          📚 Part of Series:{' '}
-          <Link
-            href={`/series/${seriesSlug}`}
-            className="hover:text-teal-700 dark:hover:text-teal-300 transition-colors underline decoration-2 underline-offset-2"
-          >
-            {currentSeries}
-          </Link>
-        </h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-          Article {currentIndex + 1} of {articles.length} in this series
+    <div className="my-10 overflow-hidden rounded-lg border border-gray-200 dark:border-gray-800">
+      {/* Header */}
+      <div className="border-b border-gray-200 bg-gray-50 px-5 py-4 dark:border-gray-800 dark:bg-gray-900/50">
+        <p className="mb-0.5 text-[10px] uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600">
+          Part of series
         </p>
+        <Link
+          href={`/series/${seriesSlug}`}
+          className="text-[13.5px] font-semibold text-gray-900 transition-colors hover:text-gray-600 dark:text-gray-100 dark:hover:text-gray-400"
+        >
+          {currentSeries} ↗
+        </Link>
       </div>
 
-      {/* Series overview with article list */}
-      <div className="mt-4">
-        <div className="space-y-2">
-          {articles.map((article, index) => (
-            <div
-              key={article.slug}
-              className={`flex items-center gap-3 p-3 rounded-md transition-colors ${
-                article.slug === currentSlug
-                  ? 'bg-teal-100 dark:bg-teal-900/50 border-l-4 border-teal-500'
-                  : 'hover:bg-white dark:hover:bg-teal-900/20'
-              }`}
-            >
-              <div
-                className={`w-8 h-8 flex items-center justify-center text-sm font-bold rounded-full ${
-                  article.slug === currentSlug
-                    ? 'bg-teal-500 text-white'
-                    : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-                }`}
-              >
-                {article.seriesOrder || index + 1}
-              </div>
-              <div className="flex-1">
-                {article.slug === currentSlug ? (
-                  <span className="text-sm font-medium text-teal-900 dark:text-teal-100">
+      {/* Article list */}
+      <ul className="py-2">
+        {articles.map((article, index) => {
+          const isCurrent = article.slug === currentSlug
+          const num = String(article.seriesOrder ?? index + 1)
+
+          return (
+            <li key={article.slug}>
+              {isCurrent ? (
+                <div className="flex items-center gap-3 bg-gray-100 px-5 py-2.5 dark:bg-gray-800/60">
+                  <span className="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full bg-gray-900 font-mono text-[11px] text-white dark:bg-gray-100 dark:text-gray-900">
+                    {num}
+                  </span>
+                  <span className="text-[13px] font-semibold text-gray-900 dark:text-gray-100">
                     {article.title}
                   </span>
-                ) : (
-                  <Link
-                    href={`/${article.path}`}
-                    className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-300 transition-colors"
-                  >
+                </div>
+              ) : (
+                <Link
+                  href={`/${article.path}`}
+                  className="flex items-center gap-3 px-5 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-900/40"
+                >
+                  <span className="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full bg-gray-100 font-mono text-[11px] text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+                    {num}
+                  </span>
+                  <span className="text-[13px] text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
                     {article.title}
-                  </Link>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+                  </span>
+                </Link>
+              )}
+            </li>
+          )
+        })}
+      </ul>
     </div>
   )
 }
