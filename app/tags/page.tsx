@@ -1,5 +1,4 @@
 import Link from '@/components/Link'
-import Tag from '@/components/Tag'
 import { slug } from 'github-slugger'
 import tagData from 'app/tag-data.json'
 import { genPageMetadata } from 'app/seo'
@@ -10,32 +9,37 @@ export default async function Page() {
   const tagCounts = tagData as Record<string, number>
   const tagKeys = Object.keys(tagCounts)
   const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
+
   return (
-    <>
-      <div className="flex flex-col items-start justify-start divide-y divide-gray-200 dark:divide-gray-700 md:mt-24 md:flex-row md:items-center md:justify-center md:space-x-6 md:divide-y-0">
-        <div className="space-x-2 pb-8 pt-6 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:border-r-2 md:px-6 md:text-6xl md:leading-14">
-            Tags
-          </h1>
-        </div>
-        <div className="flex max-w-lg flex-wrap">
-          {tagKeys.length === 0 && 'No tags found.'}
-          {sortedTags.map((t) => {
-            return (
-              <div key={t} className="mb-2 mr-5 mt-2">
-                <Tag text={t} />
-                <Link
-                  href={`/tags/${slug(t)}`}
-                  className="-ml-2 text-sm font-semibold uppercase text-gray-600 dark:text-gray-300"
-                  aria-label={`View posts tagged ${t}`}
-                >
-                  {` (${tagCounts[t]})`}
-                </Link>
-              </div>
-            )
-          })}
-        </div>
+    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-8">
+      <div className="mb-10">
+        <p className="mb-1 text-[10.5px] tracking-[0.13em] text-gray-400 dark:text-gray-600">
+          — tags
+        </p>
+        <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
+          Tags
+        </h1>
       </div>
-    </>
+
+      {tagKeys.length === 0 ? (
+        <p className="text-[13px] text-gray-400 dark:text-gray-600">No tags found.</p>
+      ) : (
+        <div className="grid grid-cols-2 gap-x-12 sm:grid-cols-3">
+          {sortedTags.map((t) => (
+            <Link
+              key={t}
+              href={`/tags/${slug(t)}`}
+              aria-label={`View posts tagged ${t}`}
+              className="flex justify-between border-b border-gray-100 py-2 text-[13px] transition-colors hover:text-gray-900 dark:border-gray-800 dark:text-gray-400 dark:hover:text-gray-100"
+            >
+              <span className="text-gray-600 dark:text-gray-400">{t}</span>
+              <span className="font-mono text-[11px] text-gray-400 dark:text-gray-600">
+                {tagCounts[t]}
+              </span>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }

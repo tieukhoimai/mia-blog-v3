@@ -1,87 +1,81 @@
 import Link from '@/components/Link'
-import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
+import { CoreContent } from 'pliny/utils/contentlayer'
+import type { Blog } from 'contentlayer/generated'
 
-const MAX_DISPLAY = 3
+type Post = CoreContent<Blog> & { readingTime?: { text: string } }
 
-export default function Home({ posts }) {
+const MAX_DISPLAY = 8
+
+export default function Home({ posts }: { posts: Post[] }) {
+  const [featuredPost, ...recentPosts] = posts.slice(0, MAX_DISPLAY)
+
   return (
-    <>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            Latest
-          </h1>
-          <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            {siteMetadata.description}
+    <div className="space-y-10 px-4 py-10 sm:px-6 xl:px-8">
+      {/* Section label */}
+      <p className="text-xs tracking-widest text-gray-400 dark:text-gray-500">— latest</p>
+
+      {/* Featured post — large typographic treatment */}
+      {featuredPost && (
+        <article className="space-y-4 border-b border-gray-100 pb-10 dark:border-gray-800">
+          <p className="text-xs text-gray-400 dark:text-gray-500">
+            <time dateTime={featuredPost.date}>
+              {formatDate(featuredPost.date, siteMetadata.locale)}
+            </time>
           </p>
-        </div>
-        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {!posts.length && 'No posts found.'}
-          {posts.slice(0, MAX_DISPLAY).map((post) => {
-            const { slug, date, title, summary, tags, image } = post
-            return (
-              <li key={slug} className="py-12">
-                <article>
-                  <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
-                    <dl>
-                      <dt className="sr-only">Published on</dt>
-                      <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                        <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
-                      </dd>
-                    </dl>
-                    <div className="space-y-5 xl:col-span-3">
-                      <div className="space-y-6">
-                        <div>
-                          <h2 className="text-2xl font-bold leading-8 tracking-tight">
-                            <Link
-                              href={`/blog/${slug}`}
-                              className="text-gray-900 dark:text-gray-100"
-                            >
-                              {title}
-                            </Link>
-                          </h2>
-                          <div
-                            className="flex flex-wrap gap-2"
-                            aria-label={`Tags: ${tags?.join(', ')}`}
-                          >
-                            {/* prettier-ignore */}
-                            {tags?.map((tag) => (
-                              <Tag key={tag} text={tag} variant="chip" />
-                            ))}
-                          </div>
-                        </div>
-                        <p className="text-gray-600 dark:text-gray-300">{summary}</p>
-                      </div>
-                      <div className="text-base font-medium leading-6">
-                        <Link
-                          href={`/blog/${slug}`}
-                          className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                          aria-label={`Read more: "${title}"`}
-                        >
-                          Read more &rarr;
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
+          <h2 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100 sm:text-3xl">
+            <Link href={`/blog/${featuredPost.slug}`}>{featuredPost.title}</Link>
+          </h2>
+          <p className="max-w-2xl text-sm font-light leading-relaxed text-gray-500 dark:text-gray-400">
+            {featuredPost.summary}
+          </p>
+          <Link
+            href={`/blog/${featuredPost.slug}`}
+            className="inline-flex items-center text-sm text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
+            aria-label={`Read: "${featuredPost.title}"`}
+          >
+            {featuredPost.readingTime?.text ?? 'Read more'} →
+          </Link>
+        </article>
+      )}
+
+      {/* Recent posts — editorial list */}
+      <ul className="divide-y divide-gray-100 dark:divide-gray-800">
+        {recentPosts.map((post) => (
+          <li key={post.slug} className="py-5 first:pt-0 last:pb-0">
+            <article className="grid grid-cols-1 gap-1 sm:grid-cols-[1fr_auto] sm:items-start sm:gap-4">
+              <div className="space-y-1">
+                <p className="text-xs text-gray-400 dark:text-gray-500">
+                  <time dateTime={post.date}>{formatDate(post.date, siteMetadata.locale)}</time>
+                </p>
+                <h3 className="text-base font-semibold leading-snug tracking-tight text-gray-900 dark:text-gray-100">
+                  <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                </h3>
+                <p className="line-clamp-2 text-sm font-light leading-relaxed text-gray-500 dark:text-gray-400">
+                  {post.summary}
+                </p>
+              </div>
+              <div className="whitespace-nowrap pt-0.5 font-mono text-xs text-gray-400 dark:text-gray-600">
+                {post.readingTime?.text ?? ''}
+              </div>
+            </article>
+          </li>
+        ))}
+      </ul>
+
+      {/* All posts link */}
       {posts.length > MAX_DISPLAY && (
-        <div className="flex justify-end text-base font-medium leading-6">
+        <div className="border-t border-gray-100 pt-6 dark:border-gray-800">
           <Link
             href="/blog"
-            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+            className="text-sm text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
             aria-label="All posts"
           >
-            All Posts &rarr;
+            All Posts →
           </Link>
         </div>
       )}
-    </>
+    </div>
   )
 }

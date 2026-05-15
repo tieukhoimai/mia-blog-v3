@@ -1,4 +1,3 @@
-import { Authors, allAuthors } from 'contentlayer/generated'
 import { genPageMetadata } from 'app/seo'
 import ResumeClient from '../resume/ResumeClient'
 import { ResumeData } from '../resume/types'
@@ -15,14 +14,13 @@ async function fetchResume(): Promise<ResumeData> {
 }
 
 export default async function Page() {
-  const author = allAuthors.find((p) => p.slug === 'default') as Authors
   const resumeData = await fetchResume()
 
   return (
     <ResumeClient
       data={resumeData}
       sections={['education', 'experience', 'projects', 'awards']}
-      heroImage={author.avatar ? { src: author.avatar, alt: author.name } : undefined}
+      heroImage={{ src: '/static/images/avatar.png', alt: 'Mia' }}
     />
   )
 }
