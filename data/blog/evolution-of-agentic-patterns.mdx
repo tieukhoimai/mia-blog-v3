@@ -20,7 +20,7 @@ Each shift happened because the previous generation hit a wall it could not clim
 
 > This article was inspired by the talk _"Build an Agent Harness with Microsoft Agent Framework and GitHub Copilot SDK"_ delivered by **Thang Chung** at [Global Azure 2026](https://github.com/devcafevn/globalazure2026) (DevCafe Vietnam, April 18, 2026) [^globalazure]. The concepts introduced in that session prompted a deeper exploration — the references, research, and writing that followed became this post. [View slides here](https://github.com/devcafevn/globalazure2026/blob/main/slides/GlobalAzure2026_AgentHarnesswithMAFandGitHubCopilotSDK.pdf)
 
-## 1. Prompt engineering — "what should I say?"
+## 1. Prompt engineering
 
 From 2022 through most of 2024, the central challenge was figuring out how to talk to a model. LLMs are trained on vast corpora of human knowledge — books, code, papers, conversations — and that knowledge gets compressed into billions of parameters. If the knowledge is already inside the model, then the only variable left is how you phrase your request. Write the right words, in the right structure, and you unlock the right answer.
 
@@ -53,7 +53,7 @@ But the limits were structural, not stylistic. LLMs are frozen in time — their
 
 ![prompting-problem](/static/images/resource/agentic-patterns/prompting-problem.png)
 
-## 2. Context engineering — "what info should I feed?"
+## 2. Context engineering
 
 Context engineering emerged toward the end of 2023, driven by that realization: writing a better prompt wasn't enough if the model was operating blind. The real question became what to load into the **context window** — the full composition of everything the model sees before it generates a response.[^anthropic-context]
 
@@ -76,7 +76,7 @@ But even with these techniques, a deeper problem remained. When a model summariz
 
 Context engineering made agents smarter. It didn't make them reliable. For that, you needed something more than a well-crafted prompt or a well-managed window — you needed a system. That shift is what harness engineering addresses.
 
-## 3. Harness engineering — "what system should I build?"
+## 3. Harness engineering
 
 Then, toward late 2025 going into 2026, a blog post started circulating that put a name to where things were heading. Mitchell Hashimoto — co-founder of HashiCorp — wrote [_My AI Adoption Journey_](https://mitchellh.com/writing/my-ai-adoption-journey), and in it he introduced the term harness engineering.
 
@@ -111,7 +111,7 @@ A harness has six layers, flowing from user interface down to the model:
 
 ![the-anatomy-of-an-agent-harness](/static/images/resource/agentic-patterns/the-anatomy-of-an-agent-harness.png)
 
-### 3.1 Serving Layer — Channels
+### 3.1 Serving Layer
 
 The serving layer is how the agent receives input and delivers output. The key insight from OpenClaw's architecture is the **Channel** abstraction: rather than deploying separate bots per platform, a single Gateway process receives messages from different platforms and routes them into the same session store.[^lumadock]
 
@@ -126,7 +126,7 @@ The critical difference between channels is the **richness of context** they pro
 - **Messaging** (WhatsApp, Telegram, Slack) — leanest context; text only, but meets users where they already are
   The Gateway normalizes all of these into a unified session format before the agent ever sees them.[^aijourn]
 
-### 3.2 Orchestration — Routing, Not a Gateway
+### 3.2 Orchestration
 
 Orchestration is not the entry point for requests — that is the serving layer's responsibility. Orchestration is the **routing and decomposition logic**: given a task, decide how to split it and who handles what. Think of it like OpenRouter — not a gateway, but intelligent routing.
 
@@ -138,7 +138,7 @@ Two patterns dominate:
 
 The key difference: spawning copies context and delegates one task; multi-agent coordination decomposes the problem and gives each agent only its part.
 
-### 3.3 Sandbox — Isolated Execution
+### 3.3 Sandbox
 
 Agents run code. That code can delete files, crash systems, or leak credentials. Sandboxes ensure failures stay contained and enable horizontal scaling across parallel environments.[^decodingai]
 
@@ -149,7 +149,7 @@ Three levels of isolation, in increasing order of safety:
 - **Remote cloud containers** — spun up on demand, destroyed when done; safest, horizontally scalable, GPU-capable for heavy workloads
   Anthropic learned the credential isolation lesson the hard way. An early coupled design ran untrusted agent-generated code in the same container as credentials — one prompt injection was all it took to read the entire environment.[^nebius] The structural fix is non-negotiable: **credentials must never be reachable from the sandbox where the agent's generated code runs.**
 
-### 3.4 Context Engineering (as a Harness Component)
+### 3.4 Context Engineering
 
 At the harness level, context engineering is no longer a craft — it is an **engineered component** that runs on every invocation, deciding what enters the context window and when.[^anthropic-context]
 
@@ -163,7 +163,7 @@ Three techniques address three distinct problem surfaces:
 
 > This pattern has spread widely. OpenAI Agents SDK added `deferLoading: true`. ZeroClaw implements it nearly identically. CrewAI added dynamic tool injection in v1.10.2. If you have more than ~20 tools and you're not doing this, you're wasting tokens on every call.[^kubesimplify]
 
-### 3.5 Memory — The Filesystem, Not a Vector Database
+### 3.5 Memory
 
 Production agent memory operates across three tiers:
 
@@ -177,7 +177,7 @@ The instinct is to reach for a vector database. The reality is simpler. Claude C
 
 Anthropic's long-running agent pattern makes this concrete: an initializer agent runs on the first session, writes a progress file, makes an initial git commit. Every subsequent session reads that file first — durable knowledge transfer from one session to the next, no infrastructure required.[^anthropic-harness]
 
-### 3.6 Tools — MCP Wrappers with Permission Gating
+### 3.6 Tools
 
 Before the Claude Code source leak on March 31, 2026, many assumed you only needed to give an agent a bash shell. The leaked 512,000 lines of TypeScript revealed the actual architecture: Claude Code is not a chat wrapper. It is a plugin-style architecture where every capability is a discrete, permission-gated tool — BashTool, FileRead, FileWrite, WebFetch, LSP integration, and ~40 others.[^varshith]
 
@@ -196,7 +196,7 @@ Standard tool set:
 | `Grep`         | Search _inside_ files by content pattern                           |
 | `Task`         | Spawn a new subagent — bridge between Tools and Orchestration      |
 
-### 3.7 Agent Loop — Two Dominant Patterns
+### 3.7 Agent Loop
 
 ![orchestration](/static/images/resource/agentic-patterns/orchestration.png)
 
