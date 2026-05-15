@@ -80,20 +80,18 @@ export default async function SeriesPage({ params }: Props) {
       {/* Back link */}
       <Link
         href="/series"
-        className="mb-8 inline-flex items-center gap-1 text-[12.5px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
+        className="mb-8 inline-flex items-center gap-1 text-xs text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
       >
         ← All series
       </Link>
 
       {/* Heading */}
       <div className="mb-10">
-        <p className="mb-1 text-[10.5px] tracking-[0.13em] text-gray-400 dark:text-gray-600">
-          — series
-        </p>
+        <p className="mb-1 text-2xs tracking-[0.13em] text-gray-400 dark:text-gray-600">— series</p>
         <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
           {seriesTitle}
         </h1>
-        <p className="mt-1 font-mono text-[11.5px] text-gray-400 dark:text-gray-600">
+        <p className="mt-1 font-mono text-xs text-gray-400 dark:text-gray-600">
           {sortedArticles.length} articles
         </p>
       </div>
@@ -104,18 +102,18 @@ export default async function SeriesPage({ params }: Props) {
           <li key={article.slug} className="py-6 first:pt-0">
             <div className="flex items-start gap-4">
               {/* Number */}
-              <span className="mt-0.5 w-6 shrink-0 font-mono text-[11px] text-gray-400 dark:text-gray-600">
+              <span className="mt-0.5 w-6 shrink-0 font-mono text-xs text-gray-400 dark:text-gray-600">
                 {String(article.seriesOrder ?? index + 1).padStart(2, '0')}
               </span>
 
               {/* Content */}
               <div className="min-w-0 flex-1">
-                <p className="mb-0.5 text-[11px] tracking-[0.04em] text-gray-400 dark:text-gray-600">
+                <p className="mb-0.5 text-xs tracking-[0.04em] text-gray-400 dark:text-gray-600">
                   <time dateTime={article.date}>
                     {formatDate(article.date, siteMetadata.locale)}
                   </time>
                 </p>
-                <h2 className="mb-2 text-[16px] font-semibold leading-snug tracking-[-0.02em] text-gray-900 dark:text-gray-100">
+                <h2 className="mb-2 text-base font-semibold leading-snug tracking-[-0.02em] text-gray-900 dark:text-gray-100">
                   <Link
                     href={`/${article.path}`}
                     className="transition-colors hover:text-gray-600 dark:hover:text-gray-400"
@@ -123,12 +121,12 @@ export default async function SeriesPage({ params }: Props) {
                     {article.title}
                   </Link>
                 </h2>
-                <p className="mb-3 text-[13px] font-light leading-relaxed text-gray-500 dark:text-gray-400">
+                <p className="mb-3 text-sm font-light leading-relaxed text-gray-500 dark:text-gray-400">
                   {article.summary}
                 </p>
                 <Link
                   href={`/${article.path}`}
-                  className="text-[12px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
+                  className="text-xs text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
                 >
                   Read article →
                 </Link>
