@@ -3,24 +3,21 @@ import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog, Authors } from 'contentlayer/generated'
 import Comments from '@/components/Comments'
 import Link from '@/components/Link'
-import PageTitle from '@/components/PageTitle'
-import SectionContainer from '@/components/SectionContainer'
 import Image from '@/components/Image'
 import Tag from '@/components/Tag'
 import SeriesNavigation from '@/components/SeriesNavigation'
+import TableOfContents from '@/components/TableOfContents'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 
-const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
-// const discussUrl = (path) =>
-//   `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
+const editUrl = (path: string) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
 
-const postDateTemplate: Intl.DateTimeFormatOptions = {
-  weekday: 'long',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-}
+const shortDate = (dateStr: string, locale: string) =>
+  new Date(dateStr).toLocaleDateString(locale, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
 
 interface LayoutProps {
   content: CoreContent<Blog>
@@ -30,147 +27,146 @@ interface LayoutProps {
   children: ReactNode
 }
 
-export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
+export default function PostLayout({ content, next, prev, children }: LayoutProps) {
   const { filePath, path, slug, date, title, tags, image, series } = content
   const basePath = path.split('/')[0]
+  const readingTime = (content as CoreContent<Blog> & { readingTime?: { text: string } })
+    .readingTime?.text
+  const rawToc = (
+    content as CoreContent<Blog> & {
+      toc?: string | { value: string; url: string; depth: number }[]
+    }
+  ).toc
+  const toc: { value: string; url: string; depth: number }[] =
+    typeof rawToc === 'string' ? JSON.parse(rawToc) : (rawToc ?? [])
 
   return (
-    <SectionContainer>
+    <div
+      className={`mx-auto px-4 py-12 sm:px-8 ${toc.length > 0 ? 'max-w-3xl xl:max-w-5xl' : 'max-w-3xl'}`}
+    >
       <ScrollTopAndComment />
-      <article>
-        <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
-          <header className="pt-6 xl:pb-6">
-            <div className="space-y-1 text-center">
-              <dl className="space-y-10">
-                <div>
-                  <dt className="sr-only">Published on</dt>
-                  <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                    <time dateTime={date}>
-                      {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
-                    </time>
-                  </dd>
-                </div>
-              </dl>
-              <div>
-                <PageTitle>{title}</PageTitle>
+      <div className="xl:flex xl:gap-16">
+        <article className="min-w-0 flex-1">
+          {/* Section label + back link */}
+          <div className="mb-10">
+            <p className="mb-1 text-[10.5px] tracking-[0.13em] text-gray-400 dark:text-gray-600">
+              <Link
+                href={`/${basePath}`}
+                className="transition-colors hover:text-gray-900 dark:hover:text-gray-100"
+              >
+                ← {basePath}
+              </Link>
+            </p>
+
+            {/* Eyebrow: date · reading time */}
+            <p className="mb-3 text-[11px] tracking-[0.04em] text-gray-400 dark:text-gray-600">
+              <span>{shortDate(date, siteMetadata.locale)}</span>
+              {readingTime && (
+                <>
+                  <span className="mx-2">·</span>
+                  <span>{readingTime}</span>
+                </>
+              )}
+            </p>
+
+            {/* Title */}
+            <h1 className="mb-4 text-[1.75rem] font-semibold leading-[1.2] tracking-tight text-gray-900 dark:text-gray-100 sm:text-[2rem]">
+              {title}
+            </h1>
+
+            {/* Tags */}
+            {tags && (
+              <div className="flex flex-wrap gap-1.5">
+                {tags.map((tag) => (
+                  <Tag key={tag} text={tag} variant="chip" />
+                ))}
               </div>
+            )}
+          </div>
+
+          {/* Divider */}
+          <div className="mb-8 h-px bg-gray-100 dark:bg-gray-800" />
+
+          {/* Mobile TOC — collapsible, hidden on xl (where sidebar takes over) */}
+          {toc.length > 0 && (
+            <div className="xl:hidden">
+              <TableOfContents toc={toc} mobile />
             </div>
-          </header>
-          <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0">
-            <dl className="pb-10 pt-6 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
-              <dt className="sr-only">Authors</dt>
-              <dd>
-                <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-x-0 xl:space-y-8">
-                  {authorDetails.map((author) => (
-                    <li className="flex items-center space-x-2" key={author.name}>
-                      {author.avatar && (
-                        <Image
-                          src={author.avatar}
-                          width={38}
-                          height={38}
-                          alt="avatar"
-                          className="h-10 w-10 rounded-full"
-                        />
-                      )}
-                      <dl className="whitespace-nowrap justify-center text-sm font-medium leading-5">
-                        <dt className="sr-only">Name</dt>
-                        <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                        <dt className="sr-only">linkedin</dt>
-                        <dd>
-                          {author.linkedin && (
-                            <Link
-                              href={author.linkedin}
-                              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                            >
-                              {author.linkedin.replace(
-                                'https://www.linkedin.com/in/tieukhoimai/',
-                                '@tieukhoimai'
-                              )}
-                            </Link>
-                          )}
-                        </dd>
-                      </dl>
-                    </li>
-                  ))}
-                </ul>
-              </dd>
-            </dl>
-            <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div>
-                <Image
-                  src={image}
-                  width={2548}
-                  height={1296}
-                  alt="Article Cover"
-                  // style={{ opacity: '0.9' }}
-                />
-              </div>
-              <div className="prose max-w-none pb-8 pt-10 dark:prose-invert">{children}</div>
-              {series && <SeriesNavigation currentSeries={series} currentSlug={slug} />}
-              <div className=" pb-6 pt-6 text-sm text-gray-700 dark:text-gray-300">
-                <Link href={editUrl(filePath)}>View on GitHub</Link>
-              </div>
-              {siteMetadata.comments && (
-                <div
-                  className="pb-6 pt-6 text-center text-gray-700 dark:text-gray-300"
-                  id="comment"
+          )}
+
+          {/* Cover image */}
+          {image && (
+            <div className="mb-8 overflow-hidden rounded-sm">
+              <Image src={image} width={2548} height={1296} alt="Article Cover" />
+            </div>
+          )}
+
+          {/* Prose body */}
+          <div className="prose max-w-none dark:prose-invert">{children}</div>
+
+          {/* Series navigation */}
+          {series && <SeriesNavigation currentSeries={series} currentSlug={slug} />}
+
+          {/* Prev / Next — bordered cards */}
+          {(prev || next) && (
+            <div className="mt-12 grid grid-cols-2 gap-4 border-t border-gray-100 pt-8 dark:border-gray-800">
+              {prev?.path ? (
+                <Link
+                  href={`/${prev.path}`}
+                  className="rounded-lg border border-gray-200 p-4 transition-colors hover:border-gray-400 dark:border-gray-800 dark:hover:border-gray-600"
                 >
-                  <Comments slug={slug} />
-                </div>
+                  <p className="mb-1.5 text-[10px] uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600">
+                    ← previous
+                  </p>
+                  <p className="text-[13px] font-semibold leading-snug text-gray-900 dark:text-gray-100">
+                    {prev.title}
+                  </p>
+                </Link>
+              ) : (
+                <div />
+              )}
+              {next?.path ? (
+                <Link
+                  href={`/${next.path}`}
+                  className="rounded-lg border border-gray-200 p-4 text-right transition-colors hover:border-gray-400 dark:border-gray-800 dark:hover:border-gray-600"
+                >
+                  <p className="mb-1.5 text-[10px] uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600">
+                    next →
+                  </p>
+                  <p className="text-[13px] font-semibold leading-snug text-gray-900 dark:text-gray-100">
+                    {next.title}
+                  </p>
+                </Link>
+              ) : (
+                <div />
               )}
             </div>
-            <footer>
-              <div className="divide-gray-200 text-sm font-medium leading-5 dark:divide-gray-700 xl:col-start-1 xl:row-start-2">
-                {tags && (
-                  <div className="py-4 xl:py-8">
-                    <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                      Tags
-                    </h2>
-                    <div className="flex flex-wrap gap-2" aria-label={`Tags: ${tags.join(', ')}`}>
-                      {tags.map((tag) => (
-                        <Tag key={tag} text={tag} variant="chip" />
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {(next || prev) && (
-                  <div className="flex justify-between py-4 xl:block xl:space-y-8 xl:py-8">
-                    {prev && prev.path && (
-                      <div>
-                        <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                          Previous Article
-                        </h2>
-                        <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                          <Link href={`/${prev.path}`}>{prev.title}</Link>
-                        </div>
-                      </div>
-                    )}
-                    {next && next.path && (
-                      <div>
-                        <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                          Next Article
-                        </h2>
-                        <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                          <Link href={`/${next.path}`}>{next.title}</Link>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-              <div className="pt-4 xl:pt-8">
-                <Link
-                  href={`/${basePath}`}
-                  className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                  aria-label="Back to the blog"
-                >
-                  &larr; Back to the blog
-                </Link>
-              </div>
-            </footer>
+          )}
+
+          {/* Edit on GitHub */}
+          <div className="mt-6 text-[12px] text-gray-400 dark:text-gray-600">
+            <Link href={editUrl(filePath)} className="hover:text-gray-900 dark:hover:text-gray-100">
+              View on GitHub
+            </Link>
           </div>
-        </div>
-      </article>
-    </SectionContainer>
+
+          {/* Comments */}
+          {siteMetadata.comments && (
+            <div className="mt-8 pt-6 text-center" id="comment">
+              <Comments slug={slug} />
+            </div>
+          )}
+        </article>
+
+        {/* Sticky TOC — visible only on xl screens */}
+        {toc.length > 0 && (
+          <aside className="hidden xl:block xl:w-52 xl:shrink-0">
+            <div className="sticky top-24">
+              <TableOfContents toc={toc} />
+            </div>
+          </aside>
+        )}
+      </div>
+    </div>
   )
 }

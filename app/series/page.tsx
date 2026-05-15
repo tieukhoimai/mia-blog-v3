@@ -8,20 +8,16 @@ export const metadata = genPageMetadata({
 
 export default function SeriesPage() {
   return (
-    <>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            Article Series
-          </h1>
-          <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            Discover comprehensive article series covering various topics in depth
-          </p>
-        </div>
-        <div className="py-8">
-          <SeriesList />
-        </div>
+    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-8">
+      <div className="mb-10">
+        <p className="mb-1 text-[10.5px] tracking-[0.13em] text-gray-400 dark:text-gray-600">
+          — series
+        </p>
+        <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
+          Series
+        </h1>
       </div>
-    </>
+      <SeriesList />
+    </div>
   )
 }

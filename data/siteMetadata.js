@@ -2,9 +2,9 @@
 const siteMetadata = {
   title: 'm a i',
   author: 'Tieu Khoi Mai (Mia)',
-  headerTitle: 'm a i',
+  headerTitle: 'mai',
   description:
-    'this is my /maɪ/ blog. The world is a messy place but at least now I have a way of structuring queries about it. And let me share with you my own story or all I known about my career - technical and non-technical in the most naive way.',
+    'this is my /maɪ/ blog. The world is a messy place but at least now I have a way of structuring queries about it.',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://tieukhoimai.me/',

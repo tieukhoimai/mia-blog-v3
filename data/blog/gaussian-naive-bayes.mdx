@@ -1,22 +1,19 @@
 ---
 title: Gaussian Naive Bayes
 date: '2023-11-01'
-tags: ['Machine Learning','Data Science', 'Naive Bayes']
+tags: ['Machine Learning', 'Data Science', 'Naive Bayes']
 draft: false
 summary: "We delve into the intricacies of Gaussian Naive Bayes classification. The focus is on determining the probability of a data point belonging to a specific class among several, emphasizing probabilistic assessment over precise labeling. The article breaks down key concepts, from Bayesian decision theory to Bayes' theorem, and provides a step-by-step implementation using the Iris dataset."
 image: '/static/images/resource/gaussian-naive-bayes/thumbnail.JPG'
 ---
 
-<TOCInline toc={props.toc} asDisclosure toHeading={3} />
-
 ## Gaussian Naive Bayes
 
-*Disclaimer: This article is based on my personal lecture notes from my studies at Machine Learning for Data Science 2023/2024 course: Bayesian Learning. The content reflects my understanding and interpretation of the course material.*
+_This article is based on my personal lecture notes from my studies at Machine Learning for Data Science 2023/2024 course: Bayesian Learning. The content reflects my understanding and interpretation of the course material._
 
 ## Objective
 
 > **Given a data point x, what is the probability of x belonging to some class c?**
-> 
 
 We have C class and need to find which group of $x$, instead of finding exactly the label, **given a data point x, we find the probability of x belonging to some class c** or find $P(y=c|x)$ or $P(c|x)$
 
@@ -69,7 +66,7 @@ import matplotlib.pyplot as plt
 x, y = load_iris( return_X_y=True )
 ```
 
-There are 
+There are
 
 - 3 classes $c_1, c_2, c_3$
 - 150 observations with 4 features $x_1, x_2, x_3, x_4$
@@ -88,7 +85,7 @@ $$
 p(x) = \frac{1}{\sqrt{2\pi \sigma^2}}e^{(-\frac{(x-\mu)^2}{2\sigma^2})}
 $$
 
-This distribution is described by two parameters: the mean $\mu$ and the variance $\sigma^2$. 
+This distribution is described by two parameters: the mean $\mu$ and the variance $\sigma^2$.
 
 - The value of $\mu$ can be any real number, indicating the location of the peak, where the probability density function reaches its highest value.
 
@@ -152,13 +149,13 @@ plt.show()
 
 **Multivariate normal distribution (or multivariate density)**
 
-This is the general case of the normal distribution when the variable is multidimensional, assuming it has $d$ dimensions. 
+This is the general case of the normal distribution when the variable is multidimensional, assuming it has $d$ dimensions.
 
 $$
 p(x) = \frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}}\exp\left(-\frac{1}{2}(x - \mu)^T \Sigma^{-1} (x - \mu)\right)
 $$
 
-where 
+where
 
 - $x$ is $d$-component column vector
 - $\mu \in \mathbb{R}^d$ is $d$-component mean vector
@@ -175,7 +172,7 @@ cl1 = x[ y==0, :]
 cl2 = x[ y==1, :]
 cl3 = x[ y==2, :]
 
-# Compute the mean (centroid) of each class -> return a 4 row vector 
+# Compute the mean (centroid) of each class -> return a 4 row vector
 m1 = np.mean(cl1, axis = 0)
 m2 = np.mean(cl2, axis = 0)
 m3 = np.mean(cl3, axis = 0)
@@ -232,14 +229,16 @@ post = np.vstack((post1,post2,post3)) # shape = (3,150)
 ### Making Prediction
 
 $$
-c = \argmax_{c \in \{1, \ldots, C\}}P(c|x)=\argmax_{c \in \{1, \ldots, C\}} \prod_{i=1}^{d} p(x_i|c)p(c) 
+c = \argmax_{c \in \{1, \ldots, C\}}P(c|x)=\argmax_{c \in \{1, \ldots, C\}} \prod_{i=1}^{d} p(x_i|c)p(c)
+
 
 $$
 
 When $d$ is large and the probabilities are small, the expression on the right-hand side of equation above becomes a very small number, leading to potential numerical inaccuracies during computation. To address this, equation above is often rewritten in an equivalent form by taking the logarithm of the right-hand side
 
 $$
-c = \argmax_{c \in \{1, \ldots, C\}}logP(c|x)=\argmax_{c \in \{1, \ldots, C\}} \sum_{i=1}^{d} log(p(x_i|c)) + log(p(c)) 
+c = \argmax_{c \in \{1, \ldots, C\}}logP(c|x)=\argmax_{c \in \{1, \ldots, C\}} \sum_{i=1}^{d} log(p(x_i|c)) + log(p(c))
+
 
 $$
 
@@ -264,10 +263,9 @@ cm_display = ConfusionMatrixDisplay(cm).plot()
   <img src="/static/images/resource/gaussian-naive-bayes/predicted.png" />
 </p>
 
-
 ## Reference
 
-1. Duda, R. O., Hart, P. E., & Stork, D. G. (2001). Chapter 2: Bayesian decision theory. In *Pattern Classification*. Wiley.
-2. Naive Bayes Classifier Implementation. *[GitHub](https://github.com/vamc-stash/Naive-Bayes/blob/master/src/GaussianNB.py)*. 
-3. Chapter 11: Naive Bayes Classifier. *[Github](https://github.com/tiepvupsu/ebookMLCB/blob/master/book_ML.pdf)*
-4. [Understanding by Implementing: Gaussian Naive Bayes](https://towardsdatascience.com/learning-by-implementing-gaussian-naive-bayes-3f0e3d2c01b2). *Towards Data Science*.
+1. Duda, R. O., Hart, P. E., & Stork, D. G. (2001). Chapter 2: Bayesian decision theory. In _Pattern Classification_. Wiley.
+2. Naive Bayes Classifier Implementation. _[GitHub](https://github.com/vamc-stash/Naive-Bayes/blob/master/src/GaussianNB.py)_.
+3. Chapter 11: Naive Bayes Classifier. _[Github](https://github.com/tiepvupsu/ebookMLCB/blob/master/book_ML.pdf)_
+4. [Understanding by Implementing: Gaussian Naive Bayes](https://towardsdatascience.com/learning-by-implementing-gaussian-naive-bayes-3f0e3d2c01b2). _Towards Data Science_.

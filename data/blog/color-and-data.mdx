@@ -7,8 +7,6 @@ summary: 'Color makes a chart look better and makes it easier for people to unde
 image: '/static/images/resource/color-and-data/background.png'
 ---
 
-<TOCInline toc={props.toc} asDisclosure toHeading={3} />
-
 ## 1. Overview
 
 Visualizations are tools that can help people understand difficult ideas better. And a bad choice of color can hide important information and cause confusion. Graphics can help send the right message if they use the right color palettes. Color makes a chart look better and makes it easier for people to understand the data it shows.
@@ -23,12 +21,12 @@ Based on the **types of data**, the colors used for data visualization can be pu
 
 There are two main types of data
 
-- Qualitative/ categorical data, fields that contain qualitative information are **dimensions**. 
+- Qualitative/ categorical data, fields that contain qualitative information are **dimensions**.
 - Quantitative/ numerical data - will always be a number that can be **measured**, which called a **metric**.
 
 Based on these we can classify to four primary levels of measurement are nominal, ordinal, interval, and ratio.
 
-<table style={{ overflowX: "auto", fontSize: "0.8em" }}>
+<table style={{ overflowX: 'auto', fontSize: '0.8em' }}>
   <thead>
     <tr>
       <th colSpan={4}>Types of data</th>
@@ -40,25 +38,23 @@ Based on these we can classify to four primary levels of measurement are nominal
       <td rowSpan={2}>Qualitative</td>
       <td colSpan={2}>Nominal</td>
       <td>
-        Categories without order. These are discrete and unique categories that
-        have no inherent order. These variables are also called factors.
+        Categories without order. These are discrete and unique categories that have no inherent
+        order. These variables are also called factors.
       </td>
       <td>
-        - Languages: English, Chinese, Vietnamese, etc.
-        - Relationship status: married, single, etc.
+        - Languages: English, Chinese, Vietnamese, etc. - Relationship status: married, single, etc.
         - Public transportation bus, train, car, etc.
       </td>
     </tr>
     <tr>
       <td colSpan={2}>Ordinal</td>
       <td>
-        Categories with order. These are discrete and unique categories with an
-        order. These variables are also called ordered factors.
+        Categories with order. These are discrete and unique categories with an order. These
+        variables are also called ordered factors.
       </td>
       <td>
-        - Economic status: poor, middle income, wealthy
-        - Likert scales: Very satisfied, satisfied, neutral, dissatisfied,
-        very dissatisfied
+        - Economic status: poor, middle income, wealthy - Likert scales: Very satisfied, satisfied,
+        neutral, dissatisfied, very dissatisfied
       </td>
     </tr>
     <tr>
@@ -66,21 +62,16 @@ Based on these we can classify to four primary levels of measurement are nominal
       <td rowSpan={2}>Discrete</td>
       <td>Nominal</td>
       <td>
-        When numbers are assigned to characteristics for the purpose of data
-        classification arbitrarily and without any regard to order.
+        When numbers are assigned to characteristics for the purpose of data classification
+        arbitrarily and without any regard to order.
       </td>
-      <td>
-        Gender: 
-        - Females are assigned the number 1
-        - Males are assigned the number 2
-      </td>
+      <td>Gender: - Females are assigned the number 1 - Males are assigned the number 2</td>
     </tr>
     <tr>
       <td>Ordinal</td>
       <td>
-        When numbers are purposefully assigned to data that have a sense of rank
-        or order, but the magnitude of difference between those numbers is not
-        known or cannot be measured.
+        When numbers are purposefully assigned to data that have a sense of rank or order, but the
+        magnitude of difference between those numbers is not known or cannot be measured.
       </td>
       <td>Grade score can range from as low as 0 and as high as 20.</td>
     </tr>
@@ -88,22 +79,19 @@ Based on these we can classify to four primary levels of measurement are nominal
       <td rowSpan={2}>Continous</td>
       <td>Interval</td>
       <td>
-        - When numbers have units that are of equal magnitude as well as rank order on a scale without an absolute zero
-        - Scales of this type can have an arbitrarily assigned "zero", but
-        it will not correspond to an absence of the measured variable.{" "}
+        - When numbers have units that are of equal magnitude as well as rank order on a scale
+        without an absolute zero - Scales of this type can have an arbitrarily assigned "zero", but
+        it will not correspond to an absence of the measured variable.{' '}
       </td>
       <td>Temperature in Fahrenheit scale: 10, 0, +10, +20, +30.</td>
     </tr>
     <tr>
       <td>Ratio</td>
       <td>
-        - When numbers have units that are of equal magnitude as well as rank
-        order on a scale with an absolute zero
+        - When numbers have units that are of equal magnitude as well as rank order on a scale with
+        an absolute zero
       </td>
-      <td>
-        - Distance (from zero miles/km upwards)
-        - Time intervals
-      </td>
+      <td>- Distance (from zero miles/km upwards) - Time intervals</td>
     </tr>
   </tbody>
 </table>
@@ -111,11 +99,12 @@ Based on these we can classify to four primary levels of measurement are nominal
 ## 3. Colors and Data
 
 #### 3.1. Categorical Colors
+
 ![Colors Palete](/static/images/resource/color-and-data/categorical-colors.png)
 
-A qualitative palette is used when the variable is a **categorical data**.  Categorical variables are those that have different labels but don't have an inherent order. 
+A qualitative palette is used when the variable is a **categorical data**. Categorical variables are those that have different labels but don't have an inherent order.
 
-**Categorical colors are optimized for maximum differentiation.** Use these for a nominal scale. Do not use them for **ordinal, interval, or ratio scales**. 
+**Categorical colors are optimized for maximum differentiation.** Use these for a nominal scale. Do not use them for **ordinal, interval, or ratio scales**.
 
 Some examples include country, languages, and gender. Each possible value of the variable is given a color from a qualitative palette.
 
@@ -141,7 +130,7 @@ If our numeric variable has a central value that makes sense, like zero, we can 
 
 Statistical approaches are classified into two types: descriptive statistics and inferential statistics. Parametric tests are used to examine quantitative (rather than qualitative) information, whereas non-parametric tests are more typically employed for qualitative, non-numerical data.
 
-<table style={{ overflowX: "auto", fontSize: "0.8em" }}>
+<table style={{ overflowX: 'auto', fontSize: '0.8em' }}>
   <thead>
     <tr>
       <th>Inferential statistics </th>
@@ -155,49 +144,34 @@ Statistical approaches are classified into two types: descriptive statistics and
     <tr>
       <td>Nonparametric Statistical Tests</td>
       <td>
-        Refers to the use of statistical tests or methods when the data being
-        studied comes from a sample or population of people that does not follow
-        a normal distributed.
+        Refers to the use of statistical tests or methods when the data being studied comes from a
+        sample or population of people that does not follow a normal distributed.
       </td>
       <td>
-        - Assumes patient population being studied is not normally distributed
-        (i.e., as seen with outliers)
-        - The usual central measure is a median
+        - Assumes patient population being studied is not normally distributed (i.e., as seen with
+        outliers) - The usual central measure is a median
       </td>
+      <td>- Nominal - Ordinal</td>
       <td>
-        - Nominal
-        - Ordinal
-      </td>
-      <td>
-        - Mann-Whitney test (assumes 2 independent groups (i.e., not related)
-        being studied)
-        - Kruskal-Wallis test (assumes &gt; 2 independent groups being
-        studied/compared)
-        - Spearman (correlation test)
+        - Mann-Whitney test (assumes 2 independent groups (i.e., not related) being studied) -
+        Kruskal-Wallis test (assumes &gt; 2 independent groups being studied/compared) - Spearman
+        (correlation test)
       </td>
     </tr>
     <tr>
       <td>Parametric Statistical Analysis</td>
       <td>
-        Refers to the use of statistical tests or methods when the data being
-        studied comes from a sample or population of people that is normally
-        distributed.
+        Refers to the use of statistical tests or methods when the data being studied comes from a
+        sample or population of people that is normally distributed.
       </td>
       <td>
-        - Assumes patient population being studied is normally distributed
-        - Assumes the variance is homogeneous - The usual central measure
-        is a mean
+        - Assumes patient population being studied is normally distributed - Assumes the variance is
+        homogeneous - The usual central measure is a mean
       </td>
+      <td>- Interval - Ratio</td>
       <td>
-        - Interval
-        - Ratio
-      </td>
-      <td>
-        - T-test (assumes 2 independent groups (i.e., not related) being
-        studied)
-        - One-way ANOVA (assumes &gt; 2 independent groups being
-        studied/compared)
-        - Pearson (correlation test)
+        - T-test (assumes 2 independent groups (i.e., not related) being studied) - One-way ANOVA
+        (assumes &gt; 2 independent groups being studied/compared) - Pearson (correlation test)
       </td>
     </tr>
   </tbody>

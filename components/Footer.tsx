@@ -1,28 +1,53 @@
 import Link from './Link'
+import ThemeSwitch from './ThemeSwitch'
 import siteMetadata from '@/data/siteMetadata'
-import SocialIcon from '@/components/social-icons'
 
 export default function Footer() {
   return (
-    <footer>
-      <div className="mb-0 flex flex-col justify-start space-y-1.5 space-x-0 py-10 text-gray-500 dark:text-gray-400">
-        <div className="flex flex-col items-center space-y-2 text-sm sm:flex-row sm:justify-between sm:text-base">
-          <ul className="flex space-x-2">
-            <li>{`© ${new Date().getFullYear()}`}</li>
-            <li>{` • `}</li>
-            <li>
-              <Link href="/">Mai Khoi TIEU</Link>
-            </li>
-            <li>{` • `}</li>
-            <li>
-              <Link href={siteMetadata.siteRepo}>mia-blog-v3</Link>
-            </li>
-          </ul>
-          <ul className="flex cursor-pointer items-center space-x-5">
-            <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={6} />
-            <SocialIcon kind="github" href={siteMetadata.github} size={6} />
-            <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
-          </ul>
+    <footer className="border-t border-gray-100 dark:border-gray-800">
+      <div className="mx-auto max-w-3xl px-4 py-6 sm:px-8">
+        <div className="flex items-center justify-between gap-4">
+          {/* Left: identity + copyright */}
+          <div className="flex items-baseline gap-3">
+            <Link
+              href="/"
+              className="text-[13px] font-semibold tracking-[-0.03em] text-gray-900 transition-colors hover:text-gray-500 dark:text-gray-100 dark:hover:text-gray-400"
+            >
+              {siteMetadata.title}
+              <span className="text-gray-400 dark:text-gray-600">.</span>
+            </Link>
+            <span className="font-mono text-[11px] text-gray-400 dark:text-gray-600">
+              © {new Date().getFullYear()} Mai Khoi TIEU
+            </span>
+          </div>
+
+          {/* Right: socials + theme */}
+          <div className="flex items-center gap-4">
+            {siteMetadata.github && (
+              <Link
+                href={siteMetadata.github}
+                className="border-b border-transparent font-mono text-[11px] text-gray-400 transition-colors hover:border-gray-900 hover:text-gray-900 dark:hover:border-gray-100 dark:hover:text-gray-100"
+              >
+                github
+              </Link>
+            )}
+            {siteMetadata.linkedin && (
+              <Link
+                href={siteMetadata.linkedin}
+                className="border-b border-transparent font-mono text-[11px] text-gray-400 transition-colors hover:border-gray-900 hover:text-gray-900 dark:hover:border-gray-100 dark:hover:text-gray-100"
+              >
+                linkedin
+              </Link>
+            )}
+            {siteMetadata.email && (
+              <Link
+                href={`mailto:${siteMetadata.email}`}
+                className="border-b border-transparent font-mono text-[11px] text-gray-400 transition-colors hover:border-gray-900 hover:text-gray-900 dark:hover:border-gray-100 dark:hover:text-gray-100"
+              >
+                email
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </footer>

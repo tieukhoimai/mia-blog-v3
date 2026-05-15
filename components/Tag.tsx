@@ -21,9 +21,9 @@ interface Props {
 
 const Tag = ({ text, variant = 'text', className = '', count }: Props) => {
   const baseText =
-    'mr-3 text-sm font-medium uppercase text-primary-500 hover:text-primary-600 dark:hover:text-primary-400'
+    'mr-3 text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100'
   const chipText =
-    'inline-block whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
+    'inline-block whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
 
   const classes = `${variant === 'chip' ? chipText : baseText} ${className}`.trim()
 

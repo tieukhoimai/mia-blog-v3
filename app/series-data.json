@@ -9,7 +9,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/relational-database-management-system",
       "seriesOrder": 1,
-      "tags": ["Database", "Data Management"]
+      "tags": ["Database", "Data Management", "RDBMS", "Data Engineering"]
     },
     {
       "title": "ER Modeling and Normalization",
@@ -31,7 +31,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/data-modeling",
       "seriesOrder": 3,
-      "tags": ["Data Warehouse", "Database", "Data Science"]
+      "tags": ["Data Warehouse", "Database", "Data Modeling", "Data Engineering"]
     },
     {
       "title": "Dimensional Modeling - Part 0: 4-Step Design Process",
@@ -42,7 +42,13 @@
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-modeling-four-step",
       "seriesOrder": 4,
-      "tags": ["Data Warehouse", "Dimensional Modeling", "Database"]
+      "tags": [
+        "Data Warehouse",
+        "Dimensional Modeling",
+        "Database",
+        "Data Engineering",
+        "Data Modeling"
+      ]
     },
     {
       "title": "Dimensional Modeling - Part 1: Basic Fact Table Techniques",
@@ -53,7 +59,13 @@
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-part-1",
       "seriesOrder": 5,
-      "tags": ["Data Warehouse", "Database"]
+      "tags": [
+        "Data Warehouse",
+        "Database",
+        "Dimensional Modeling",
+        "Data Engineering",
+        "Data Modeling"
+      ]
     },
     {
       "title": "Dimensional Modeling - Part 2: Basic Dimension Table Techniques",
@@ -64,7 +76,13 @@
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-part-2",
       "seriesOrder": 6,
-      "tags": ["Data Warehouse", "Database"]
+      "tags": [
+        "Data Warehouse",
+        "Database",
+        "Dimensional Modeling",
+        "Data Engineering",
+        "Data Modeling"
+      ]
     },
     {
       "title": "Dimensional Modeling - Part 3: Dimensions Hierarchy",
@@ -75,7 +93,14 @@
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-modeling-hierarchy",
       "seriesOrder": 7,
-      "tags": ["Data Warehouse", "Dimensional Modeling", "Database", "Hierarchy"]
+      "tags": [
+        "Data Warehouse",
+        "Dimensional Modeling",
+        "Database",
+        "Hierarchy",
+        "Data Engineering",
+        "Data Modeling"
+      ]
     },
     {
       "title": "Data Integration - Part 1: ETL, Pushdown and Data Orchestrator",
@@ -86,7 +111,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/data-integration-etl-pushdown",
       "seriesOrder": 8,
-      "tags": ["Data Integration", "ETL", "ELT", "Data Engineering", "Data Warehouse"]
+      "tags": ["Data Integration", "ETL", "Data Engineering", "Data Warehouse"]
     },
     {
       "title": "Data Integration - Part 2: Loading Strategies, Change Data Capture and Data Layers",
@@ -108,7 +133,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/big-data",
       "seriesOrder": 10,
-      "tags": ["Big Data", "Hadoop", "Kafka", "Spark", "Data Engineering", "Data Warehouse"]
+      "tags": ["Big Data", "Data Engineering", "Data Warehouse"]
     },
     {
       "title": "Monolithic Data Lake vs Data Mesh",
@@ -132,11 +157,11 @@
       "series": "LLMs",
       "path": "blog/from-transformer-to-llm",
       "seriesOrder": 1,
-      "tags": ["LLMs", "Language Models", "Transformer", "Fine-tuning", "RAG"]
+      "tags": ["LLMs", "Language Models", "Transformer", "RAG", "Prompt Engineering", "Fine-tuning"]
     },
     {
       "title": "Preference Alignment: RLHF and DPO",
-      "date": "2025-11-04",
+      "date": "2025-10-26",
       "summary": "An in-depth exploration of preference alignment techniques for LLMs, including Reinforcement Learning from Human Feedback (RLHF) and Direct Preference Optimization (DPO).",
       "slug": "llms-preference-alignment",
       "image": "/static/images/resource/llms/DPO.png",
@@ -147,14 +172,14 @@
     },
     {
       "title": "LLM-based Agents: Single and Multi-Agent Systems",
-      "date": "2025-11-04",
+      "date": "2025-11-01",
       "summary": "Overview of LLM-based agents, including single-agent and multi-agent systems, core components (planning, memory, tool use), and common coordination and planning patterns.",
       "slug": "llms-based-agents",
       "image": "/static/images/resource/llms/agent-classifications.png",
       "series": "LLMs",
       "path": "blog/llms-based-agents",
       "seriesOrder": 3,
-      "tags": ["LLMs", "Agents", "Multi-Agent", "Autonomous Agents"]
+      "tags": ["LLMs", "Agentic AI", "Multi-Agent"]
     },
     {
       "title": "LLMs in LangChain - Part 1. Conceptual",
