@@ -1,16 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 'use client'
 
-import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { slug } from 'github-slugger'
-import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog } from 'contentlayer/generated'
 import Link from '@/components/Link'
-import Image from '@/components/Image'
-import Tag from '@/components/Tag'
-import siteMetadata from '@/data/siteMetadata'
 import tagData from 'app/tag-data.json'
 
 interface PaginationProps {
@@ -22,6 +17,12 @@ interface ListLayoutProps {
   title: string
   initialDisplayPosts?: CoreContent<Blog>[]
   pagination?: PaginationProps
+}
+
+const TAG_BAR_LIMIT = 12
+
+function shortDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
 function Pagination({ totalPages, currentPage }: PaginationProps) {
@@ -71,26 +72,28 @@ export default function ListLayoutWithTags({
   pagination,
 }: ListLayoutProps) {
   const pathname = usePathname()
-  const [tagFilter, setTagFilter] = useState('')
-  const [mobileOpen, setMobileOpen] = useState(false)
   const tagCounts = tagData as Record<string, number>
-  const tagKeys = Object.keys(tagCounts)
-  const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
-  const SIDEBAR_LIMIT = 20
-  const sidebarTags = sortedTags.slice(0, SIDEBAR_LIMIT)
-  const filteredTags = tagFilter
-    ? sortedTags.filter((t) => t.toLowerCase().includes(tagFilter.toLowerCase()))
-    : sidebarTags
-  const totalPosts = Object.values(tagCounts).reduce((a, b) => a + b, 0)
+  const sortedTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a])
+  const barTags = sortedTags.slice(0, TAG_BAR_LIMIT)
+  const extraCount = sortedTags.length - TAG_BAR_LIMIT
 
   const displayPosts = initialDisplayPosts.length > 0 ? initialDisplayPosts : posts
-
   const isAllPosts = pathname === '/blog'
 
+  // Group posts by year for the archive layout
+  const postsByYear = displayPosts.reduce<Record<number, typeof displayPosts>>((acc, post) => {
+    const year = new Date(post.date).getFullYear()
+    ;(acc[year] ??= []).push(post)
+    return acc
+  }, {})
+  const years = Object.keys(postsByYear)
+    .map(Number)
+    .sort((a, b) => b - a)
+
   return (
-    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-8">
+    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-8">
       {/* Page heading */}
-      <div className="mb-10">
+      <div className="mb-8">
         <p className="mb-1 text-[10.5px] tracking-[0.13em] text-gray-400 dark:text-gray-600">
           — blog
         </p>
@@ -99,198 +102,108 @@ export default function ListLayoutWithTags({
         </h1>
       </div>
 
-      <div className="flex gap-12 xl:gap-16">
-        {/* Sidebar — tag filter */}
-        <aside className="hidden w-44 shrink-0 md:block">
-          <div className="sticky top-20">
-            <p className="mb-2 text-[10px] uppercase tracking-[0.15em] text-gray-400 dark:text-gray-600">
-              Filter by tag
-            </p>
-            {/* Desktop search input */}
-            <input
-              type="text"
-              value={tagFilter}
-              onChange={(e) => setTagFilter(e.target.value)}
-              placeholder="Search tags…"
-              className="mb-3 w-full border-b border-gray-100 bg-transparent pb-1.5 text-[12px] text-gray-600 placeholder-gray-300 outline-none transition-colors focus:border-gray-400 dark:border-gray-800 dark:text-gray-400 dark:placeholder-gray-700 dark:focus:border-gray-600"
-            />
-            <nav className="flex flex-col">
-              {!tagFilter && (
-                <Link
-                  href="/blog"
-                  className={`flex justify-between border-b py-1.5 text-[13px] transition-colors ${
-                    isAllPosts
-                      ? 'border-gray-900 text-gray-900 dark:border-gray-100 dark:text-gray-100'
-                      : 'border-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100'
-                  }`}
-                >
-                  <span>All</span>
-                  <span className="font-mono text-[11px] text-gray-400 dark:text-gray-600">
-                    {totalPosts}
-                  </span>
-                </Link>
-              )}
-              {filteredTags.map((tag) => {
-                const tagSlug = slug(tag)
-                const isActive = pathname === `/tags/${tagSlug}`
-                return (
-                  <Link
-                    key={tag}
-                    href={`/tags/${tagSlug}`}
-                    className={`flex justify-between border-b py-1.5 text-[13px] transition-colors ${
-                      isActive
-                        ? 'border-gray-900 text-gray-900 dark:border-gray-100 dark:text-gray-100'
-                        : 'border-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100'
-                    }`}
-                    aria-label={`View posts tagged ${tag}`}
-                  >
-                    <span>{tag}</span>
-                    <span className="font-mono text-[11px] text-gray-400 dark:text-gray-600">
-                      {tagCounts[tag]}
-                    </span>
-                  </Link>
-                )
-              })}
-              {filteredTags.length === 0 && (
-                <p className="py-2 text-[12px] text-gray-400 dark:text-gray-600">No tags found.</p>
-              )}
-              {!tagFilter && sortedTags.length > SIDEBAR_LIMIT && (
-                <Link
-                  href="/tags"
-                  className="mt-2 block text-[11px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
-                >
-                  + {sortedTags.length - SIDEBAR_LIMIT} more →
-                </Link>
-              )}
-            </nav>
-          </div>
-        </aside>
-
-        {/* Post list */}
-        <div className="min-w-0 flex-1">
-          {/* Mobile tag filter */}
-          <div className="mb-6 md:hidden">
-            <button
-              onClick={() => setMobileOpen((o) => !o)}
-              className="flex items-center gap-1.5 text-[12px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
+      {/* Horizontal tag pill bar */}
+      <div
+        className="mb-10 flex gap-2 overflow-x-auto pb-1"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        <Link
+          href="/blog"
+          className={`flex-shrink-0 rounded-full px-3 py-1 text-[12px] transition-colors ${
+            isAllPosts
+              ? 'bg-gray-900 text-gray-100 dark:bg-gray-100 dark:text-gray-900'
+              : 'bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
+          }`}
+        >
+          All
+        </Link>
+        {barTags.map((tag) => {
+          const tagSlug = slug(tag)
+          const isActive = pathname === `/tags/${tagSlug}`
+          return (
+            <Link
+              key={tag}
+              href={`/tags/${tagSlug}`}
+              className={`flex-shrink-0 rounded-full px-3 py-1 text-[12px] transition-colors ${
+                isActive
+                  ? 'bg-gray-900 text-gray-100 dark:bg-gray-100 dark:text-gray-900'
+                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
+              }`}
             >
-              <span>{mobileOpen ? '▾' : '▸'}</span>
-              <span>
-                {pathname.startsWith('/tags/')
-                  ? `Tag: ${pathname.replace('/tags/', '')}`
-                  : 'Filter by tag'}
-              </span>
-            </button>
+              {tag}
+            </Link>
+          )
+        })}
+        {extraCount > 0 && (
+          <Link
+            href="/tags"
+            className="flex-shrink-0 rounded-full px-3 py-1 text-[12px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
+          >
+            +{extraCount} more →
+          </Link>
+        )}
+      </div>
 
-            {mobileOpen && (
-              <div className="mt-3 rounded-lg border border-gray-100 p-4 dark:border-gray-800">
-                <input
-                  type="text"
-                  value={tagFilter}
-                  onChange={(e) => setTagFilter(e.target.value)}
-                  placeholder="Search tags…"
-                  className="mb-3 w-full border-b border-gray-100 bg-transparent pb-1.5 text-[12px] text-gray-600 placeholder-gray-300 outline-none transition-colors focus:border-gray-400 dark:border-gray-800 dark:text-gray-400 dark:placeholder-gray-700 dark:focus:border-gray-600"
-                  ref={(el) => el?.focus()}
-                />
-                <div className="flex max-h-48 flex-col overflow-y-auto">
-                  {!tagFilter && (
-                    <Link
-                      href="/blog"
-                      onClick={() => setMobileOpen(false)}
-                      className={`flex justify-between border-b py-1.5 text-[13px] transition-colors ${
-                        isAllPosts
-                          ? 'border-gray-900 text-gray-900 dark:border-gray-100 dark:text-gray-100'
-                          : 'border-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100'
-                      }`}
-                    >
-                      <span>All</span>
-                      <span className="font-mono text-[11px] text-gray-400 dark:text-gray-600">
-                        {totalPosts}
-                      </span>
-                    </Link>
-                  )}
-                  {filteredTags.map((tag) => {
-                    const tagSlug = slug(tag)
-                    const isActive = pathname === `/tags/${tagSlug}`
-                    return (
+      {/* Archive list — grouped by year */}
+      {displayPosts.length === 0 ? (
+        <p className="py-4 text-[13px] text-gray-400 dark:text-gray-600">No posts found.</p>
+      ) : (
+        <div className="space-y-10">
+          {years.map((year) => (
+            <div key={year}>
+              {/* Year label */}
+              <div className="mb-4 flex items-center gap-4">
+                <span className="font-mono text-[11px] text-gray-400 dark:text-gray-600">
+                  {year}
+                </span>
+                <span className="h-px flex-1 bg-gray-100 dark:bg-gray-800" />
+              </div>
+
+              {/* Posts for this year */}
+              <ul className="divide-y divide-gray-100 dark:divide-gray-800">
+                {postsByYear[year].map((post) => {
+                  const { path, date, title: postTitle, tags } = post
+                  const readingTime = (post as { readingTime?: { text: string } }).readingTime?.text
+                  return (
+                    <li key={path}>
                       <Link
-                        key={tag}
-                        href={`/tags/${tagSlug}`}
-                        onClick={() => setMobileOpen(false)}
-                        className={`flex justify-between border-b py-1.5 text-[13px] transition-colors ${
-                          isActive
-                            ? 'border-gray-900 text-gray-900 dark:border-gray-100 dark:text-gray-100'
-                            : 'border-transparent text-gray-500 hover:text-gray-900 dark:text-gray:400 dark:hover:text-gray-100'
-                        }`}
+                        href={`/${path}`}
+                        className="group flex items-start gap-4 py-4 transition-opacity hover:opacity-60 sm:gap-6"
                       >
-                        <span>{tag}</span>
-                        <span className="font-mono text-[11px] text-gray-400 dark:text-gray-600">
-                          {tagCounts[tag]}
+                        {/* Date column */}
+                        <span className="w-14 flex-shrink-0 font-mono text-[11px] text-gray-400 dark:text-gray-600 sm:w-16">
+                          {shortDate(date)}
+                        </span>
+
+                        {/* Title + tags */}
+                        <div className="min-w-0 flex-1">
+                          <h2 className="text-[14.5px] font-semibold leading-snug tracking-[-0.02em] text-gray-900 dark:text-gray-100">
+                            {postTitle}
+                          </h2>
+                          {tags && tags.length > 0 && (
+                            <p className="mt-0.5 truncate text-[11px] text-gray-400 dark:text-gray-600">
+                              {tags.join(' · ')}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Reading time */}
+                        <span className="flex-shrink-0 whitespace-nowrap font-mono text-[11px] text-gray-400 dark:text-gray-600">
+                          {readingTime?.replace(' read', '') ?? ''}
                         </span>
                       </Link>
-                    )
-                  })}
-                  {filteredTags.length === 0 && (
-                    <p className="py-2 text-[12px] text-gray-400 dark:text-gray-600">
-                      No tags found.
-                    </p>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-
-          <ul className="divide-y divide-gray-100 dark:divide-gray-800">
-            {!displayPosts.length && (
-              <li className="py-4">
-                <p className="text-[13px] text-gray-400 dark:text-gray-600">No posts found.</p>
-              </li>
-            )}
-            {displayPosts.map((post) => {
-              const { path, date, title, summary, tags, image } = post
-              const readingTime = (post as { readingTime?: { text: string } }).readingTime?.text
-              return (
-                <li key={path} className="py-8 first:pt-0">
-                  <article>
-                    <p className="mb-1 text-[11px] tracking-[0.04em] text-gray-400 dark:text-gray-600">
-                      <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
-                    </p>
-                    <h2 className="mb-1.5 text-[17.5px] font-semibold leading-snug tracking-[-0.025em] text-gray-900 dark:text-gray-100">
-                      <Link href={`/${path}`}>{title}</Link>
-                    </h2>
-                    <div className="mb-2 flex flex-wrap gap-1.5">
-                      {tags?.map((tag) => (
-                        <Tag key={tag} text={tag} variant="chip" />
-                      ))}
-                    </div>
-                    <p className="mb-3 text-[13px] font-light leading-relaxed text-gray-500 dark:text-gray-400">
-                      {summary}
-                    </p>
-                    {image && (
-                      <Link href={`/${path}`} className="mb-3 block" tabIndex={-1}>
-                        <div className="overflow-hidden rounded-sm">
-                          <Image src={image} alt={title} width={2548} height={1296} />
-                        </div>
-                      </Link>
-                    )}
-                    <Link
-                      href={`/${path}`}
-                      className="text-[12px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
-                      aria-label={`Read more: "${title}"`}
-                    >
-                      {readingTime ?? 'Read more'} →
-                    </Link>
-                  </article>
-                </li>
-              )
-            })}
-          </ul>
-
-          {pagination && pagination.totalPages > 1 && (
-            <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
-          )}
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          ))}
         </div>
-      </div>
+      )}
+
+      {pagination && pagination.totalPages > 1 && (
+        <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
+      )}
     </div>
   )
 }
