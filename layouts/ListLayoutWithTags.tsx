@@ -8,6 +8,7 @@ import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog } from 'contentlayer/generated'
 import Link from '@/components/Link'
+import Image from '@/components/Image'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import tagData from 'app/tag-data.json'
@@ -75,9 +76,11 @@ export default function ListLayoutWithTags({
   const tagCounts = tagData as Record<string, number>
   const tagKeys = Object.keys(tagCounts)
   const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
+  const SIDEBAR_LIMIT = 20
+  const sidebarTags = sortedTags.slice(0, SIDEBAR_LIMIT)
   const filteredTags = tagFilter
     ? sortedTags.filter((t) => t.toLowerCase().includes(tagFilter.toLowerCase()))
-    : sortedTags
+    : sidebarTags
   const totalPosts = Object.values(tagCounts).reduce((a, b) => a + b, 0)
 
   const displayPosts = initialDisplayPosts.length > 0 ? initialDisplayPosts : posts
@@ -150,6 +153,14 @@ export default function ListLayoutWithTags({
               })}
               {filteredTags.length === 0 && (
                 <p className="py-2 text-[12px] text-gray-400 dark:text-gray-600">No tags found.</p>
+              )}
+              {!tagFilter && sortedTags.length > SIDEBAR_LIMIT && (
+                <Link
+                  href="/tags"
+                  className="mt-2 block text-[11px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
+                >
+                  + {sortedTags.length - SIDEBAR_LIMIT} more →
+                </Link>
               )}
             </nav>
           </div>
@@ -236,10 +247,10 @@ export default function ListLayoutWithTags({
               </li>
             )}
             {displayPosts.map((post) => {
-              const { path, date, title, summary, tags } = post
+              const { path, date, title, summary, tags, image } = post
               const readingTime = (post as { readingTime?: { text: string } }).readingTime?.text
               return (
-                <li key={path} className="py-6 first:pt-0">
+                <li key={path} className="py-8 first:pt-0">
                   <article>
                     <p className="mb-1 text-[11px] tracking-[0.04em] text-gray-400 dark:text-gray-600">
                       <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
@@ -252,9 +263,16 @@ export default function ListLayoutWithTags({
                         <Tag key={tag} text={tag} variant="chip" />
                       ))}
                     </div>
-                    <p className="mb-2 text-[13px] font-light leading-relaxed text-gray-500 dark:text-gray-400">
+                    <p className="mb-3 text-[13px] font-light leading-relaxed text-gray-500 dark:text-gray-400">
                       {summary}
                     </p>
+                    {image && (
+                      <Link href={`/${path}`} className="mb-3 block" tabIndex={-1}>
+                        <div className="overflow-hidden rounded-sm">
+                          <Image src={image} alt={title} width={2548} height={1296} />
+                        </div>
+                      </Link>
+                    )}
                     <Link
                       href={`/${path}`}
                       className="text-[12px] text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
