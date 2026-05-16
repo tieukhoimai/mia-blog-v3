@@ -36,14 +36,15 @@ async function getSeriesData(): Promise<SeriesData> {
 }
 
 interface Props {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
   const seriesData = await getSeriesData()
-  const articles = seriesData[params.slug]
+  const articles = seriesData[slug]
 
   if (!articles || articles.length === 0) {
     return genPageMetadata({ title: 'Series Not Found', description: '' })
@@ -62,8 +63,9 @@ export async function generateStaticParams() {
 }
 
 export default async function SeriesPage({ params }: Props) {
+  const { slug } = await params
   const seriesData = await getSeriesData()
-  const articles = seriesData[params.slug]
+  const articles = seriesData[slug]
 
   if (!articles || articles.length === 0) notFound()
 
