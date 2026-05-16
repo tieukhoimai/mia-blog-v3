@@ -66,7 +66,7 @@ module.exports = () => {
       ignoreDuringBuilds: true,
     },
     images: {
-      domains: ['picsum.photos'],
+      remotePatterns: [{ protocol: 'https', hostname: 'picsum.photos' }],
     },
     async headers() {
       return [
