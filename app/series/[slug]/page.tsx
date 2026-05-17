@@ -78,7 +78,7 @@ export default async function SeriesPage({ params }: Props) {
   const seriesTitle = articles[0]?.series || 'Article Series'
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-8">
       {/* Back link */}
       <Link
         href="/series"
