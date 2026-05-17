@@ -68,7 +68,7 @@ export default function TableOfContents({ toc, mobile = false }: Props) {
           <a
             href={`#${id}`}
             onClick={(e) => handleClick(e, id)}
-            className={`block text-[12px] leading-snug transition-colors ${
+            className={`block text-xs leading-snug transition-colors ${
               activeId === id
                 ? 'text-gray-900 dark:text-gray-100'
                 : 'text-gray-400 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-300'
@@ -88,10 +88,10 @@ export default function TableOfContents({ toc, mobile = false }: Props) {
           onClick={() => setOpen((o) => !o)}
           className="flex w-full items-center justify-between px-4 py-3 text-left"
         >
-          <span className="text-[10.5px] uppercase tracking-[0.13em] text-gray-400 dark:text-gray-600">
+          <span className="text-2xs uppercase tracking-[0.13em] text-gray-400 dark:text-gray-600">
             — contents
           </span>
-          <span className="font-mono text-[11px] text-gray-400 dark:text-gray-600">
+          <span className="font-mono text-xs text-gray-400 dark:text-gray-600">
             {open ? '−' : '+'}
           </span>
         </button>
@@ -104,9 +104,7 @@ export default function TableOfContents({ toc, mobile = false }: Props) {
 
   return (
     <nav aria-label="Table of contents">
-      <p className="mb-3 text-[10px] uppercase tracking-[0.13em] text-gray-400 dark:text-gray-600">
-        — contents
-      </p>
+      <p className="mb-3 text-2xs tracking-[0.13em] text-gray-400 dark:text-gray-600">— contents</p>
       {list}
     </nav>
   )

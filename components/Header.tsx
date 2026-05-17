@@ -26,20 +26,20 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky top-0 z-40 flex items-center justify-between bg-white px-4 py-2.5 transition-all duration-200 dark:bg-gray-950 sm:px-6 xl:px-8 ${
+      className={`sticky top-0 z-40 flex items-center bg-white px-4 py-2.5 transition-all duration-200 dark:bg-gray-950 sm:px-6 xl:px-8 ${
         isTop ? '' : 'border-b border-gray-100 dark:border-gray-800'
       }`}
     >
-      {/* Logo: — m ai. */}
-      <Link href="/" className="font-mono tracking-wide">
-        <span className="text-gray-200 dark:text-gray-700 font-light">—</span>{' '}
-        <span className="text-gray-400 dark:text-gray-600 font-light tracking-widest">m</span>{' '}
-        <span className="text-gray-900 dark:text-gray-50 font-semibold tracking-normal">ai</span>
-        <span className="text-gray-300 dark:text-gray-700 font-light tracking-normal">.</span>
+      {/* Logo */}
+      <Link href="/" className="mr-8 shrink-0 font-mono tracking-wide">
+        <span className="font-light text-gray-200 dark:text-gray-700">—</span>{' '}
+        <span className="font-light tracking-widest text-gray-400 dark:text-gray-600">m</span>{' '}
+        <span className="font-semibold tracking-normal text-gray-900 dark:text-gray-50">ai</span>
+        <span className="font-light tracking-normal text-gray-300 dark:text-gray-700">.</span>
       </Link>
 
-      {/* Right nav */}
-      <div className="flex items-center gap-5 sm:gap-6">
+      {/* Desktop nav links — fill remaining space */}
+      <nav className="hidden flex-1 items-center gap-6 sm:flex">
         {headerNavLinks
           .filter((link) => link.href !== '/')
           .map((link) => {
@@ -49,16 +49,20 @@ const Header = () => {
               <Link
                 key={link.title}
                 href={link.href}
-                className={`hidden pb-px text-xs tracking-[0.02em] transition-colors sm:block ${
+                className={`pb-0.5 text-sm transition-colors ${
                   isActive
-                    ? 'border-b border-gray-900 text-gray-900 dark:border-gray-100 dark:text-gray-100'
-                    : 'border-b border-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100'
+                    ? 'border-b-2 border-gray-900 font-medium text-gray-900 dark:border-gray-100 dark:text-gray-100'
+                    : 'border-b-2 border-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100'
                 }`}
               >
                 {link.title}
               </Link>
             )
           })}
+      </nav>
+
+      {/* Right controls */}
+      <div className="ml-auto flex items-center gap-2">
         <SearchButton />
         <ThemeSwitch />
         <MobileNav />
