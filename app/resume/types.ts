@@ -1,5 +1,6 @@
 export type ResumeData = {
   name: string
+  tagline?: string
   socials?: Record<string, { url: string; display?: string }>
   headline?: string
   experience?: Array<{

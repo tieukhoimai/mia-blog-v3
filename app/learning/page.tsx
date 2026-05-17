@@ -7,7 +7,7 @@ export const metadata = genPageMetadata({ title: 'Learning' })
 
 export default function Learning() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-8">
       <div className="mb-10">
         <p className="mb-1 text-2xs tracking-[0.13em] text-gray-400 dark:text-gray-600">
           — learning
@@ -16,7 +16,7 @@ export default function Learning() {
           Study with me
         </h1>
         <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-          Let's learn it, write it and bring it all together for continous improvement.
+          Let's learn it, write it and bring it all together for continuous improvement.
         </p>
       </div>
 
