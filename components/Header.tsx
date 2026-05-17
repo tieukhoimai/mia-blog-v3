@@ -30,12 +30,12 @@ const Header = () => {
         isTop ? '' : 'border-b border-gray-100 dark:border-gray-800'
       }`}
     >
-      {/* Logo */}
-      <Link
-        href="/"
-        className="text-[15px] font-semibold tracking-[-0.03em] text-gray-900 dark:text-gray-100"
-      >
-        m a i<span className="text-gray-400 dark:text-gray-600">.</span>
+      {/* Logo: — m ai. */}
+      <Link href="/" className="font-mono tracking-wide">
+        <span className="text-gray-200 dark:text-gray-700 font-light">—</span>{' '}
+        <span className="text-gray-400 dark:text-gray-600 font-light tracking-widest">m</span>{' '}
+        <span className="text-gray-900 dark:text-gray-50 font-semibold tracking-normal">ai</span>
+        <span className="text-gray-300 dark:text-gray-700 font-light tracking-normal">.</span>
       </Link>
 
       {/* Right nav */}
@@ -49,7 +49,7 @@ const Header = () => {
               <Link
                 key={link.title}
                 href={link.href}
-                className={`hidden pb-px text-[13px] tracking-[0.02em] transition-colors sm:block ${
+                className={`hidden pb-px text-xs tracking-[0.02em] transition-colors sm:block ${
                   isActive
                     ? 'border-b border-gray-900 text-gray-900 dark:border-gray-100 dark:text-gray-100'
                     : 'border-b border-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100'

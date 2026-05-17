@@ -38,7 +38,7 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
     }
   ).toc
   const toc: { value: string; url: string; depth: number }[] =
-    typeof rawToc === 'string' ? JSON.parse(rawToc) : (rawToc ?? [])
+    typeof rawToc === 'string' ? JSON.parse(rawToc) : rawToc ?? []
 
   return (
     <div
@@ -49,7 +49,7 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
         <article className="min-w-0 flex-1">
           {/* Section label + back link */}
           <div className="mb-10">
-            <p className="mb-1 text-[10.5px] tracking-[0.13em] text-gray-400 dark:text-gray-600">
+            <p className="mb-1 text-2xs tracking-[0.13em] text-gray-400 dark:text-gray-600">
               <Link
                 href={`/${basePath}`}
                 className="transition-colors hover:text-gray-900 dark:hover:text-gray-100"
@@ -59,7 +59,7 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
             </p>
 
             {/* Eyebrow: date · reading time */}
-            <p className="mb-3 text-[11px] tracking-[0.04em] text-gray-400 dark:text-gray-600">
+            <p className="mb-3 text-2xs tracking-[0.04em] text-gray-400 dark:text-gray-600">
               <span>{shortDate(date, siteMetadata.locale)}</span>
               {readingTime && (
                 <>
@@ -70,7 +70,7 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
             </p>
 
             {/* Title */}
-            <h1 className="mb-4 text-[1.75rem] font-semibold leading-[1.2] tracking-tight text-gray-900 dark:text-gray-100 sm:text-[2rem]">
+            <h1 className="mb-4 text-base font-semibold leading-[1.2] tracking-tight text-gray-900 dark:text-gray-100 sm:text-[2rem]">
               {title}
             </h1>
 
@@ -115,10 +115,10 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
                   href={`/${prev.path}`}
                   className="rounded-lg border border-gray-200 p-4 transition-colors hover:border-gray-400 dark:border-gray-800 dark:hover:border-gray-600"
                 >
-                  <p className="mb-1.5 text-[10px] uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600">
+                  <p className="mb-1.5 text-2xs uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600">
                     ← previous
                   </p>
-                  <p className="text-[13px] font-semibold leading-snug text-gray-900 dark:text-gray-100">
+                  <p className="text-xs font-semibold leading-snug text-gray-900 dark:text-gray-100">
                     {prev.title}
                   </p>
                 </Link>
@@ -130,10 +130,10 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
                   href={`/${next.path}`}
                   className="rounded-lg border border-gray-200 p-4 text-right transition-colors hover:border-gray-400 dark:border-gray-800 dark:hover:border-gray-600"
                 >
-                  <p className="mb-1.5 text-[10px] uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600">
+                  <p className="mb-1.5 text-2xs uppercase tracking-[0.12em] text-gray-400 dark:text-gray-600">
                     next →
                   </p>
-                  <p className="text-[13px] font-semibold leading-snug text-gray-900 dark:text-gray-100">
+                  <p className="text-xs font-semibold leading-snug text-gray-900 dark:text-gray-100">
                     {next.title}
                   </p>
                 </Link>
@@ -144,7 +144,7 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
           )}
 
           {/* Edit on GitHub */}
-          <div className="mt-6 text-[12px] text-gray-400 dark:text-gray-600">
+          <div className="mt-6 text-2xs text-gray-400 dark:text-gray-600">
             <Link href={editUrl(filePath)} className="hover:text-gray-900 dark:hover:text-gray-100">
               View on GitHub
             </Link>

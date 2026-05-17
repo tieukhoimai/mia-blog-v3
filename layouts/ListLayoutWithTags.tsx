@@ -91,7 +91,7 @@ export default function ListLayoutWithTags({
     .sort((a, b) => b - a)
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-8">
       {/* Page heading */}
       <div className="mb-8">
         <p className="mb-1 text-2xs tracking-[0.13em] text-gray-400 dark:text-gray-600">— blog</p>
