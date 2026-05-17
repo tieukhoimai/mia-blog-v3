@@ -11,6 +11,7 @@ import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import Script from 'next/script'
 import * as gtag from 'gtag'
+import { allBlogs } from 'contentlayer/generated'
 
 const plex_sans = IBM_Plex_Sans({
   weight: ['300', '400', '600'],
@@ -54,6 +55,7 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const postCount = allBlogs.filter((post) => !post.draft).length
   return (
     <html
       lang={siteMetadata.language}
@@ -95,7 +97,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
             {/* Body: identity panel (home only) + content */}
             <div className="flex flex-1">
-              <IdentityPanel />
+              <IdentityPanel postCount={postCount} />
               <div className="flex min-w-0 flex-1 flex-col">
                 <main className="flex-1">{children}</main>
                 <Footer />
