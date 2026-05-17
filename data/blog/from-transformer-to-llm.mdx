@@ -1,7 +1,7 @@
 ---
 title: From Transformer to LLMs
 date: '2024-12-12'
-tags: ['LLMs', 'Language Models', 'Transformer', 'RAG', 'Prompt Engineering', 'Fine-tuning']
+tags: ['LLMs', 'RAG', 'Prompt Engineering', 'Fine-tuning']
 draft: false
 summary: 'This article explores the evolution from Transformers to Large Language Models (LLMs), detailing the mechanisms of self-attention and multi-head attention, the role of position embeddings, various types of transformer models, and the training and fine-tuning processes of LLMs.'
 image: '/static/images/resource/from-transformer-to-llm/thumbnail-board-room-attention.png'
@@ -124,6 +124,7 @@ Multi-head self-attention isn’t quite sufficient. We need a few extra things a
 Encoder self-attention covers the entire sequence, i.e. both the words to the left of the current position and the words to the right of the current position.
 
 - Text classification (one label per sentence)
+
   - Train a model on the MLM task, adding a `[CLS]` token in front of every sentence
   - Throw away the output layer, create a new one
   - Fine-tune the model to predict the label at the `[CLS]` position
@@ -162,6 +163,7 @@ Self-attention allows the model to weigh the importance of different tokens in t
 ## 2. Training Process
 
 - The LLM is trained through **self-supervision**:
+
   1. Given a text made of tokens $[w_1, w_2, \dots, w_n]$, we take partial sequences $[w_1, w_2, \dots, w_i]$ and seek to predict the next token $w_{i+1}$.
   2. The LLM will take as input $[w_1, w_2, \dots, w_i]$ and output a **probability distribution** $\hat{y}_i$ over possible next tokens.
   3. The loss for this token is then defined as the cross-entropy:
@@ -169,6 +171,7 @@ Self-attention allows the model to weigh the importance of different tokens in t
      $$
      L_{CE} = -\log \hat{y}_i[w_{i+1}]
      $$
+
      - **Explanation:** Probability of the actual token $w_{i+1}$ in the output distribution $\hat{y}_i$.
 
   4. We then make (at batch level) a small update on the model weights $\theta$ to reduce the loss.
@@ -178,6 +181,7 @@ Self-attention allows the model to weigh the importance of different tokens in t
   $$
   \theta^{t+1} = \theta^t - \eta \nabla_\theta L_{CE}
   $$
+
   - **Explanation:**
     - $\theta^t$: Current model weights.
     - $\nabla_\theta L_{CE}$: Gradient of the cross-entropy loss as a function of the model weights.
@@ -272,6 +276,7 @@ These PEFT techniques enable efficient adaptation of large pre-trained models to
 ### 4.2. Two Alignment Strategies
 
 - **Instruction Tuning:** This involves training the model to follow specific instructions by providing it with pairs of instructions and correct responses.
+
   - Manually: Humans write questions or problems and their correct answers.
   - Dataset Conversion: Existing datasets for supervised NLP tasks (e.g., text classification, sentiment analysis, NER, machine translation) are converted into instruction-response pairs.
   - LLM Generation: Large language models generate instruction-response pairs based on external databases and general guidelines.

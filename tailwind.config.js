@@ -22,16 +22,16 @@ module.exports = {
         14: '3.5rem',
       },
       fontSize: {
-        '2xs': ['0.65rem', { lineHeight: '1rem' }], // ~10px — index numbers, labels
-        xs: ['0.75rem', { lineHeight: '1rem' }], // ~12px — captions, timestamps
-        sm: ['0.875rem', { lineHeight: '1.5rem' }], // ~14px — secondary UI text
-        base: ['1rem', { lineHeight: '1.75rem' }], // ~16px — body
-        lg: ['1.125rem', { lineHeight: '1.75rem' }], // ~18px — lead text
-        xl: ['1.25rem', { lineHeight: '1.75rem' }],
-        '2xl': ['1.5rem', { lineHeight: '2rem' }],
-        '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
-        '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
-        '5xl': ['3rem', { lineHeight: '1' }],
+        '2xs': ['0.75rem', { lineHeight: '1rem' }], // ~12px — index numbers, labels
+        xs: ['0.875rem', { lineHeight: '1.25rem' }], // ~14px — captions, timestamps
+        sm: ['1rem', { lineHeight: '1.5rem' }], // ~16px — secondary UI text
+        base: ['1.125rem', { lineHeight: '1.75rem' }], // ~18px — body
+        lg: ['1.3rem', { lineHeight: '1.75rem' }], // ~21px — lead text
+        xl: ['1.5rem', { lineHeight: '1.75rem' }], // ~24px
+        '2xl': ['1.75rem', { lineHeight: '2.25rem' }], // ~28px
+        '3xl': ['2.125rem', { lineHeight: '2.5rem' }], // ~34px
+        '4xl': ['2.625rem', { lineHeight: '2.75rem' }], // ~42px
+        '5xl': ['3.5rem', { lineHeight: '1' }], // ~56px
       },
       fontFamily: {
         sans: ['var(--font-ibm-plex-sans)', ...fontFamily.sans],
