@@ -6,7 +6,7 @@ import type { Blog } from 'contentlayer/generated'
 
 type Post = CoreContent<Blog> & { readingTime?: { text: string } }
 
-const MAX_DISPLAY = 8
+const MAX_DISPLAY = 4
 
 export default function Home({ posts }: { posts: Post[] }) {
   const [featuredPost, ...recentPosts] = posts.slice(0, MAX_DISPLAY)
