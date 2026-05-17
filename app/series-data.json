@@ -9,7 +9,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/relational-database-management-system",
       "seriesOrder": 1,
-      "tags": ["Database", "Data Management", "RDBMS", "Data Engineering"]
+      "tags": ["Database", "Data Engineering"]
     },
     {
       "title": "ER Modeling and Normalization",
@@ -20,7 +20,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/er-modeling-and-normalization",
       "seriesOrder": 2,
-      "tags": ["Database", "Data Modeling", "Normalization", "ER Diagram"]
+      "tags": ["Database", "Data Modeling"]
     },
     {
       "title": "Data Modeling",
@@ -42,13 +42,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-modeling-four-step",
       "seriesOrder": 4,
-      "tags": [
-        "Data Warehouse",
-        "Dimensional Modeling",
-        "Database",
-        "Data Engineering",
-        "Data Modeling"
-      ]
+      "tags": ["Data Warehouse", "Database", "Data Engineering", "Data Modeling"]
     },
     {
       "title": "Dimensional Modeling - Part 1: Basic Fact Table Techniques",
@@ -59,13 +53,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-part-1",
       "seriesOrder": 5,
-      "tags": [
-        "Data Warehouse",
-        "Database",
-        "Dimensional Modeling",
-        "Data Engineering",
-        "Data Modeling"
-      ]
+      "tags": ["Data Warehouse", "Database", "Data Engineering", "Data Modeling"]
     },
     {
       "title": "Dimensional Modeling - Part 2: Basic Dimension Table Techniques",
@@ -76,13 +64,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-part-2",
       "seriesOrder": 6,
-      "tags": [
-        "Data Warehouse",
-        "Database",
-        "Dimensional Modeling",
-        "Data Engineering",
-        "Data Modeling"
-      ]
+      "tags": ["Data Warehouse", "Database", "Data Engineering", "Data Modeling"]
     },
     {
       "title": "Dimensional Modeling - Part 3: Dimensions Hierarchy",
@@ -93,14 +75,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-modeling-hierarchy",
       "seriesOrder": 7,
-      "tags": [
-        "Data Warehouse",
-        "Dimensional Modeling",
-        "Database",
-        "Hierarchy",
-        "Data Engineering",
-        "Data Modeling"
-      ]
+      "tags": ["Data Warehouse", "Database", "Data Engineering", "Data Modeling"]
     },
     {
       "title": "Data Integration - Part 1: ETL, Pushdown and Data Orchestrator",
@@ -111,7 +86,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/data-integration-etl-pushdown",
       "seriesOrder": 8,
-      "tags": ["Data Integration", "ETL", "Data Engineering", "Data Warehouse"]
+      "tags": ["Data Engineering", "Data Warehouse"]
     },
     {
       "title": "Data Integration - Part 2: Loading Strategies, Change Data Capture and Data Layers",
@@ -122,7 +97,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/data-integration-loading",
       "seriesOrder": 9,
-      "tags": ["Data Integration", "ETL", "CDC", "Data Warehouse", "Data Engineering"]
+      "tags": ["Data Engineering", "Data Warehouse"]
     },
     {
       "title": "Big Data: Concepts, Architecture, and Technologies",
@@ -133,7 +108,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/big-data",
       "seriesOrder": 10,
-      "tags": ["Big Data", "Data Engineering", "Data Warehouse"]
+      "tags": ["Data Engineering", "Data Warehouse"]
     },
     {
       "title": "Monolithic Data Lake vs Data Mesh",
@@ -144,7 +119,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/data-lake-vs-data-mesh",
       "seriesOrder": 11,
-      "tags": ["Data Engineering", "Data Architecture", "Data Mesh", "Data Lake"]
+      "tags": ["Data Engineering"]
     }
   ],
   "llms": [
@@ -157,7 +132,7 @@
       "series": "LLMs",
       "path": "blog/from-transformer-to-llm",
       "seriesOrder": 1,
-      "tags": ["LLMs", "Language Models", "Transformer", "RAG", "Prompt Engineering", "Fine-tuning"]
+      "tags": ["LLMs", "RAG", "Prompt Engineering", "Fine-tuning"]
     },
     {
       "title": "Preference Alignment: RLHF and DPO",
@@ -168,7 +143,7 @@
       "series": "LLMs",
       "path": "blog/llms-preference-alignment",
       "seriesOrder": 2,
-      "tags": ["LLMs", "RLHF", "DPO", "Preference Alignment"]
+      "tags": ["LLMs", "Fine-tuning"]
     },
     {
       "title": "LLM-based Agents: Single and Multi-Agent Systems",
@@ -179,7 +154,7 @@
       "series": "LLMs",
       "path": "blog/llms-based-agents",
       "seriesOrder": 3,
-      "tags": ["LLMs", "Agentic AI", "Multi-Agent"]
+      "tags": ["LLMs", "Agentic AI"]
     },
     {
       "title": "LLMs in LangChain - Part 1. Conceptual",
@@ -190,7 +165,7 @@
       "series": "LLMs",
       "path": "blog/llms-part-1",
       "seriesOrder": 4,
-      "tags": ["LLMs", "Language Models", "LangChain"]
+      "tags": ["LLMs", "Agentic AI"]
     },
     {
       "title": "LLMs in LangChain - Part 2. LLMs Core Concepts",
@@ -201,7 +176,7 @@
       "series": "LLMs",
       "path": "blog/llms-part-2",
       "seriesOrder": 5,
-      "tags": ["LLMs", "Language Models", "LangChain"]
+      "tags": ["LLMs", "Agentic AI"]
     }
   ],
   "retrieval-augmented-generation-rag": [
@@ -214,7 +189,7 @@
       "series": "Retrieval Augmented Generation (RAG)",
       "path": "blog/vector-database",
       "seriesOrder": null,
-      "tags": ["Database", "Vector Databases", "Pinecone"]
+      "tags": ["Database", "Vector Databases"]
     },
     {
       "title": "Retrieval Augmented Generation (RAG) with Vector Databases",
@@ -225,7 +200,7 @@
       "series": "Retrieval Augmented Generation (RAG)",
       "path": "blog/rag-with-vector-db",
       "seriesOrder": null,
-      "tags": ["LLMs", "RAG", "Vector Databases", "Database"]
+      "tags": ["LLMs", "RAG", "Vector Databases"]
     }
   ]
 }

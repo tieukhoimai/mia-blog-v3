@@ -36,7 +36,7 @@ export default function SeriesList() {
   }, [])
 
   if (loading) {
-    return <p className="py-4 font-mono text-[11px] text-gray-400 dark:text-gray-600">Loading...</p>
+    return <p className="py-4 font-mono text-2xs text-gray-400 dark:text-gray-600">Loading...</p>
   }
 
   if (Object.keys(seriesData).length === 0) {
@@ -62,18 +62,18 @@ export default function SeriesList() {
           >
             <Link
               href={`/series/${seriesSlug}`}
-              className="text-[17px] font-semibold text-gray-900 transition-colors hover:text-gray-600 dark:text-gray-100 dark:hover:text-gray-400"
+              className="text-base font-semibold text-gray-900 transition-colors hover:text-gray-600 dark:text-gray-100 dark:hover:text-gray-400"
             >
               {seriesName}
             </Link>
-            <p className="mb-5 mt-1 font-mono text-[11.5px] text-gray-400 dark:text-gray-600">
+            <p className="mb-5 mt-1 font-mono text-xs text-gray-400 dark:text-gray-600">
               {articles.length} articles
             </p>
 
             <div className="flex flex-col gap-2">
               {sorted.slice(0, PREVIEW_COUNT).map((article, i) => (
-                <div key={article.slug} className="flex items-baseline gap-3 text-[13px]">
-                  <span className="w-5 shrink-0 font-mono text-[10px] text-gray-400 dark:text-gray-600">
+                <div key={article.slug} className="flex items-baseline gap-3 text-sm">
+                  <span className="w-5 shrink-0 font-mono text-xs text-gray-400 dark:text-gray-600">
                     {String(article.seriesOrder ?? i + 1).padStart(2, '0')}
                   </span>
                   <Link
@@ -85,9 +85,12 @@ export default function SeriesList() {
                 </div>
               ))}
               {extra > 0 && (
-                <p className="pl-8 text-[12px] text-gray-400 dark:text-gray-600">
+                <Link
+                  href={`/series/${seriesSlug}`}
+                  className="pl-8 text-xs text-gray-400 transition-colors hover:text-gray-900 dark:text-gray-600 dark:hover:text-gray-100"
+                >
                   + {extra} more articles
-                </p>
+                </Link>
               )}
             </div>
           </div>
