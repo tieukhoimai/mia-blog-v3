@@ -1,7 +1,7 @@
 ---
 title: 'Big Data: Concepts, Architecture, and Technologies'
 date: '2025-07-03'
-tags: ['Big Data', 'Data Engineering', 'Data Warehouse']
+tags: ['Data Engineering', 'Data Warehouse']
 draft: false
 summary: 'This article explores the world of Big Data, covering core concepts like the 4Vs (Volume, Velocity, Variety, Veracity), key technologies including Hadoop, Kafka, and Spark, and modern architectures such as Persistent Staging Areas and real-time processing systems. It provides a comprehensive overview of the technologies that emerged to address the challenges of modern data growth beyond traditional database capabilities.'
 image: '/static/images/resource/big-data/thumbnail.png'
@@ -176,15 +176,18 @@ A Persistent Staging Area (PSA) serves as an intermediate storage layer between 
 Modern Big Data architectures often incorporate real-time processing capabilities to handle data as it arrives, enabling immediate insights and actions.
 
 1. **Real-time Producer**: Devices or sensors that generate raw data
+
    - Production line aggregators
    - IoT devices, web services, or REST APIs
 
 2. **Broker**: Buffer to prevent data loss during peak data rates
+
    - Publish/subscribe messaging system for asynchronous exchange
    - Works as a FIFO buffer to ensure all data is eventually processed
    - Publishers are sensors/devices, subscriber is the real-time engine
 
 3. **Engine**: Processes incoming data for predictions, alarms, or automated actions
+
    - May be implemented as dedicated software, generic frameworks, or custom solutions
 
 4. **Data Lake**: Storage for raw data used for statistical analysis or data warehouse enrichment
