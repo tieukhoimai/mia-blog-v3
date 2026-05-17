@@ -59,12 +59,27 @@ Personal blog built with Next.js App Router, Tailwind CSS, and MDX via Contentla
 
 ## Quick start
 
-```bash
-git clone https://github.com/tieukhoimai/mia-blog-v3
-cd mia-blog-v3
-yarn install
-yarn dev          # http://localhost:3000
-```
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/tieukhoimai/mia-blog-v3
+   cd mia-blog-v3
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   yarn install
+   ```
+
+3. Configure environment variables (optional features):
+
+   - Create `.env.local` manually or pull from Vercel: `vercel env pull .env.local`
+   - Use the sample below and remove what you do not need:
+
+   ```bash
+   # Google Analytics (GA4)
+   NEXT_PUBLIC_GOOGLE_ANALYTICS=G-XXXXXXXXXX
 
 ### Environment variables (all optional)
 
