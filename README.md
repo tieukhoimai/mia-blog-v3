@@ -41,6 +41,7 @@ Personal blog built with Next.js App Router, Tailwind CSS, MDX via Contentlayer,
    ```
 
 3. Configure environment variables (optional features):
+
    - Create `.env.local` manually or pull from Vercel: `vercel env pull .env.local`
    - Use the sample below and remove what you do not need:
 
@@ -65,7 +66,7 @@ Personal blog built with Next.js App Router, Tailwind CSS, MDX via Contentlayer,
 
 ## Customization
 
-- Site metadata, analytics/comments/newsletter providers: data/siteMetadata.js
+- Site metadata, analytics/comments providers: data/siteMetadata.js
 - Navigation links: data/headerNavLinks.ts
 - Projects: data/projectsData.ts
 - Author profile: data/authors/default.mdx
