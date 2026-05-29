@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { useTheme } from 'next-themes'
 import {
   AreaChart,
@@ -36,7 +37,11 @@ function CustomTooltip({
 
 export default function PageviewChart({ data }: { data: TimeSeriesPoint[] }) {
   const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme === 'dark'
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+  const isDark = mounted && resolvedTheme === 'dark'
 
   const strokeColor = isDark ? '#e5e7eb' : '#111827'
   const gradientStart = isDark ? '#374151' : '#d1d5db'

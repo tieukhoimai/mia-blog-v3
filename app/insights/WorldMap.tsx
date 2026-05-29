@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTheme } from 'next-themes'
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps'
 import type { TopCountry } from '@/lib/analytics'
 
-const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'
+const GEO_URL = '/countries-110m.json'
 
 // GA4 country name → ISO numeric code (world-atlas feature.id)
 const COUNTRY_TO_ID: Record<string, string> = {
@@ -94,7 +94,11 @@ const COUNTRY_TO_ID: Record<string, string> = {
 
 export default function WorldMap({ data }: { data: TopCountry[] }) {
   const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme === 'dark'
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+  const isDark = mounted && resolvedTheme === 'dark'
   const [tooltip, setTooltip] = useState<{ name: string; users: number } | null>(null)
 
   const maxUsers = data[0]?.users ?? 1
