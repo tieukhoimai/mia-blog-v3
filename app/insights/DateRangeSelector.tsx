@@ -22,8 +22,11 @@ export default function DateRangeSelector({ current }: { current: DateRange }) {
       {RANGES.map((r, i) => (
         <button
           key={r.value}
-          onClick={() => startTransition(() => router.push(`/insights?range=${r.value}`))}
-          disabled={isPending}
+          onClick={() => {
+            if (r.value === current) return
+            startTransition(() => router.push(`/insights?range=${r.value}`))
+          }}
+          disabled={isPending || r.value === current}
           className={[
             'px-3 py-1.5 text-xs transition-colors sm:px-4 sm:text-sm',
             i < RANGES.length - 1 ? 'border-r border-gray-200 dark:border-gray-700' : '',
