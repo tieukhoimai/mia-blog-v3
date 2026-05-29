@@ -4,6 +4,7 @@ const headerNavLinks = [
   { href: '/series', title: 'Series' },
   // { href: '/tags', title: 'Tags' },
   { href: '/learning', title: 'Learning' },
+  { href: '/insights', title: 'Insights' },
   { href: '/about', title: 'About' },
 ]
 
