@@ -7,11 +7,11 @@ export function getStartDate(range: DateRange): string {
     case 'all':
       return '2020-01-01'
     case '365d':
-      return '365daysAgo'
+      return '364daysAgo'
     case '90d':
-      return '90daysAgo'
+      return '89daysAgo'
     case '30d':
-      return '30daysAgo'
+      return '29daysAgo'
   }
 }
 
@@ -91,11 +91,11 @@ export function getPreviousPeriodDates(
 ): { startDate: string; endDate: string } | null {
   switch (range) {
     case '30d':
-      return { startDate: '60daysAgo', endDate: '31daysAgo' }
+      return { startDate: '59daysAgo', endDate: '30daysAgo' }
     case '90d':
-      return { startDate: '180daysAgo', endDate: '91daysAgo' }
+      return { startDate: '179daysAgo', endDate: '90daysAgo' }
     case '365d':
-      return { startDate: '730daysAgo', endDate: '366daysAgo' }
+      return { startDate: '729daysAgo', endDate: '365daysAgo' }
     case 'all':
       return null
   }
@@ -143,7 +143,7 @@ export async function getTopPosts(startDate: string, limit = 10): Promise<TopPos
       dimensions: [{ name: 'pagePath' }, { name: 'pageTitle' }],
       metrics: [{ name: 'screenPageViews' }],
       orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
-      limit: Math.max(limit, 200),
+      limit,
       dimensionFilter: {
         filter: {
           fieldName: 'pagePath',
