@@ -290,3 +290,35 @@ export async function getTopChannels(startDate: string, limit = 8): Promise<TopC
     return []
   }
 }
+
+export interface TopSource {
+  source: string
+  sessions: number
+}
+
+export async function getTopSources(startDate: string, limit = 8): Promise<TopSource[]> {
+  const client = getClient()
+  if (!client || !propertyId) return []
+
+  try {
+    const [response] = await client.runReport({
+      property: `properties/${propertyId}`,
+      dateRanges: [{ startDate, endDate: 'today' }],
+      dimensions: [{ name: 'sessionSourceMedium' }],
+      metrics: [{ name: 'sessions' }],
+      orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
+      limit: limit + 2, // fetch a couple extra to absorb filtered-out rows
+    })
+
+    const EXCLUDE = new Set(['(not set)', '(data deleted)'])
+    return (response.rows ?? [])
+      .map((row) => ({
+        source: row.dimensionValues?.[0]?.value ?? '',
+        sessions: parseInt(row.metricValues?.[0]?.value ?? '0', 10),
+      }))
+      .filter((s) => s.source && !EXCLUDE.has(s.source))
+      .slice(0, limit)
+  } catch {
+    return []
+  }
+}

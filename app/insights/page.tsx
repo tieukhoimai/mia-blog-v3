@@ -6,7 +6,7 @@ import {
   getTopPosts,
   getPageviewTimeSeries,
   getTopCountries,
-  getTopChannels,
+  getTopSources,
   getPreviousPeriodDates,
 } from '@/lib/analytics'
 import { getAllSeries } from '@/lib/series'
@@ -26,6 +26,47 @@ const RANGE_LABEL: Record<DateRange, string> = {
   '365d': 'over the last 12 months',
   '90d': 'over the last 3 months',
   '30d': 'last month',
+}
+
+const SOURCE_LABELS: Record<string, string> = {
+  '(direct)': 'Direct',
+  google: 'Google',
+  bing: 'Bing',
+  duckduckgo: 'DuckDuckGo',
+  yahoo: 'Yahoo',
+  'linkedin.com': 'LinkedIn',
+  't.co': 'Twitter / X',
+  'twitter.com': 'Twitter / X',
+  'x.com': 'Twitter / X',
+  'github.com': 'GitHub',
+  'facebook.com': 'Facebook',
+  'l.facebook.com': 'Facebook',
+  'lm.facebook.com': 'Facebook',
+  'm.facebook.com': 'Facebook',
+  'instagram.com': 'Instagram',
+  'l.instagram.com': 'Instagram',
+  'reddit.com': 'Reddit',
+  'medium.com': 'Medium',
+  'dev.to': 'dev.to',
+  'news.ycombinator.com': 'Hacker News',
+  hackernews: 'Hacker News',
+  'substack.com': 'Substack',
+  'youtube.com': 'YouTube',
+  'l.threads.com': 'Threads',
+  'www.threads.net': 'Threads',
+  'chatgpt.com': 'ChatGPT',
+  zalo: 'Zalo',
+}
+
+function formatSourceMedium(sourceMedium: string): string {
+  if (sourceMedium === '(direct) / (none)') return 'Direct'
+  const slash = sourceMedium.lastIndexOf(' / ')
+  if (slash === -1) return SOURCE_LABELS[sourceMedium.toLowerCase()] ?? sourceMedium
+  const src = sourceMedium.slice(0, slash)
+  const medium = sourceMedium.slice(slash + 3)
+  const label = SOURCE_LABELS[src.toLowerCase()] ?? src
+  if (!medium || medium === '(none)') return label
+  return `${label} / ${medium}`
 }
 
 function formatDuration(seconds: number): string {
@@ -67,14 +108,14 @@ export default async function InsightsPage({
   const startDate = getStartDate(range)
   const prevDates = getPreviousPeriodDates(range)
 
-  const [overview, prevOverview, allPosts, timeSeries, topCountries, topChannels] =
+  const [overview, prevOverview, allPosts, timeSeries, topCountries, topSources] =
     await Promise.all([
       getOverviewStats(startDate),
       prevDates ? getOverviewStats(prevDates.startDate, prevDates.endDate) : Promise.resolve(null),
       getTopPosts(startDate, 200),
       getPageviewTimeSeries(range),
       getTopCountries(startDate, 50),
-      getTopChannels(startDate),
+      getTopSources(startDate),
     ])
 
   const stats = overview ?? { pageviews: 0, users: 0, avgSessionDuration: 0 }
@@ -87,6 +128,16 @@ export default async function InsightsPage({
         avgSessionDuration: calcDelta(stats.avgSessionDuration, prevOverview.avgSessionDuration),
       }
     : null
+
+  // Merge sources that normalize to the same display label (e.g. l.facebook.com + lm.facebook.com → Facebook)
+  const sourceMap = new Map<string, number>()
+  topSources.forEach((item) => {
+    const label = formatSourceMedium(item.source)
+    sourceMap.set(label, (sourceMap.get(label) ?? 0) + item.sessions)
+  })
+  const mergedSources = Array.from(sourceMap.entries())
+    .map(([source, sessions]) => ({ source, sessions }))
+    .sort((a, b) => b.sessions - a.sessions)
 
   // Compute views per series.
   // Use title as primary key (stable across URL renames) and sum across all matching paths.
@@ -178,21 +229,21 @@ export default async function InsightsPage({
           </div>
 
           {/* Traffic source + World map */}
-          {(topChannels.length > 0 || topCountries.length > 0) && (
+          {(topSources.length > 0 || topCountries.length > 0) && (
             <div className="mb-12 grid grid-cols-1 gap-8 sm:grid-cols-3">
               <div>
                 <p className="mb-4 text-2xs tracking-[0.13em] text-gray-400 dark:text-gray-600">
-                  — sessions by traffic source
+                  — sessions by source
                 </p>
-                {topChannels.length > 0 ? (
+                {mergedSources.length > 0 ? (
                   <ul className="divide-y divide-gray-100 dark:divide-gray-800">
-                    {topChannels.map((item) => {
-                      const pct = Math.round((item.sessions / topChannels[0].sessions) * 100)
+                    {mergedSources.map((item) => {
+                      const pct = Math.round((item.sessions / mergedSources[0].sessions) * 100)
                       return (
-                        <li key={item.channel} className="py-3 first:pt-0 last:pb-0">
+                        <li key={item.source} className="py-3 first:pt-0 last:pb-0">
                           <div className="mb-1 flex items-center justify-between">
                             <span className="text-sm text-gray-700 dark:text-gray-300">
-                              {item.channel}
+                              {formatSourceMedium(item.source)}
                             </span>
                             <span className="ml-3 shrink-0 font-mono text-xs text-gray-400 dark:text-gray-600">
                               {item.sessions.toLocaleString()}
