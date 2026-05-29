@@ -32,9 +32,13 @@ const SOURCE_LABELS: Record<string, string> = {
   '(direct)': 'Direct',
   google: 'Google',
   bing: 'Bing',
+  'cn.bing.com': 'Bing',
   duckduckgo: 'DuckDuckGo',
   yahoo: 'Yahoo',
+  ecosia: 'Ecosia',
+  'ecosia.org': 'Ecosia',
   'linkedin.com': 'LinkedIn',
+  'lnkd.in': 'LinkedIn',
   't.co': 'Twitter / X',
   'twitter.com': 'Twitter / X',
   'x.com': 'Twitter / X',
@@ -53,19 +57,43 @@ const SOURCE_LABELS: Record<string, string> = {
   'substack.com': 'Substack',
   'youtube.com': 'YouTube',
   'l.threads.com': 'Threads',
+  'l.threads.net': 'Threads',
   'www.threads.net': 'Threads',
   'chatgpt.com': 'ChatGPT',
+  'gemini.google.com': 'Google Gemini',
+  'lens.google.com': 'Google Lens',
+  'perplexity.ai': 'Perplexity',
+  'unsplash.com': 'Unsplash',
+  'vercel.com': 'Vercel',
   zalo: 'Zalo',
+  'chat.zalo.me': 'Zalo',
+  'statics.teams.cdn.office.net': 'Microsoft Teams',
+}
+
+function normalizeSource(src: string): string {
+  const lower = src.toLowerCase()
+  if (SOURCE_LABELS[lower]) return SOURCE_LABELS[lower]
+  if (lower.endsWith('.pages.github.io')) return 'GitHub Pages'
+  if (lower.endsWith('.google.com')) return 'Google'
+  if (lower.endsWith('.bing.com')) return 'Bing'
+  if (lower.endsWith('.facebook.com')) return 'Facebook'
+  if (lower.endsWith('.instagram.com')) return 'Instagram'
+  if (lower.endsWith('.linkedin.com')) return 'LinkedIn'
+  if (lower.endsWith('.youtube.com')) return 'YouTube'
+  if (lower.endsWith('.reddit.com')) return 'Reddit'
+  if (lower.endsWith('.threads.net')) return 'Threads'
+  return src
 }
 
 function formatSourceMedium(sourceMedium: string): string {
   if (sourceMedium === '(direct) / (none)') return 'Direct'
   const slash = sourceMedium.lastIndexOf(' / ')
-  if (slash === -1) return SOURCE_LABELS[sourceMedium.toLowerCase()] ?? sourceMedium
+  if (slash === -1) return normalizeSource(sourceMedium)
   const src = sourceMedium.slice(0, slash)
   const medium = sourceMedium.slice(slash + 3)
-  const label = SOURCE_LABELS[src.toLowerCase()] ?? src
-  if (!medium || medium === '(none)') return label
+  const label = normalizeSource(src)
+  const HIDE_MEDIUMS = new Set(['(none)', '(not set)', src.toLowerCase(), label.toLowerCase()])
+  if (!medium || HIDE_MEDIUMS.has(medium.toLowerCase())) return label
   return `${label} / ${medium}`
 }
 
@@ -115,7 +143,7 @@ export default async function InsightsPage({
       getTopPosts(startDate, 200),
       getPageviewTimeSeries(range),
       getTopCountries(startDate, 50),
-      getTopSources(startDate),
+      getTopSources(startDate, 30),
     ])
 
   const stats = overview ?? { pageviews: 0, users: 0, avgSessionDuration: 0 }
@@ -135,9 +163,13 @@ export default async function InsightsPage({
     const label = formatSourceMedium(item.source)
     sourceMap.set(label, (sourceMap.get(label) ?? 0) + item.sessions)
   })
-  const mergedSources = Array.from(sourceMap.entries())
+  const allMergedSources = Array.from(sourceMap.entries())
     .map(([source, sessions]) => ({ source, sessions }))
     .sort((a, b) => b.sessions - a.sessions)
+  const TOP_N = 7
+  const mergedSources = allMergedSources.slice(0, TOP_N)
+  const otherSessions = allMergedSources.slice(TOP_N).reduce((sum, s) => sum + s.sessions, 0)
+  if (otherSessions > 0) mergedSources.push({ source: 'Other', sessions: otherSessions })
 
   // Compute views per series.
   // Use title as primary key (stable across URL renames) and sum across all matching paths.
