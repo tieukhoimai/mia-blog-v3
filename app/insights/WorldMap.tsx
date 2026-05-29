@@ -174,6 +174,24 @@ export default function WorldMap({ data }: { data: TopCountry[] }) {
           </Geographies>
         </ComposableMap>
       </div>
+
+      <div className="grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3">
+        {data.slice(0, 6).map((item, i) => (
+          <div key={item.country} className="flex items-center justify-between gap-2">
+            <span className="flex min-w-0 items-center gap-1.5">
+              <span className="shrink-0 font-mono text-xs text-gray-400 dark:text-gray-600">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="truncate text-xs text-gray-600 dark:text-gray-400">
+                {item.country}
+              </span>
+            </span>
+            <span className="shrink-0 font-mono text-xs text-gray-400 dark:text-gray-600">
+              {item.users.toLocaleString()}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
