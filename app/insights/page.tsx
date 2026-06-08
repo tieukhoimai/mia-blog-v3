@@ -193,8 +193,6 @@ export default async function InsightsPage({
     })
     .sort((a, b) => b.views - a.views)
 
-  const maxSeriesViews = seriesViews[0]?.views ?? 1
-
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-8">
       {/* Header */}
@@ -224,14 +222,14 @@ export default async function InsightsPage({
         <>
           {/* Pageview chart */}
           {timeSeries.length > 0 && (
-            <div className="mb-10 border-b border-t border-gray-100 py-6 dark:border-gray-800">
+            <div className="mb-10">
               <PageviewChart data={timeSeries} />
             </div>
           )}
 
           {/* Stats row — 3 cards */}
-          <div className="mb-12 grid grid-cols-2 border border-gray-100 sm:grid-cols-3 dark:border-gray-800">
-            <div className="border-b border-r border-gray-100 px-5 py-4 sm:border-b-0 sm:px-6 sm:py-5 dark:border-gray-800">
+          <div className="mb-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <div className="border border-gray-200 bg-gray-100 px-5 py-4 sm:px-6 sm:py-5 dark:border-gray-700 dark:bg-gray-800">
               <p className="font-mono text-2xl font-light text-gray-900 dark:text-gray-100">
                 {formatNumber(stats.pageviews)}
                 <Delta value={deltas?.pageviews ?? null} />
@@ -240,7 +238,7 @@ export default async function InsightsPage({
                 Pageviews
               </p>
             </div>
-            <div className="border-b border-gray-100 px-5 py-4 sm:border-b-0 sm:border-r sm:px-6 sm:py-5 dark:border-gray-800">
+            <div className="border border-gray-200 bg-gray-100 px-5 py-4 sm:px-6 sm:py-5 dark:border-gray-700 dark:bg-gray-800">
               <p className="font-mono text-2xl font-light text-gray-900 dark:text-gray-100">
                 {formatNumber(stats.users)}
                 <Delta value={deltas?.users ?? null} />
@@ -249,7 +247,7 @@ export default async function InsightsPage({
                 Unique visitors
               </p>
             </div>
-            <div className="col-span-2 px-5 py-4 sm:col-span-1 sm:px-6 sm:py-5">
+            <div className="col-span-2 border border-gray-200 bg-gray-100 px-5 py-4 sm:col-span-1 sm:px-6 sm:py-5 dark:border-gray-700 dark:bg-gray-800">
               <p className="font-mono text-2xl font-light text-gray-900 dark:text-gray-100">
                 {formatDuration(stats.avgSessionDuration)}
                 <Delta value={deltas?.avgSessionDuration ?? null} />
@@ -268,7 +266,7 @@ export default async function InsightsPage({
                   — sessions by source
                 </p>
                 {mergedSources.length > 0 ? (
-                  <ul className="divide-y divide-gray-100 dark:divide-gray-800">
+                  <ul>
                     {mergedSources.map((item) => {
                       const pct = Math.round((item.sessions / mergedSources[0].sessions) * 100)
                       return (
@@ -308,34 +306,25 @@ export default async function InsightsPage({
               <p className="mb-4 text-2xs tracking-[0.13em] text-gray-400 dark:text-gray-600">
                 — views by series
               </p>
-              <ul className="divide-y divide-gray-100 dark:divide-gray-800">
-                {seriesViews.map((s) => {
-                  const pct = Math.round((s.views / maxSeriesViews) * 100)
-                  return (
-                    <li key={s.slug} className="py-3 first:pt-0 last:pb-0">
-                      <div className="mb-1 flex items-start justify-between gap-2">
-                        <Link
-                          href={`/series/${s.slug}`}
-                          className="text-sm leading-snug text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
-                        >
-                          {s.name}
-                        </Link>
-                        <span className="shrink-0 font-mono text-xs text-gray-400 dark:text-gray-600">
-                          {formatNumber(s.views)}
-                        </span>
-                      </div>
-                      <div className="mb-1 h-px w-full bg-gray-100 dark:bg-gray-800">
-                        <div
-                          className="h-px bg-gray-400 dark:bg-gray-600"
-                          style={{ width: `${pct}%` }}
-                        />
-                      </div>
-                      <p className="font-mono text-xs text-gray-400 dark:text-gray-600">
-                        {s.count} {s.count === 1 ? 'article' : 'articles'}
-                      </p>
-                    </li>
-                  )
-                })}
+              <ul className="space-y-4">
+                {seriesViews.map((s) => (
+                  <li key={s.slug}>
+                    <div className="flex items-start justify-between gap-2">
+                      <Link
+                        href={`/series/${s.slug}`}
+                        className="text-sm leading-snug text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
+                      >
+                        {s.name}
+                      </Link>
+                      <span className="shrink-0 font-mono text-xs text-gray-400 dark:text-gray-600">
+                        {formatNumber(s.views)}
+                      </span>
+                    </div>
+                    <p className="mt-0.5 font-mono text-xs text-gray-400 dark:text-gray-600">
+                      {s.count} {s.count === 1 ? 'article' : 'articles'}
+                    </p>
+                  </li>
+                ))}
               </ul>
             </div>
 

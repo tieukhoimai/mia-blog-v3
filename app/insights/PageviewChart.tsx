@@ -52,7 +52,7 @@ export default function PageviewChart({ data }: { data: TimeSeriesPoint[] }) {
 
   return (
     <div>
-      <p className="mb-1 text-2xs tracking-[0.13em] text-gray-400 dark:text-gray-600">
+      <p className="mb-4 text-2xs tracking-[0.13em] text-gray-400 dark:text-gray-600">
         — pageviews
       </p>
       <ResponsiveContainer width="100%" height={200}>
