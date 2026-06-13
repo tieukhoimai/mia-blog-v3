@@ -45,6 +45,176 @@ Understanding the difference between OLTP and OLAP models is crucial for effecti
 
 The transition from a Logical Data Model (LDM) to a Physical Data Model (PDM) is a critical step in database implementation.
 
+<div className="my-6 overflow-x-auto">
+  <svg viewBox="0 0 900 340" xmlns="http://www.w3.org/2000/svg" className="w-full">
+    <text
+      x="150"
+      y="20"
+      textAnchor="middle"
+      fontSize="10"
+      fill="#6b7280"
+      fontFamily="sans-serif"
+      fontWeight="600"
+    >
+      {'LOGICAL DATA MODEL'}
+    </text>
+    <text
+      x="732"
+      y="20"
+      textAnchor="middle"
+      fontSize="10"
+      fill="#6b7280"
+      fontFamily="sans-serif"
+      fontWeight="600"
+    >
+      {'PHYSICAL DATA MODEL'}
+    </text>
+    <rect x="20" y="28" width="260" height="32" fill="#3b9daa" />
+    <text
+      x="150"
+      y="49"
+      textAnchor="middle"
+      fontSize="12"
+      fill="white"
+      fontWeight="bold"
+      fontFamily="sans-serif"
+    >
+      {'CUSTOMER'}
+    </text>
+    <rect x="20" y="60" width="260" height="24" fill="white" />
+    <rect x="20" y="84" width="260" height="24" fill="white" />
+    <rect x="20" y="108" width="260" height="24" fill="white" />
+    <rect x="20" y="132" width="260" height="24" fill="white" />
+    <rect x="20" y="156" width="260" height="24" fill="white" />
+    <line x1="20" y1="84" x2="280" y2="84" stroke="#e5e7eb" strokeWidth="1" />
+    <line x1="20" y1="108" x2="280" y2="108" stroke="#e5e7eb" strokeWidth="1" />
+    <line x1="20" y1="132" x2="280" y2="132" stroke="#e5e7eb" strokeWidth="1" />
+    <line x1="20" y1="156" x2="280" y2="156" stroke="#e5e7eb" strokeWidth="1" />
+    <line x1="170" y1="60" x2="170" y2="180" stroke="#e5e7eb" strokeWidth="1" />
+    <text x="32" y="76" fontSize="11" fill="#374151" fontFamily="sans-serif">
+      {'customer_id'}
+    </text>
+    <text x="180" y="76" fontSize="10" fill="#3b9daa" fontFamily="sans-serif" fontWeight="600">
+      {'PK'}
+    </text>
+    <text x="32" y="100" fontSize="11" fill="#374151" fontFamily="sans-serif">
+      {'first_name'}
+    </text>
+    <text x="32" y="124" fontSize="11" fill="#374151" fontFamily="sans-serif">
+      {'last_name'}
+    </text>
+    <text x="32" y="148" fontSize="11" fill="#374151" fontFamily="sans-serif">
+      {'email'}
+    </text>
+    <text x="32" y="172" fontSize="11" fill="#374151" fontFamily="sans-serif">
+      {'phone'}
+    </text>
+    <rect x="20" y="28" width="260" height="152" fill="none" stroke="#3b9daa" strokeWidth="1.5" />
+    <line
+      x1="282"
+      y1="104"
+      x2="576"
+      y2="104"
+      stroke="#9ca3af"
+      strokeWidth="1.5"
+      strokeDasharray="5,3"
+    />
+    <polygon points="576,100 582,104 576,108" fill="#9ca3af" />
+    <text x="431" y="97" textAnchor="middle" fontSize="9" fill="#9ca3af" fontFamily="sans-serif">
+      {'transform'}
+    </text>
+    <rect x="582" y="28" width="300" height="32" fill="#3b9daa" />
+    <text
+      x="732"
+      y="49"
+      textAnchor="middle"
+      fontSize="12"
+      fill="white"
+      fontWeight="bold"
+      fontFamily="sans-serif"
+    >
+      {'CUSTOMER'}
+    </text>
+    <rect x="582" y="60" width="300" height="24" fill="#fef3c7" />
+    <rect x="582" y="84" width="300" height="24" fill="white" />
+    <rect x="582" y="108" width="300" height="24" fill="white" />
+    <rect x="582" y="132" width="300" height="24" fill="white" />
+    <rect x="582" y="156" width="300" height="24" fill="white" />
+    <rect x="582" y="180" width="300" height="24" fill="white" />
+    <rect x="582" y="204" width="300" height="24" fill="#fef3c7" />
+    <rect x="582" y="228" width="300" height="24" fill="#fef3c7" />
+    <rect x="582" y="252" width="300" height="24" fill="#fef3c7" />
+    <rect x="582" y="276" width="300" height="24" fill="#fef3c7" />
+    <line x1="582" y1="84" x2="882" y2="84" stroke="#e5e7eb" strokeWidth="1" />
+    <line x1="582" y1="108" x2="882" y2="108" stroke="#e5e7eb" strokeWidth="1" />
+    <line x1="582" y1="132" x2="882" y2="132" stroke="#e5e7eb" strokeWidth="1" />
+    <line x1="582" y1="156" x2="882" y2="156" stroke="#e5e7eb" strokeWidth="1" />
+    <line x1="582" y1="180" x2="882" y2="180" stroke="#e5e7eb" strokeWidth="1" />
+    <line x1="582" y1="204" x2="882" y2="204" stroke="#e5e7eb" strokeWidth="1" />
+    <line x1="582" y1="228" x2="882" y2="228" stroke="#e5e7eb" strokeWidth="1" />
+    <line x1="582" y1="252" x2="882" y2="252" stroke="#e5e7eb" strokeWidth="1" />
+    <line x1="582" y1="276" x2="882" y2="276" stroke="#e5e7eb" strokeWidth="1" />
+    <line x1="742" y1="60" x2="742" y2="300" stroke="#e5e7eb" strokeWidth="1" />
+    <text x="594" y="76" fontSize="11" fill="#374151" fontFamily="sans-serif">
+      {'cust_sk'}
+    </text>
+    <text x="752" y="76" fontSize="10" fill="#d97706" fontFamily="sans-serif" fontWeight="600">
+      {'PK · surrogate key'}
+    </text>
+    <text x="594" y="100" fontSize="11" fill="#374151" fontFamily="sans-serif">
+      {'customer_id'}
+    </text>
+    <text x="752" y="100" fontSize="10" fill="#6b7280" fontFamily="sans-serif">
+      {'BK'}
+    </text>
+    <text x="594" y="124" fontSize="11" fill="#374151" fontFamily="sans-serif">
+      {'first_name'}
+    </text>
+    <text x="594" y="148" fontSize="11" fill="#374151" fontFamily="sans-serif">
+      {'last_name'}
+    </text>
+    <text x="594" y="172" fontSize="11" fill="#374151" fontFamily="sans-serif">
+      {'email'}
+    </text>
+    <text x="594" y="196" fontSize="11" fill="#374151" fontFamily="sans-serif">
+      {'phone'}
+    </text>
+    <text x="594" y="220" fontSize="11" fill="#374151" fontFamily="sans-serif">
+      {'job_id'}
+    </text>
+    <text x="752" y="220" fontSize="10" fill="#d97706" fontFamily="sans-serif" fontWeight="600">
+      {'technical metadata'}
+    </text>
+    <text x="594" y="244" fontSize="11" fill="#374151" fontFamily="sans-serif">
+      {'insert_date'}
+    </text>
+    <text x="752" y="244" fontSize="10" fill="#d97706" fontFamily="sans-serif" fontWeight="600">
+      {'technical metadata'}
+    </text>
+    <text x="594" y="268" fontSize="11" fill="#374151" fontFamily="sans-serif">
+      {'update_date'}
+    </text>
+    <text x="752" y="268" fontSize="10" fill="#d97706" fontFamily="sans-serif" fontWeight="600">
+      {'technical metadata'}
+    </text>
+    <text x="594" y="292" fontSize="11" fill="#374151" fontFamily="sans-serif">
+      {'is_active'}
+    </text>
+    <text x="752" y="292" fontSize="10" fill="#d97706" fontFamily="sans-serif" fontWeight="600">
+      {'data quality flag'}
+    </text>
+    <rect x="582" y="28" width="300" height="272" fill="none" stroke="#3b9daa" strokeWidth="1.5" />
+    <rect x="582" y="312" width="12" height="12" fill="white" stroke="#d1d5db" strokeWidth="1" />
+    <text x="598" y="323" fontSize="10" fill="#6b7280" fontFamily="sans-serif">
+      {'Business attribute'}
+    </text>
+    <rect x="710" y="312" width="12" height="12" fill="#fef3c7" stroke="#d97706" strokeWidth="1" />
+    <text x="726" y="323" fontSize="10" fill="#6b7280" fontFamily="sans-serif">
+      {'Technical addition (PDM only)'}
+    </text>
+  </svg>
+</div>
+
 Physical Table Structure Should Include:
 
 - **Technical metadata** (job_id, insert/update data, etc)
@@ -52,8 +222,3 @@ Physical Table Structure Should Include:
 - **Primary and/or secondary indexes** of the table to improve performance
 - **Table partitioning functions**
 - Adding **surrogate key** to simplify join, improve performance, optimize space
-
-## References
-
-- Lecture notes from Business Analytics course, Prof. Paolo Menna, University of Verona 2024-2025
-- IBM. (n.d.). [What is data modeling?](https://www.ibm.com/topics/data-modeling)

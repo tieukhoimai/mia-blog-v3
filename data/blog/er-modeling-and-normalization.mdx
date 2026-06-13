@@ -58,7 +58,108 @@ An **entity** represents a distinguishable object or concept in the real world:
 - It's possible to use the constant **N** to refer to a generic number greater than 1
 - In the ER diagram, the cardinality of the relationship is labeled on the arc that links the entity to the relationship
 
-![Cardinality Example](/static/images/resource/er-modeling-and-normalization/cardinality-example.png)
+<div className="my-6 overflow-x-auto">
+  <svg
+    viewBox="0 0 780 470"
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-full max-w-2xl mx-auto"
+  >
+    <rect x="40" y="50" width="160" height="50" fill="#3b9daa" rx="2" />
+    <text
+      x="120"
+      y="81"
+      textAnchor="middle"
+      fill="white"
+      fontWeight="bold"
+      fontSize="13"
+      fontFamily="sans-serif"
+    >
+      {'CONSULTANT'}
+    </text>
+    <rect x="520" y="50" width="220" height="50" fill="#3b9daa" rx="2" />
+    <text
+      x="630"
+      y="81"
+      textAnchor="middle"
+      fill="white"
+      fontWeight="bold"
+      fontSize="13"
+      fontFamily="sans-serif"
+    >
+      {'PROJECT_PLANNING'}
+    </text>
+    <rect x="40" y="390" width="160" height="50" fill="#3b9daa" rx="2" />
+    <text
+      x="120"
+      y="421"
+      textAnchor="middle"
+      fill="white"
+      fontWeight="bold"
+      fontSize="13"
+      fontFamily="sans-serif"
+    >
+      {'OFFICE'}
+    </text>
+    <rect x="540" y="390" width="160" height="50" fill="#3b9daa" rx="2" />
+    <text
+      x="620"
+      y="421"
+      textAnchor="middle"
+      fill="white"
+      fontWeight="bold"
+      fontSize="13"
+      fontFamily="sans-serif"
+    >
+      {'PROJECT'}
+    </text>
+    <polygon points="360,50 430,75 360,100 290,75" fill="#f0f0f0" stroke="#aaa" strokeWidth="1.5" />
+    <text x="360" y="80" textAnchor="middle" fontSize="11" fill="#555" fontFamily="sans-serif">
+      {'ALLOCATED'}
+    </text>
+    <polygon
+      points="120,215 178,245 120,275 62,245"
+      fill="#f0f0f0"
+      stroke="#aaa"
+      strokeWidth="1.5"
+    />
+    <text x="120" y="250" textAnchor="middle" fontSize="11" fill="#555" fontFamily="sans-serif">
+      {'ASSIGNED'}
+    </text>
+    <polygon
+      points="630,215 688,245 630,275 572,245"
+      fill="#f0f0f0"
+      stroke="#aaa"
+      strokeWidth="1.5"
+    />
+    <text x="630" y="250" textAnchor="middle" fontSize="11" fill="#555" fontFamily="sans-serif">
+      {'PLANNED'}
+    </text>
+    <line x1="200" y1="75" x2="290" y2="75" stroke="#666" strokeWidth="1.5" />
+    <line x1="430" y1="75" x2="520" y2="75" stroke="#666" strokeWidth="1.5" />
+    <line x1="120" y1="100" x2="120" y2="215" stroke="#666" strokeWidth="1.5" />
+    <line x1="120" y1="275" x2="120" y2="390" stroke="#666" strokeWidth="1.5" />
+    <line x1="630" y1="100" x2="630" y2="215" stroke="#666" strokeWidth="1.5" />
+    <line x1="630" y1="275" x2="630" y2="390" stroke="#666" strokeWidth="1.5" />
+    <text x="213" y="67" fontSize="11" fill="#333" fontFamily="sans-serif">
+      {'(1,N)'}
+    </text>
+    <text x="438" y="67" fontSize="11" fill="#333" fontFamily="sans-serif">
+      {'(1,1)'}
+    </text>
+    <text x="128" y="158" fontSize="11" fill="#333" fontFamily="sans-serif">
+      {'(1,1)'}
+    </text>
+    <text x="128" y="370" fontSize="11" fill="#333" fontFamily="sans-serif">
+      {'(1,N)'}
+    </text>
+    <text x="638" y="158" fontSize="11" fill="#333" fontFamily="sans-serif">
+      {'(1,1)'}
+    </text>
+    <text x="638" y="370" fontSize="11" fill="#333" fontFamily="sans-serif">
+      {'(1,N)'}
+    </text>
+  </svg>
+</div>
 
 **Example Analysis:**
 
@@ -93,12 +194,91 @@ For each relation contained in the database, a relation is in **1NF** if and onl
 - Each attribute is defined over a domain with **atomic (indivisible)** values
 - Each attribute contains a **single value** from that domain
 
+**Example: Global Tech Company — Employee / Project**
+
+The table below violates 1NF because `PROJECT`, `PROJECT MANAGER`, and `PROJECT ALLOCATION` contain multiple values per row:
+
+| EMPLOYEE CODE | EMPLOYEE        | LEVEL   | OFFICE        | ADDRESS             | CITY   | COUNTRY | ZIP      | PROJECT                                  | PROJECT MANAGER                      | PROJECT ALLOCATION |
+| ------------- | --------------- | ------- | ------------- | ------------------- | ------ | ------- | -------- | ---------------------------------------- | ------------------------------------ | ------------------ |
+| SJO01         | Sarah Johnson   | MANAGER | TechCo Berlin | Friedrichstrasse, 8 | Berlin | Germany | 10117    | CloudMigration#1, Analytics, CoreInfra#1 | David Kim, Maria Rossi, James Carter | 2w, 1w, 1w /month  |
+| KSA01         | Kenji Sato      | JUNIOR  | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 | CloudMigration#1, CloudMigration#2       | David Kim, David Kim                 | 2w, 2w /month      |
+| FAL01         | Fatima Al-Sayed | SENIOR  | TechCo Dubai  | Sheikh Zayed Rd, 33 | Dubai  | UAE     | 00000    | CloudMigration#3, CoreInfra#1            | David Kim, James Carter              | 3w, 1w /month      |
+| CME01         | Carlos Mendes   | BA      | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 | CloudMigration#2, Analytics#1            | David Kim, Maria Rossi               | 3w, 1w /month      |
+
+To reach **1NF**, flatten repeating groups so each cell holds one atomic value:
+
+| EMPLOYEE CODE | EMPLOYEE        | LEVEL   | OFFICE        | ADDRESS             | CITY   | COUNTRY | ZIP      | PROJECT          | PROJECT MANAGER | PROJECT ALLOCATION |
+| ------------- | --------------- | ------- | ------------- | ------------------- | ------ | ------- | -------- | ---------------- | --------------- | ------------------ |
+| SJO01         | Sarah Johnson   | MANAGER | TechCo Berlin | Friedrichstrasse, 8 | Berlin | Germany | 10117    | CloudMigration#1 | David Kim       | 2 week/month       |
+| SJO01         | Sarah Johnson   | MANAGER | TechCo Berlin | Friedrichstrasse, 8 | Berlin | Germany | 10117    | Analytics        | Maria Rossi     | 1 week/month       |
+| SJO01         | Sarah Johnson   | MANAGER | TechCo Berlin | Friedrichstrasse, 8 | Berlin | Germany | 10117    | CoreInfra#1      | James Carter    | 1 week/month       |
+| KSA01         | Kenji Sato      | JUNIOR  | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 | CloudMigration#1 | David Kim       | 2 week/month       |
+| KSA01         | Kenji Sato      | JUNIOR  | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 | CloudMigration#2 | David Kim       | 2 week/month       |
+| FAL01         | Fatima Al-Sayed | SENIOR  | TechCo Dubai  | Sheikh Zayed Rd, 33 | Dubai  | UAE     | 00000    | CloudMigration#3 | David Kim       | 3 week/month       |
+| FAL01         | Fatima Al-Sayed | SENIOR  | TechCo Dubai  | Sheikh Zayed Rd, 33 | Dubai  | UAE     | 00000    | CoreInfra#1      | James Carter    | 1 week/month       |
+| CME01         | Carlos Mendes   | BA      | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 | CloudMigration#2 | David Kim       | 3 week/month       |
+| CME01         | Carlos Mendes   | BA      | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 | Analytics#1      | Maria Rossi     | 1 week/month       |
+
+Because a single `EMPLOYEE CODE` now appears on multiple rows (one per project), the primary key must be the composite `[EMPLOYEE CODE, PROJECT]`.
+
 ### 2.2. Second Normal Form (2NF)
 
 A database is in **2NF** (2nd normal form) when:
 
 1. **It is in 1st normal form**, and
 2. **All non-key attributes** functionally depend on the **entire key** (no partial dependencies)
+
+**Example:**
+
+With primary key `[EMPLOYEE CODE, PROJECT]`, the following partial dependencies violate 2NF:
+
+| NON-PK ATTRIBUTE   | DEPENDS ON             | ENTIRE KEY? |
+| ------------------ | ---------------------- | ----------- |
+| EMPLOYEE           | EMPLOYEE CODE only     | No          |
+| LEVEL              | EMPLOYEE CODE only     | No          |
+| OFFICE             | EMPLOYEE CODE only     | No          |
+| ADDRESS            | EMPLOYEE CODE only     | No          |
+| CITY               | EMPLOYEE CODE only     | No          |
+| COUNTRY            | EMPLOYEE CODE only     | No          |
+| ZIP                | EMPLOYEE CODE only     | No          |
+| PROJECT MANAGER    | PROJECT only           | No          |
+| PROJECT ALLOCATION | EMPLOYEE CODE, PROJECT | Yes         |
+
+To reach **2NF**, group each partial dependency into its own table:
+
+**EMPLOYEE** — attributes that depend on `EMPLOYEE CODE`
+
+| EMPLOYEE CODE | EMPLOYEE        | LEVEL   | OFFICE        | ADDRESS             | CITY   | COUNTRY | ZIP      |
+| ------------- | --------------- | ------- | ------------- | ------------------- | ------ | ------- | -------- |
+| SJO01         | Sarah Johnson   | MANAGER | TechCo Berlin | Friedrichstrasse, 8 | Berlin | Germany | 10117    |
+| KSA01         | Kenji Sato      | JUNIOR  | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 |
+| FAL01         | Fatima Al-Sayed | SENIOR  | TechCo Dubai  | Sheikh Zayed Rd, 33 | Dubai  | UAE     | 00000    |
+| CME01         | Carlos Mendes   | BA      | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 |
+
+**PROJECT** — attributes that depend on `PROJECT`
+
+| PROJECT          | PROJECT MANAGER |
+| ---------------- | --------------- |
+| CloudMigration#1 | David Kim       |
+| CloudMigration#2 | David Kim       |
+| CloudMigration#3 | David Kim       |
+| Analytics        | Maria Rossi     |
+| Analytics#1      | Maria Rossi     |
+| CoreInfra#1      | James Carter    |
+
+**EMPLOYEE_PROJECT** — preserves the many-to-many relationship; `PROJECT ALLOCATION` depends on the entire key `[EMPLOYEE CODE, PROJECT]`
+
+| EMPLOYEE CODE | PROJECT          | PROJECT ALLOCATION |
+| ------------- | ---------------- | ------------------ |
+| SJO01         | CloudMigration#1 | 2 week/month       |
+| SJO01         | Analytics        | 1 week/month       |
+| SJO01         | CoreInfra#1      | 1 week/month       |
+| KSA01         | CloudMigration#1 | 2 week/month       |
+| KSA01         | CloudMigration#2 | 2 week/month       |
+| FAL01         | CloudMigration#3 | 3 week/month       |
+| FAL01         | CoreInfra#1      | 1 week/month       |
+| CME01         | CloudMigration#2 | 3 week/month       |
+| CME01         | Analytics#1      | 1 week/month       |
 
 ### 2.3. Third Normal Form (3NF)
 
@@ -107,8 +287,29 @@ A database is in **3NF** (3rd normal form) if it is:
 1. **In 2nd normal form**, and
 2. **All non-key attributes depend on the key only** (no transitive dependencies)
 
-This means there should be no non-key attributes that depend on other non-key attributes. For example, to eliminate transitive dependencies, you should move attributes like `City`, `State`, and `Zip` into a separate `Location` table, so that each non-key attribute depends only on the primary key, not on other non-key attributes.
+There should be no non-key attribute that depends on another non-key attribute.
 
-## References
+**Example:**
 
-- Lecture notes from Business Analytics course, Prof. Paolo Menna, University of Verona 2024-2025
+In the **EMPLOYEE** table, `ADDRESS`, `CITY`, `COUNTRY`, and `ZIP` do not depend directly on `EMPLOYEE CODE` — they depend on `OFFICE`, which itself depends on `EMPLOYEE CODE`. That is a **transitive dependency**: `EMPLOYEE CODE → OFFICE → {ADDRESS, CITY, COUNTRY, ZIP}`. Notice "TechCo Tokyo / 1 Marunouchi / Tokyo / Japan / 100-0005" repeats for both Kenji Sato and Carlos Mendes — redundancy.
+
+To reach **3NF**, move the office location attributes into a dedicated **OFFICE** table:
+
+**EMPLOYEE**
+
+| EMPLOYEE CODE | EMPLOYEE        | LEVEL   | OFFICE        |
+| ------------- | --------------- | ------- | ------------- |
+| SJO01         | Sarah Johnson   | MANAGER | TechCo Berlin |
+| KSA01         | Kenji Sato      | JUNIOR  | TechCo Tokyo  |
+| FAL01         | Fatima Al-Sayed | SENIOR  | TechCo Dubai  |
+| CME01         | Carlos Mendes   | BA      | TechCo Tokyo  |
+
+**OFFICE**
+
+| OFFICE        | ADDRESS             | CITY   | COUNTRY | ZIP      |
+| ------------- | ------------------- | ------ | ------- | -------- |
+| TechCo Berlin | Friedrichstrasse, 8 | Berlin | Germany | 10117    |
+| TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 |
+| TechCo Dubai  | Sheikh Zayed Rd, 33 | Dubai  | UAE     | 00000    |
+
+**PROJECT** and **EMPLOYEE_PROJECT** remain unchanged from 2NF. The database is now in **3NF**.

@@ -53,7 +53,13 @@
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-part-1",
       "seriesOrder": 5,
-      "tags": ["Data Warehouse", "Database", "Data Engineering", "Data Modeling"]
+      "tags": [
+        "Data Warehouse",
+        "Database",
+        "Data Engineering",
+        "Data Modeling",
+        "Dimensional Modeling"
+      ]
     },
     {
       "title": "Dimensional Modeling - Part 2: Basic Dimension Table Techniques",
@@ -64,7 +70,13 @@
       "series": "Database & Data Engineering",
       "path": "blog/dimensional-part-2",
       "seriesOrder": 6,
-      "tags": ["Data Warehouse", "Database", "Data Engineering", "Data Modeling"]
+      "tags": [
+        "Data Warehouse",
+        "Database",
+        "Data Engineering",
+        "Data Modeling",
+        "Dimensional Modeling"
+      ]
     },
     {
       "title": "Dimensional Modeling - Part 3: Dimensions Hierarchy",
@@ -86,7 +98,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/data-integration-etl-pushdown",
       "seriesOrder": 8,
-      "tags": ["Data Engineering", "Data Warehouse"]
+      "tags": ["Data Engineering", "Data Warehouse", "ETL", "ELT"]
     },
     {
       "title": "Data Integration - Part 2: Loading Strategies, Change Data Capture and Data Layers",
@@ -97,7 +109,7 @@
       "series": "Database & Data Engineering",
       "path": "blog/data-integration-loading",
       "seriesOrder": 9,
-      "tags": ["Data Engineering", "Data Warehouse"]
+      "tags": ["Data Engineering", "Data Warehouse", "CDC"]
     },
     {
       "title": "Big Data: Concepts, Architecture, and Technologies",
@@ -143,7 +155,7 @@
       "series": "LLMs",
       "path": "blog/llms-preference-alignment",
       "seriesOrder": 2,
-      "tags": ["LLMs", "Fine-tuning"]
+      "tags": ["LLMs", "Fine-tuning", "RLHF", "DPO"]
     },
     {
       "title": "LLM-based Agents: Single and Multi-Agent Systems",
@@ -200,7 +212,7 @@
       "series": "Retrieval Augmented Generation (RAG)",
       "path": "blog/rag-with-vector-db",
       "seriesOrder": null,
-      "tags": ["LLMs", "RAG", "Vector Databases"]
+      "tags": ["LLMs", "RAG", "Vector Databases", "Context Engineering"]
     }
   ]
 }
