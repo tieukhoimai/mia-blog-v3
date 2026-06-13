@@ -58,7 +58,108 @@ An **entity** represents a distinguishable object or concept in the real world:
 - It's possible to use the constant **N** to refer to a generic number greater than 1
 - In the ER diagram, the cardinality of the relationship is labeled on the arc that links the entity to the relationship
 
-![Cardinality Example](/static/images/resource/er-modeling-and-normalization/cardinality-example.png)
+<div className="my-6 overflow-x-auto">
+  <svg
+    viewBox="0 0 780 470"
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-full max-w-2xl mx-auto"
+  >
+    <rect x="40" y="50" width="160" height="50" fill="#3b9daa" rx="2" />
+    <text
+      x="120"
+      y="81"
+      textAnchor="middle"
+      fill="white"
+      fontWeight="bold"
+      fontSize="13"
+      fontFamily="sans-serif"
+    >
+      CONSULTANT
+    </text>
+    <rect x="520" y="50" width="220" height="50" fill="#3b9daa" rx="2" />
+    <text
+      x="630"
+      y="81"
+      textAnchor="middle"
+      fill="white"
+      fontWeight="bold"
+      fontSize="13"
+      fontFamily="sans-serif"
+    >
+      PROJECT_PLANNING
+    </text>
+    <rect x="40" y="390" width="160" height="50" fill="#3b9daa" rx="2" />
+    <text
+      x="120"
+      y="421"
+      textAnchor="middle"
+      fill="white"
+      fontWeight="bold"
+      fontSize="13"
+      fontFamily="sans-serif"
+    >
+      OFFICE
+    </text>
+    <rect x="540" y="390" width="160" height="50" fill="#3b9daa" rx="2" />
+    <text
+      x="620"
+      y="421"
+      textAnchor="middle"
+      fill="white"
+      fontWeight="bold"
+      fontSize="13"
+      fontFamily="sans-serif"
+    >
+      PROJECT
+    </text>
+    <polygon points="360,50 430,75 360,100 290,75" fill="#f0f0f0" stroke="#aaa" strokeWidth="1.5" />
+    <text x="360" y="80" textAnchor="middle" fontSize="11" fill="#555" fontFamily="sans-serif">
+      ALLOCATED
+    </text>
+    <polygon
+      points="120,215 178,245 120,275 62,245"
+      fill="#f0f0f0"
+      stroke="#aaa"
+      strokeWidth="1.5"
+    />
+    <text x="120" y="250" textAnchor="middle" fontSize="11" fill="#555" fontFamily="sans-serif">
+      ASSIGNED
+    </text>
+    <polygon
+      points="630,215 688,245 630,275 572,245"
+      fill="#f0f0f0"
+      stroke="#aaa"
+      strokeWidth="1.5"
+    />
+    <text x="630" y="250" textAnchor="middle" fontSize="11" fill="#555" fontFamily="sans-serif">
+      PLANNED
+    </text>
+    <line x1="200" y1="75" x2="290" y2="75" stroke="#666" strokeWidth="1.5" />
+    <line x1="430" y1="75" x2="520" y2="75" stroke="#666" strokeWidth="1.5" />
+    <line x1="120" y1="100" x2="120" y2="215" stroke="#666" strokeWidth="1.5" />
+    <line x1="120" y1="275" x2="120" y2="390" stroke="#666" strokeWidth="1.5" />
+    <line x1="630" y1="100" x2="630" y2="215" stroke="#666" strokeWidth="1.5" />
+    <line x1="630" y1="275" x2="630" y2="390" stroke="#666" strokeWidth="1.5" />
+    <text x="213" y="67" fontSize="11" fill="#333" fontFamily="sans-serif">
+      (1,N)
+    </text>
+    <text x="438" y="67" fontSize="11" fill="#333" fontFamily="sans-serif">
+      (1,1)
+    </text>
+    <text x="128" y="158" fontSize="11" fill="#333" fontFamily="sans-serif">
+      (1,1)
+    </text>
+    <text x="128" y="370" fontSize="11" fill="#333" fontFamily="sans-serif">
+      (1,N)
+    </text>
+    <text x="638" y="158" fontSize="11" fill="#333" fontFamily="sans-serif">
+      (1,1)
+    </text>
+    <text x="638" y="370" fontSize="11" fill="#333" fontFamily="sans-serif">
+      (1,N)
+    </text>
+  </svg>
+</div>
 
 **Example Analysis:**
 
@@ -93,12 +194,371 @@ For each relation contained in the database, a relation is in **1NF** if and onl
 - Each attribute is defined over a domain with **atomic (indivisible)** values
 - Each attribute contains a **single value** from that domain
 
+**Example: Global Tech Company — Employee / Department**
+
+The table below violates 1NF because `SKILL` and `CERTIFICATION` contain multiple values per row:
+
+<div className="overflow-x-auto my-4">
+  <table className="w-full text-2xs border-collapse">
+    <thead>
+      <tr>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">EMPLOYEE ID</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
+          EMPLOYEE NAME
+        </th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">LEVEL</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">DEPARTMENT</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
+          DEPT LOCATION
+        </th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">MANAGER</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">SKILL</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
+          CERTIFICATION
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E001</td>
+        <td className="px-3 py-1.5">Sarah Johnson</td>
+        <td className="px-3 py-1.5">MANAGER</td>
+        <td className="px-3 py-1.5">Engineering</td>
+        <td className="px-3 py-1.5">Berlin, Germany</td>
+        <td className="px-3 py-1.5">—</td>
+        <td className="px-3 py-1.5">Python, SQL</td>
+        <td className="px-3 py-1.5">AWS Certified, PMP</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E002</td>
+        <td className="px-3 py-1.5">Kenji Sato</td>
+        <td className="px-3 py-1.5">SENIOR</td>
+        <td className="px-3 py-1.5">Marketing</td>
+        <td className="px-3 py-1.5">Tokyo, Japan</td>
+        <td className="px-3 py-1.5">Sarah Johnson</td>
+        <td className="px-3 py-1.5">SEO, Content</td>
+        <td className="px-3 py-1.5">Google Ads Cert</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E003</td>
+        <td className="px-3 py-1.5">Fatima Al-Sayed</td>
+        <td className="px-3 py-1.5">JUNIOR</td>
+        <td className="px-3 py-1.5">Engineering</td>
+        <td className="px-3 py-1.5">Berlin, Germany</td>
+        <td className="px-3 py-1.5">Sarah Johnson</td>
+        <td className="px-3 py-1.5">Python</td>
+        <td className="px-3 py-1.5">AWS Certified</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E004</td>
+        <td className="px-3 py-1.5">Carlos Mendes</td>
+        <td className="px-3 py-1.5">SENIOR</td>
+        <td className="px-3 py-1.5">Sales</td>
+        <td className="px-3 py-1.5">São Paulo, Brazil</td>
+        <td className="px-3 py-1.5">Kenji Sato</td>
+        <td className="px-3 py-1.5">Negotiation, CRM</td>
+        <td className="px-3 py-1.5">Salesforce Cert, Negotiation Cert</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+To reach **1NF**, flatten repeating groups so each cell holds one atomic value:
+
+<div className="overflow-x-auto my-4">
+  <table className="w-full text-2xs border-collapse">
+    <thead>
+      <tr>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">EMPLOYEE ID</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
+          EMPLOYEE NAME
+        </th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">LEVEL</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">DEPARTMENT</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
+          DEPT LOCATION
+        </th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">MANAGER</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">SKILL</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
+          CERTIFICATION
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E001</td>
+        <td className="px-3 py-1.5">Sarah Johnson</td>
+        <td className="px-3 py-1.5">MANAGER</td>
+        <td className="px-3 py-1.5">Engineering</td>
+        <td className="px-3 py-1.5">Berlin, Germany</td>
+        <td className="px-3 py-1.5">—</td>
+        <td className="px-3 py-1.5">Python</td>
+        <td className="px-3 py-1.5">AWS Certified</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E001</td>
+        <td className="px-3 py-1.5">Sarah Johnson</td>
+        <td className="px-3 py-1.5">MANAGER</td>
+        <td className="px-3 py-1.5">Engineering</td>
+        <td className="px-3 py-1.5">Berlin, Germany</td>
+        <td className="px-3 py-1.5">—</td>
+        <td className="px-3 py-1.5">SQL</td>
+        <td className="px-3 py-1.5">PMP</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E002</td>
+        <td className="px-3 py-1.5">Kenji Sato</td>
+        <td className="px-3 py-1.5">SENIOR</td>
+        <td className="px-3 py-1.5">Marketing</td>
+        <td className="px-3 py-1.5">Tokyo, Japan</td>
+        <td className="px-3 py-1.5">Sarah Johnson</td>
+        <td className="px-3 py-1.5">SEO</td>
+        <td className="px-3 py-1.5">Google Ads Cert</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E002</td>
+        <td className="px-3 py-1.5">Kenji Sato</td>
+        <td className="px-3 py-1.5">SENIOR</td>
+        <td className="px-3 py-1.5">Marketing</td>
+        <td className="px-3 py-1.5">Tokyo, Japan</td>
+        <td className="px-3 py-1.5">Sarah Johnson</td>
+        <td className="px-3 py-1.5">Content</td>
+        <td className="px-3 py-1.5">Google Ads Cert</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E003</td>
+        <td className="px-3 py-1.5">Fatima Al-Sayed</td>
+        <td className="px-3 py-1.5">JUNIOR</td>
+        <td className="px-3 py-1.5">Engineering</td>
+        <td className="px-3 py-1.5">Berlin, Germany</td>
+        <td className="px-3 py-1.5">Sarah Johnson</td>
+        <td className="px-3 py-1.5">Python</td>
+        <td className="px-3 py-1.5">AWS Certified</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E004</td>
+        <td className="px-3 py-1.5">Carlos Mendes</td>
+        <td className="px-3 py-1.5">SENIOR</td>
+        <td className="px-3 py-1.5">Sales</td>
+        <td className="px-3 py-1.5">São Paulo, Brazil</td>
+        <td className="px-3 py-1.5">Kenji Sato</td>
+        <td className="px-3 py-1.5">Negotiation</td>
+        <td className="px-3 py-1.5">Negotiation Cert</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E004</td>
+        <td className="px-3 py-1.5">Carlos Mendes</td>
+        <td className="px-3 py-1.5">SENIOR</td>
+        <td className="px-3 py-1.5">Sales</td>
+        <td className="px-3 py-1.5">São Paulo, Brazil</td>
+        <td className="px-3 py-1.5">Kenji Sato</td>
+        <td className="px-3 py-1.5">CRM</td>
+        <td className="px-3 py-1.5">Salesforce Cert</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+Because a single `EMPLOYEE ID` now appears on multiple rows (one per skill), the primary key must be the composite `[EMPLOYEE ID, SKILL]`.
+
 ### 2.2. Second Normal Form (2NF)
 
 A database is in **2NF** (2nd normal form) when:
 
 1. **It is in 1st normal form**, and
 2. **All non-key attributes** functionally depend on the **entire key** (no partial dependencies)
+
+**Example:**
+
+With primary key `[EMPLOYEE ID, SKILL]`, the following partial dependencies violate 2NF:
+
+<div className="overflow-x-auto my-4">
+  <table className="w-full text-2xs border-collapse">
+    <thead>
+      <tr>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
+          NON-PK ATTRIBUTE
+        </th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">DEPENDS ON</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">ENTIRE KEY?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">EMPLOYEE NAME</td>
+        <td className="px-3 py-1.5">EMPLOYEE ID only</td>
+        <td className="px-3 py-1.5">No</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">LEVEL</td>
+        <td className="px-3 py-1.5">EMPLOYEE ID only</td>
+        <td className="px-3 py-1.5">No</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">DEPARTMENT</td>
+        <td className="px-3 py-1.5">EMPLOYEE ID only</td>
+        <td className="px-3 py-1.5">No</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">DEPT LOCATION</td>
+        <td className="px-3 py-1.5">EMPLOYEE ID only</td>
+        <td className="px-3 py-1.5">No</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">MANAGER</td>
+        <td className="px-3 py-1.5">EMPLOYEE ID only</td>
+        <td className="px-3 py-1.5">No</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">CERTIFICATION</td>
+        <td className="px-3 py-1.5">SKILL only</td>
+        <td className="px-3 py-1.5">No</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+To reach **2NF**, group each partial dependency into its own table:
+
+**EMPLOYEE** — attributes that depend on `EMPLOYEE ID`
+
+<div className="overflow-x-auto my-4">
+  <table className="w-full text-2xs border-collapse">
+    <thead>
+      <tr>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">EMPLOYEE ID</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
+          EMPLOYEE NAME
+        </th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">LEVEL</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">DEPARTMENT</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
+          DEPT LOCATION
+        </th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">MANAGER</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E001</td>
+        <td className="px-3 py-1.5">Sarah Johnson</td>
+        <td className="px-3 py-1.5">MANAGER</td>
+        <td className="px-3 py-1.5">Engineering</td>
+        <td className="px-3 py-1.5">Berlin, Germany</td>
+        <td className="px-3 py-1.5">—</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E002</td>
+        <td className="px-3 py-1.5">Kenji Sato</td>
+        <td className="px-3 py-1.5">SENIOR</td>
+        <td className="px-3 py-1.5">Marketing</td>
+        <td className="px-3 py-1.5">Tokyo, Japan</td>
+        <td className="px-3 py-1.5">Sarah Johnson</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E003</td>
+        <td className="px-3 py-1.5">Fatima Al-Sayed</td>
+        <td className="px-3 py-1.5">JUNIOR</td>
+        <td className="px-3 py-1.5">Engineering</td>
+        <td className="px-3 py-1.5">Berlin, Germany</td>
+        <td className="px-3 py-1.5">Sarah Johnson</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E004</td>
+        <td className="px-3 py-1.5">Carlos Mendes</td>
+        <td className="px-3 py-1.5">SENIOR</td>
+        <td className="px-3 py-1.5">Sales</td>
+        <td className="px-3 py-1.5">São Paulo, Brazil</td>
+        <td className="px-3 py-1.5">Kenji Sato</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+**SKILL** — attributes that depend on `SKILL`
+
+<div className="overflow-x-auto my-4">
+  <table className="w-full text-2xs border-collapse">
+    <thead>
+      <tr>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">SKILL</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
+          CERTIFICATION
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">Python</td>
+        <td className="px-3 py-1.5">AWS Certified</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">SQL</td>
+        <td className="px-3 py-1.5">PMP</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">SEO</td>
+        <td className="px-3 py-1.5">Google Ads Cert</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">Content</td>
+        <td className="px-3 py-1.5">Google Ads Cert</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">Negotiation</td>
+        <td className="px-3 py-1.5">Negotiation Cert</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">CRM</td>
+        <td className="px-3 py-1.5">Salesforce Cert</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+**EMPLOYEE_SKILL** — preserves the many-to-many relationship
+
+<div className="overflow-x-auto my-4">
+  <table className="w-full text-2xs border-collapse">
+    <thead>
+      <tr>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">EMPLOYEE ID</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">SKILL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E001</td>
+        <td className="px-3 py-1.5">Python</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E001</td>
+        <td className="px-3 py-1.5">SQL</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E002</td>
+        <td className="px-3 py-1.5">SEO</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E002</td>
+        <td className="px-3 py-1.5">Content</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E003</td>
+        <td className="px-3 py-1.5">Python</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E004</td>
+        <td className="px-3 py-1.5">Negotiation</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E004</td>
+        <td className="px-3 py-1.5">CRM</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 ### 2.3. Third Normal Form (3NF)
 
@@ -107,8 +567,89 @@ A database is in **3NF** (3rd normal form) if it is:
 1. **In 2nd normal form**, and
 2. **All non-key attributes depend on the key only** (no transitive dependencies)
 
-This means there should be no non-key attributes that depend on other non-key attributes. For example, to eliminate transitive dependencies, you should move attributes like `City`, `State`, and `Zip` into a separate `Location` table, so that each non-key attribute depends only on the primary key, not on other non-key attributes.
+There should be no non-key attribute that depends on another non-key attribute.
 
-## References
+**Example:**
 
-- Lecture notes from Business Analytics course, Prof. Paolo Menna, University of Verona 2024-2025
+In the **EMPLOYEE** table, `DEPT LOCATION` does not depend directly on `EMPLOYEE ID` — it depends on `DEPARTMENT`, which itself depends on `EMPLOYEE ID`. That is a **transitive dependency**: `EMPLOYEE ID → DEPARTMENT → DEPT LOCATION`. Notice "Engineering / Berlin, Germany" is repeated for both Sarah Johnson and Fatima Al-Sayed — redundancy.
+
+To reach **3NF**, move `DEPT LOCATION` into a dedicated **DEPARTMENT** table:
+
+**EMPLOYEE**
+
+<div className="overflow-x-auto my-4">
+  <table className="w-full text-2xs border-collapse">
+    <thead>
+      <tr>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">EMPLOYEE ID</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
+          EMPLOYEE NAME
+        </th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">LEVEL</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">DEPARTMENT</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">MANAGER</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E001</td>
+        <td className="px-3 py-1.5">Sarah Johnson</td>
+        <td className="px-3 py-1.5">MANAGER</td>
+        <td className="px-3 py-1.5">Engineering</td>
+        <td className="px-3 py-1.5">—</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E002</td>
+        <td className="px-3 py-1.5">Kenji Sato</td>
+        <td className="px-3 py-1.5">SENIOR</td>
+        <td className="px-3 py-1.5">Marketing</td>
+        <td className="px-3 py-1.5">Sarah Johnson</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E003</td>
+        <td className="px-3 py-1.5">Fatima Al-Sayed</td>
+        <td className="px-3 py-1.5">JUNIOR</td>
+        <td className="px-3 py-1.5">Engineering</td>
+        <td className="px-3 py-1.5">Sarah Johnson</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">E004</td>
+        <td className="px-3 py-1.5">Carlos Mendes</td>
+        <td className="px-3 py-1.5">SENIOR</td>
+        <td className="px-3 py-1.5">Sales</td>
+        <td className="px-3 py-1.5">Kenji Sato</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+**DEPARTMENT**
+
+<div className="overflow-x-auto my-4">
+  <table className="w-full text-2xs border-collapse">
+    <thead>
+      <tr>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">DEPARTMENT</th>
+        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
+          DEPT LOCATION
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">Engineering</td>
+        <td className="px-3 py-1.5">Berlin, Germany</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">Marketing</td>
+        <td className="px-3 py-1.5">Tokyo, Japan</td>
+      </tr>
+      <tr className="border-b border-gray-100">
+        <td className="px-3 py-1.5">Sales</td>
+        <td className="px-3 py-1.5">São Paulo, Brazil</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+**SKILL** and **EMPLOYEE_SKILL** remain unchanged from 2NF. The database is now in **3NF**.
