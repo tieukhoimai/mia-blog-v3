@@ -74,7 +74,7 @@ An **entity** represents a distinguishable object or concept in the real world:
       fontSize="13"
       fontFamily="sans-serif"
     >
-      CONSULTANT
+      {'CONSULTANT'}
     </text>
     <rect x="520" y="50" width="220" height="50" fill="#3b9daa" rx="2" />
     <text
@@ -86,7 +86,7 @@ An **entity** represents a distinguishable object or concept in the real world:
       fontSize="13"
       fontFamily="sans-serif"
     >
-      PROJECT_PLANNING
+      {'PROJECT_PLANNING'}
     </text>
     <rect x="40" y="390" width="160" height="50" fill="#3b9daa" rx="2" />
     <text
@@ -98,7 +98,7 @@ An **entity** represents a distinguishable object or concept in the real world:
       fontSize="13"
       fontFamily="sans-serif"
     >
-      OFFICE
+      {'OFFICE'}
     </text>
     <rect x="540" y="390" width="160" height="50" fill="#3b9daa" rx="2" />
     <text
@@ -110,11 +110,11 @@ An **entity** represents a distinguishable object or concept in the real world:
       fontSize="13"
       fontFamily="sans-serif"
     >
-      PROJECT
+      {'PROJECT'}
     </text>
     <polygon points="360,50 430,75 360,100 290,75" fill="#f0f0f0" stroke="#aaa" strokeWidth="1.5" />
     <text x="360" y="80" textAnchor="middle" fontSize="11" fill="#555" fontFamily="sans-serif">
-      ALLOCATED
+      {'ALLOCATED'}
     </text>
     <polygon
       points="120,215 178,245 120,275 62,245"
@@ -123,7 +123,7 @@ An **entity** represents a distinguishable object or concept in the real world:
       strokeWidth="1.5"
     />
     <text x="120" y="250" textAnchor="middle" fontSize="11" fill="#555" fontFamily="sans-serif">
-      ASSIGNED
+      {'ASSIGNED'}
     </text>
     <polygon
       points="630,215 688,245 630,275 572,245"
@@ -132,7 +132,7 @@ An **entity** represents a distinguishable object or concept in the real world:
       strokeWidth="1.5"
     />
     <text x="630" y="250" textAnchor="middle" fontSize="11" fill="#555" fontFamily="sans-serif">
-      PLANNED
+      {'PLANNED'}
     </text>
     <line x1="200" y1="75" x2="290" y2="75" stroke="#666" strokeWidth="1.5" />
     <line x1="430" y1="75" x2="520" y2="75" stroke="#666" strokeWidth="1.5" />
@@ -141,22 +141,22 @@ An **entity** represents a distinguishable object or concept in the real world:
     <line x1="630" y1="100" x2="630" y2="215" stroke="#666" strokeWidth="1.5" />
     <line x1="630" y1="275" x2="630" y2="390" stroke="#666" strokeWidth="1.5" />
     <text x="213" y="67" fontSize="11" fill="#333" fontFamily="sans-serif">
-      (1,N)
+      {'(1,N)'}
     </text>
     <text x="438" y="67" fontSize="11" fill="#333" fontFamily="sans-serif">
-      (1,1)
+      {'(1,1)'}
     </text>
     <text x="128" y="158" fontSize="11" fill="#333" fontFamily="sans-serif">
-      (1,1)
+      {'(1,1)'}
     </text>
     <text x="128" y="370" fontSize="11" fill="#333" fontFamily="sans-serif">
-      (1,N)
+      {'(1,N)'}
     </text>
     <text x="638" y="158" fontSize="11" fill="#333" fontFamily="sans-serif">
-      (1,1)
+      {'(1,1)'}
     </text>
     <text x="638" y="370" fontSize="11" fill="#333" fontFamily="sans-serif">
-      (1,N)
+      {'(1,N)'}
     </text>
   </svg>
 </div>
@@ -194,173 +194,32 @@ For each relation contained in the database, a relation is in **1NF** if and onl
 - Each attribute is defined over a domain with **atomic (indivisible)** values
 - Each attribute contains a **single value** from that domain
 
-**Example: Global Tech Company — Employee / Department**
+**Example: Global Tech Company — Employee / Project**
 
-The table below violates 1NF because `SKILL` and `CERTIFICATION` contain multiple values per row:
+The table below violates 1NF because `PROJECT`, `PROJECT MANAGER`, and `PROJECT ALLOCATION` contain multiple values per row:
 
-<div className="overflow-x-auto my-4">
-  <table className="w-full text-2xs border-collapse">
-    <thead>
-      <tr>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">EMPLOYEE ID</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
-          EMPLOYEE NAME
-        </th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">LEVEL</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">DEPARTMENT</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
-          DEPT LOCATION
-        </th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">MANAGER</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">SKILL</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
-          CERTIFICATION
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E001</td>
-        <td className="px-3 py-1.5">Sarah Johnson</td>
-        <td className="px-3 py-1.5">MANAGER</td>
-        <td className="px-3 py-1.5">Engineering</td>
-        <td className="px-3 py-1.5">Berlin, Germany</td>
-        <td className="px-3 py-1.5">—</td>
-        <td className="px-3 py-1.5">Python, SQL</td>
-        <td className="px-3 py-1.5">AWS Certified, PMP</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E002</td>
-        <td className="px-3 py-1.5">Kenji Sato</td>
-        <td className="px-3 py-1.5">SENIOR</td>
-        <td className="px-3 py-1.5">Marketing</td>
-        <td className="px-3 py-1.5">Tokyo, Japan</td>
-        <td className="px-3 py-1.5">Sarah Johnson</td>
-        <td className="px-3 py-1.5">SEO, Content</td>
-        <td className="px-3 py-1.5">Google Ads Cert</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E003</td>
-        <td className="px-3 py-1.5">Fatima Al-Sayed</td>
-        <td className="px-3 py-1.5">JUNIOR</td>
-        <td className="px-3 py-1.5">Engineering</td>
-        <td className="px-3 py-1.5">Berlin, Germany</td>
-        <td className="px-3 py-1.5">Sarah Johnson</td>
-        <td className="px-3 py-1.5">Python</td>
-        <td className="px-3 py-1.5">AWS Certified</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E004</td>
-        <td className="px-3 py-1.5">Carlos Mendes</td>
-        <td className="px-3 py-1.5">SENIOR</td>
-        <td className="px-3 py-1.5">Sales</td>
-        <td className="px-3 py-1.5">São Paulo, Brazil</td>
-        <td className="px-3 py-1.5">Kenji Sato</td>
-        <td className="px-3 py-1.5">Negotiation, CRM</td>
-        <td className="px-3 py-1.5">Salesforce Cert, Negotiation Cert</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+| EMPLOYEE CODE | EMPLOYEE        | LEVEL   | OFFICE        | ADDRESS             | CITY   | COUNTRY | ZIP      | PROJECT                                  | PROJECT MANAGER                      | PROJECT ALLOCATION |
+| ------------- | --------------- | ------- | ------------- | ------------------- | ------ | ------- | -------- | ---------------------------------------- | ------------------------------------ | ------------------ |
+| SJO01         | Sarah Johnson   | MANAGER | TechCo Berlin | Friedrichstrasse, 8 | Berlin | Germany | 10117    | CloudMigration#1, Analytics, CoreInfra#1 | David Kim, Maria Rossi, James Carter | 2w, 1w, 1w /month  |
+| KSA01         | Kenji Sato      | JUNIOR  | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 | CloudMigration#1, CloudMigration#2       | David Kim, David Kim                 | 2w, 2w /month      |
+| FAL01         | Fatima Al-Sayed | SENIOR  | TechCo Dubai  | Sheikh Zayed Rd, 33 | Dubai  | UAE     | 00000    | CloudMigration#3, CoreInfra#1            | David Kim, James Carter              | 3w, 1w /month      |
+| CME01         | Carlos Mendes   | BA      | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 | CloudMigration#2, Analytics#1            | David Kim, Maria Rossi               | 3w, 1w /month      |
 
 To reach **1NF**, flatten repeating groups so each cell holds one atomic value:
 
-<div className="overflow-x-auto my-4">
-  <table className="w-full text-2xs border-collapse">
-    <thead>
-      <tr>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">EMPLOYEE ID</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
-          EMPLOYEE NAME
-        </th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">LEVEL</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">DEPARTMENT</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
-          DEPT LOCATION
-        </th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">MANAGER</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">SKILL</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
-          CERTIFICATION
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E001</td>
-        <td className="px-3 py-1.5">Sarah Johnson</td>
-        <td className="px-3 py-1.5">MANAGER</td>
-        <td className="px-3 py-1.5">Engineering</td>
-        <td className="px-3 py-1.5">Berlin, Germany</td>
-        <td className="px-3 py-1.5">—</td>
-        <td className="px-3 py-1.5">Python</td>
-        <td className="px-3 py-1.5">AWS Certified</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E001</td>
-        <td className="px-3 py-1.5">Sarah Johnson</td>
-        <td className="px-3 py-1.5">MANAGER</td>
-        <td className="px-3 py-1.5">Engineering</td>
-        <td className="px-3 py-1.5">Berlin, Germany</td>
-        <td className="px-3 py-1.5">—</td>
-        <td className="px-3 py-1.5">SQL</td>
-        <td className="px-3 py-1.5">PMP</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E002</td>
-        <td className="px-3 py-1.5">Kenji Sato</td>
-        <td className="px-3 py-1.5">SENIOR</td>
-        <td className="px-3 py-1.5">Marketing</td>
-        <td className="px-3 py-1.5">Tokyo, Japan</td>
-        <td className="px-3 py-1.5">Sarah Johnson</td>
-        <td className="px-3 py-1.5">SEO</td>
-        <td className="px-3 py-1.5">Google Ads Cert</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E002</td>
-        <td className="px-3 py-1.5">Kenji Sato</td>
-        <td className="px-3 py-1.5">SENIOR</td>
-        <td className="px-3 py-1.5">Marketing</td>
-        <td className="px-3 py-1.5">Tokyo, Japan</td>
-        <td className="px-3 py-1.5">Sarah Johnson</td>
-        <td className="px-3 py-1.5">Content</td>
-        <td className="px-3 py-1.5">Google Ads Cert</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E003</td>
-        <td className="px-3 py-1.5">Fatima Al-Sayed</td>
-        <td className="px-3 py-1.5">JUNIOR</td>
-        <td className="px-3 py-1.5">Engineering</td>
-        <td className="px-3 py-1.5">Berlin, Germany</td>
-        <td className="px-3 py-1.5">Sarah Johnson</td>
-        <td className="px-3 py-1.5">Python</td>
-        <td className="px-3 py-1.5">AWS Certified</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E004</td>
-        <td className="px-3 py-1.5">Carlos Mendes</td>
-        <td className="px-3 py-1.5">SENIOR</td>
-        <td className="px-3 py-1.5">Sales</td>
-        <td className="px-3 py-1.5">São Paulo, Brazil</td>
-        <td className="px-3 py-1.5">Kenji Sato</td>
-        <td className="px-3 py-1.5">Negotiation</td>
-        <td className="px-3 py-1.5">Negotiation Cert</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E004</td>
-        <td className="px-3 py-1.5">Carlos Mendes</td>
-        <td className="px-3 py-1.5">SENIOR</td>
-        <td className="px-3 py-1.5">Sales</td>
-        <td className="px-3 py-1.5">São Paulo, Brazil</td>
-        <td className="px-3 py-1.5">Kenji Sato</td>
-        <td className="px-3 py-1.5">CRM</td>
-        <td className="px-3 py-1.5">Salesforce Cert</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+| EMPLOYEE CODE | EMPLOYEE        | LEVEL   | OFFICE        | ADDRESS             | CITY   | COUNTRY | ZIP      | PROJECT          | PROJECT MANAGER | PROJECT ALLOCATION |
+| ------------- | --------------- | ------- | ------------- | ------------------- | ------ | ------- | -------- | ---------------- | --------------- | ------------------ |
+| SJO01         | Sarah Johnson   | MANAGER | TechCo Berlin | Friedrichstrasse, 8 | Berlin | Germany | 10117    | CloudMigration#1 | David Kim       | 2 week/month       |
+| SJO01         | Sarah Johnson   | MANAGER | TechCo Berlin | Friedrichstrasse, 8 | Berlin | Germany | 10117    | Analytics        | Maria Rossi     | 1 week/month       |
+| SJO01         | Sarah Johnson   | MANAGER | TechCo Berlin | Friedrichstrasse, 8 | Berlin | Germany | 10117    | CoreInfra#1      | James Carter    | 1 week/month       |
+| KSA01         | Kenji Sato      | JUNIOR  | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 | CloudMigration#1 | David Kim       | 2 week/month       |
+| KSA01         | Kenji Sato      | JUNIOR  | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 | CloudMigration#2 | David Kim       | 2 week/month       |
+| FAL01         | Fatima Al-Sayed | SENIOR  | TechCo Dubai  | Sheikh Zayed Rd, 33 | Dubai  | UAE     | 00000    | CloudMigration#3 | David Kim       | 3 week/month       |
+| FAL01         | Fatima Al-Sayed | SENIOR  | TechCo Dubai  | Sheikh Zayed Rd, 33 | Dubai  | UAE     | 00000    | CoreInfra#1      | James Carter    | 1 week/month       |
+| CME01         | Carlos Mendes   | BA      | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 | CloudMigration#2 | David Kim       | 3 week/month       |
+| CME01         | Carlos Mendes   | BA      | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 | Analytics#1      | Maria Rossi     | 1 week/month       |
 
-Because a single `EMPLOYEE ID` now appears on multiple rows (one per skill), the primary key must be the composite `[EMPLOYEE ID, SKILL]`.
+Because a single `EMPLOYEE CODE` now appears on multiple rows (one per project), the primary key must be the composite `[EMPLOYEE CODE, PROJECT]`.
 
 ### 2.2. Second Normal Form (2NF)
 
@@ -371,194 +230,55 @@ A database is in **2NF** (2nd normal form) when:
 
 **Example:**
 
-With primary key `[EMPLOYEE ID, SKILL]`, the following partial dependencies violate 2NF:
+With primary key `[EMPLOYEE CODE, PROJECT]`, the following partial dependencies violate 2NF:
 
-<div className="overflow-x-auto my-4">
-  <table className="w-full text-2xs border-collapse">
-    <thead>
-      <tr>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
-          NON-PK ATTRIBUTE
-        </th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">DEPENDS ON</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">ENTIRE KEY?</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">EMPLOYEE NAME</td>
-        <td className="px-3 py-1.5">EMPLOYEE ID only</td>
-        <td className="px-3 py-1.5">No</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">LEVEL</td>
-        <td className="px-3 py-1.5">EMPLOYEE ID only</td>
-        <td className="px-3 py-1.5">No</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">DEPARTMENT</td>
-        <td className="px-3 py-1.5">EMPLOYEE ID only</td>
-        <td className="px-3 py-1.5">No</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">DEPT LOCATION</td>
-        <td className="px-3 py-1.5">EMPLOYEE ID only</td>
-        <td className="px-3 py-1.5">No</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">MANAGER</td>
-        <td className="px-3 py-1.5">EMPLOYEE ID only</td>
-        <td className="px-3 py-1.5">No</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">CERTIFICATION</td>
-        <td className="px-3 py-1.5">SKILL only</td>
-        <td className="px-3 py-1.5">No</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+| NON-PK ATTRIBUTE   | DEPENDS ON             | ENTIRE KEY? |
+| ------------------ | ---------------------- | ----------- |
+| EMPLOYEE           | EMPLOYEE CODE only     | No          |
+| LEVEL              | EMPLOYEE CODE only     | No          |
+| OFFICE             | EMPLOYEE CODE only     | No          |
+| ADDRESS            | EMPLOYEE CODE only     | No          |
+| CITY               | EMPLOYEE CODE only     | No          |
+| COUNTRY            | EMPLOYEE CODE only     | No          |
+| ZIP                | EMPLOYEE CODE only     | No          |
+| PROJECT MANAGER    | PROJECT only           | No          |
+| PROJECT ALLOCATION | EMPLOYEE CODE, PROJECT | Yes         |
 
 To reach **2NF**, group each partial dependency into its own table:
 
-**EMPLOYEE** — attributes that depend on `EMPLOYEE ID`
+**EMPLOYEE** — attributes that depend on `EMPLOYEE CODE`
 
-<div className="overflow-x-auto my-4">
-  <table className="w-full text-2xs border-collapse">
-    <thead>
-      <tr>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">EMPLOYEE ID</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
-          EMPLOYEE NAME
-        </th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">LEVEL</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">DEPARTMENT</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
-          DEPT LOCATION
-        </th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">MANAGER</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E001</td>
-        <td className="px-3 py-1.5">Sarah Johnson</td>
-        <td className="px-3 py-1.5">MANAGER</td>
-        <td className="px-3 py-1.5">Engineering</td>
-        <td className="px-3 py-1.5">Berlin, Germany</td>
-        <td className="px-3 py-1.5">—</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E002</td>
-        <td className="px-3 py-1.5">Kenji Sato</td>
-        <td className="px-3 py-1.5">SENIOR</td>
-        <td className="px-3 py-1.5">Marketing</td>
-        <td className="px-3 py-1.5">Tokyo, Japan</td>
-        <td className="px-3 py-1.5">Sarah Johnson</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E003</td>
-        <td className="px-3 py-1.5">Fatima Al-Sayed</td>
-        <td className="px-3 py-1.5">JUNIOR</td>
-        <td className="px-3 py-1.5">Engineering</td>
-        <td className="px-3 py-1.5">Berlin, Germany</td>
-        <td className="px-3 py-1.5">Sarah Johnson</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E004</td>
-        <td className="px-3 py-1.5">Carlos Mendes</td>
-        <td className="px-3 py-1.5">SENIOR</td>
-        <td className="px-3 py-1.5">Sales</td>
-        <td className="px-3 py-1.5">São Paulo, Brazil</td>
-        <td className="px-3 py-1.5">Kenji Sato</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+| EMPLOYEE CODE | EMPLOYEE        | LEVEL   | OFFICE        | ADDRESS             | CITY   | COUNTRY | ZIP      |
+| ------------- | --------------- | ------- | ------------- | ------------------- | ------ | ------- | -------- |
+| SJO01         | Sarah Johnson   | MANAGER | TechCo Berlin | Friedrichstrasse, 8 | Berlin | Germany | 10117    |
+| KSA01         | Kenji Sato      | JUNIOR  | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 |
+| FAL01         | Fatima Al-Sayed | SENIOR  | TechCo Dubai  | Sheikh Zayed Rd, 33 | Dubai  | UAE     | 00000    |
+| CME01         | Carlos Mendes   | BA      | TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 |
 
-**SKILL** — attributes that depend on `SKILL`
+**PROJECT** — attributes that depend on `PROJECT`
 
-<div className="overflow-x-auto my-4">
-  <table className="w-full text-2xs border-collapse">
-    <thead>
-      <tr>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">SKILL</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
-          CERTIFICATION
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">Python</td>
-        <td className="px-3 py-1.5">AWS Certified</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">SQL</td>
-        <td className="px-3 py-1.5">PMP</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">SEO</td>
-        <td className="px-3 py-1.5">Google Ads Cert</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">Content</td>
-        <td className="px-3 py-1.5">Google Ads Cert</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">Negotiation</td>
-        <td className="px-3 py-1.5">Negotiation Cert</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">CRM</td>
-        <td className="px-3 py-1.5">Salesforce Cert</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+| PROJECT          | PROJECT MANAGER |
+| ---------------- | --------------- |
+| CloudMigration#1 | David Kim       |
+| CloudMigration#2 | David Kim       |
+| CloudMigration#3 | David Kim       |
+| Analytics        | Maria Rossi     |
+| Analytics#1      | Maria Rossi     |
+| CoreInfra#1      | James Carter    |
 
-**EMPLOYEE_SKILL** — preserves the many-to-many relationship
+**EMPLOYEE_PROJECT** — preserves the many-to-many relationship; `PROJECT ALLOCATION` depends on the entire key `[EMPLOYEE CODE, PROJECT]`
 
-<div className="overflow-x-auto my-4">
-  <table className="w-full text-2xs border-collapse">
-    <thead>
-      <tr>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">EMPLOYEE ID</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">SKILL</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E001</td>
-        <td className="px-3 py-1.5">Python</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E001</td>
-        <td className="px-3 py-1.5">SQL</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E002</td>
-        <td className="px-3 py-1.5">SEO</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E002</td>
-        <td className="px-3 py-1.5">Content</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E003</td>
-        <td className="px-3 py-1.5">Python</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E004</td>
-        <td className="px-3 py-1.5">Negotiation</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E004</td>
-        <td className="px-3 py-1.5">CRM</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+| EMPLOYEE CODE | PROJECT          | PROJECT ALLOCATION |
+| ------------- | ---------------- | ------------------ |
+| SJO01         | CloudMigration#1 | 2 week/month       |
+| SJO01         | Analytics        | 1 week/month       |
+| SJO01         | CoreInfra#1      | 1 week/month       |
+| KSA01         | CloudMigration#1 | 2 week/month       |
+| KSA01         | CloudMigration#2 | 2 week/month       |
+| FAL01         | CloudMigration#3 | 3 week/month       |
+| FAL01         | CoreInfra#1      | 1 week/month       |
+| CME01         | CloudMigration#2 | 3 week/month       |
+| CME01         | Analytics#1      | 1 week/month       |
 
 ### 2.3. Third Normal Form (3NF)
 
@@ -571,87 +291,25 @@ There should be no non-key attribute that depends on another non-key attribute.
 
 **Example:**
 
-In the **EMPLOYEE** table, `DEPT LOCATION` does not depend directly on `EMPLOYEE ID` — it depends on `DEPARTMENT`, which itself depends on `EMPLOYEE ID`. That is a **transitive dependency**: `EMPLOYEE ID → DEPARTMENT → DEPT LOCATION`. Notice "Engineering / Berlin, Germany" is repeated for both Sarah Johnson and Fatima Al-Sayed — redundancy.
+In the **EMPLOYEE** table, `ADDRESS`, `CITY`, `COUNTRY`, and `ZIP` do not depend directly on `EMPLOYEE CODE` — they depend on `OFFICE`, which itself depends on `EMPLOYEE CODE`. That is a **transitive dependency**: `EMPLOYEE CODE → OFFICE → {ADDRESS, CITY, COUNTRY, ZIP}`. Notice "TechCo Tokyo / 1 Marunouchi / Tokyo / Japan / 100-0005" repeats for both Kenji Sato and Carlos Mendes — redundancy.
 
-To reach **3NF**, move `DEPT LOCATION` into a dedicated **DEPARTMENT** table:
+To reach **3NF**, move the office location attributes into a dedicated **OFFICE** table:
 
 **EMPLOYEE**
 
-<div className="overflow-x-auto my-4">
-  <table className="w-full text-2xs border-collapse">
-    <thead>
-      <tr>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">EMPLOYEE ID</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
-          EMPLOYEE NAME
-        </th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">LEVEL</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">DEPARTMENT</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">MANAGER</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E001</td>
-        <td className="px-3 py-1.5">Sarah Johnson</td>
-        <td className="px-3 py-1.5">MANAGER</td>
-        <td className="px-3 py-1.5">Engineering</td>
-        <td className="px-3 py-1.5">—</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E002</td>
-        <td className="px-3 py-1.5">Kenji Sato</td>
-        <td className="px-3 py-1.5">SENIOR</td>
-        <td className="px-3 py-1.5">Marketing</td>
-        <td className="px-3 py-1.5">Sarah Johnson</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E003</td>
-        <td className="px-3 py-1.5">Fatima Al-Sayed</td>
-        <td className="px-3 py-1.5">JUNIOR</td>
-        <td className="px-3 py-1.5">Engineering</td>
-        <td className="px-3 py-1.5">Sarah Johnson</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">E004</td>
-        <td className="px-3 py-1.5">Carlos Mendes</td>
-        <td className="px-3 py-1.5">SENIOR</td>
-        <td className="px-3 py-1.5">Sales</td>
-        <td className="px-3 py-1.5">Kenji Sato</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+| EMPLOYEE CODE | EMPLOYEE        | LEVEL   | OFFICE        |
+| ------------- | --------------- | ------- | ------------- |
+| SJO01         | Sarah Johnson   | MANAGER | TechCo Berlin |
+| KSA01         | Kenji Sato      | JUNIOR  | TechCo Tokyo  |
+| FAL01         | Fatima Al-Sayed | SENIOR  | TechCo Dubai  |
+| CME01         | Carlos Mendes   | BA      | TechCo Tokyo  |
 
-**DEPARTMENT**
+**OFFICE**
 
-<div className="overflow-x-auto my-4">
-  <table className="w-full text-2xs border-collapse">
-    <thead>
-      <tr>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">DEPARTMENT</th>
-        <th className="bg-[#3b9daa] text-white font-semibold px-3 py-1.5 text-left">
-          DEPT LOCATION
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">Engineering</td>
-        <td className="px-3 py-1.5">Berlin, Germany</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">Marketing</td>
-        <td className="px-3 py-1.5">Tokyo, Japan</td>
-      </tr>
-      <tr className="border-b border-gray-100">
-        <td className="px-3 py-1.5">Sales</td>
-        <td className="px-3 py-1.5">São Paulo, Brazil</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+| OFFICE        | ADDRESS             | CITY   | COUNTRY | ZIP      |
+| ------------- | ------------------- | ------ | ------- | -------- |
+| TechCo Berlin | Friedrichstrasse, 8 | Berlin | Germany | 10117    |
+| TechCo Tokyo  | 1 Marunouchi        | Tokyo  | Japan   | 100-0005 |
+| TechCo Dubai  | Sheikh Zayed Rd, 33 | Dubai  | UAE     | 00000    |
 
-Note: `MANAGER` remains in the **EMPLOYEE** table intentionally. A manager's identity is tied to each individual employee, not to the department — Sarah Johnson manages staff in both Engineering and Marketing, so `DEPARTMENT → MANAGER` does not hold. There is no transitive dependency through `DEPARTMENT`, and `MANAGER` depends directly on `EMPLOYEE ID`.
-
-**SKILL** and **EMPLOYEE_SKILL** remain unchanged from 2NF. The database is now in **3NF**.
+**PROJECT** and **EMPLOYEE_PROJECT** remain unchanged from 2NF. The database is now in **3NF**.
