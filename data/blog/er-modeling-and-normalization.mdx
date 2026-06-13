@@ -652,4 +652,6 @@ To reach **3NF**, move `DEPT LOCATION` into a dedicated **DEPARTMENT** table:
   </table>
 </div>
 
+Note: `MANAGER` remains in the **EMPLOYEE** table intentionally. A manager's identity is tied to each individual employee, not to the department — Sarah Johnson manages staff in both Engineering and Marketing, so `DEPARTMENT → MANAGER` does not hold. There is no transitive dependency through `DEPARTMENT`, and `MANAGER` depends directly on `EMPLOYEE ID`.
+
 **SKILL** and **EMPLOYEE_SKILL** remain unchanged from 2NF. The database is now in **3NF**.
