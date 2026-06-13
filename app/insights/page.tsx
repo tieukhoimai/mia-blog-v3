@@ -201,7 +201,7 @@ export default async function InsightsPage({
           — insights
         </p>
         <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
-          Insights
+          Retrospectives
         </h1>
         <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
           Let's read the numbers, spot the patterns, and write what the data says —{' '}
