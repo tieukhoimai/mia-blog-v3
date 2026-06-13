@@ -98,6 +98,11 @@ export default function ListLayoutWithTags({
         <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
           {title}
         </h1>
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+          Let's explore the source of my reflections — on data, AI, and everything that sits between
+          a raw dataset and a good decision — turn complexity into clarity, and share it all in the
+          most naive way.
+        </p>
       </div>
 
       {/* Horizontal tag pill bar */}
