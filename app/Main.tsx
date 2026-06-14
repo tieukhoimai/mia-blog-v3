@@ -5,6 +5,7 @@ import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog } from 'contentlayer/generated'
 import KnowledgeGraph from '@/components/KnowledgeGraph'
+import TypingEffect from '@/components/TypingEffect'
 import graphData from 'app/graph-data.json'
 
 type Post = CoreContent<Blog> & { readingTime?: { text: string } }
@@ -37,13 +38,15 @@ export default function Home({ posts }: { posts: Post[] }) {
             — {siteMetadata.description}
           </p>
           <h1 className="mb-6 font-serif text-4xl font-bold leading-[1.05] tracking-tight text-gray-900 dark:text-gray-100 sm:text-6xl lg:text-5xl">
-            Hi, I'm Mai.
+            Hi, I'm Mai
             <br />
-            <span className="text-gray-400 dark:text-gray-600">a source of reflections.</span>
+            <span className="text-gray-400 dark:text-gray-600">
+              <TypingEffect />
+            </span>
           </h1>
           <p className="mb-10 max-w-md text-base font-light leading-relaxed text-gray-500 dark:text-gray-400">
-            The world is messy — but I have a way of structuring queries about it. Stories and
-            lessons from a career in data, shared in the most naive way.
+            The world is messy. Writing is how I structure queries about it — data, AI, and
+            everything in between, shared in the most naive way.
           </p>
           {/* Re-enable pointer events for links only */}
           <div className="pointer-events-auto flex gap-6">
