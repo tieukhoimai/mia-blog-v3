@@ -35,6 +35,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['var(--font-ibm-plex-sans)', ...fontFamily.sans],
+        serif: ['var(--font-ibm-plex-serif)', ...fontFamily.serif],
       },
       colors: {
         primary: colors.neutral,

@@ -1,22 +1,26 @@
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 
-import { IBM_Plex_Sans } from 'next/font/google'
+import { IBM_Plex_Sans, IBM_Plex_Serif } from 'next/font/google'
 import ClientSearchProvider from '@/components/SearchProvider'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
-import IdentityPanel from '@/components/IdentityPanel'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import Script from 'next/script'
 import * as gtag from 'gtag'
-import { allBlogs } from 'contentlayer/generated'
 
 const plex_sans = IBM_Plex_Sans({
   weight: ['300', '400', '600'],
   subsets: ['latin'],
   variable: '--font-ibm-plex-sans',
+})
+
+const plex_serif = IBM_Plex_Serif({
+  weight: ['600', '700'],
+  subsets: ['latin'],
+  variable: '--font-ibm-plex-serif',
 })
 
 export const metadata: Metadata = {
@@ -55,11 +59,10 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const postCount = allBlogs.filter((post) => !post.draft).length
   return (
     <html
       lang={siteMetadata.language}
-      className={`${plex_sans.variable} scroll-smooth`}
+      className={`${plex_sans.variable} ${plex_serif.variable} scroll-smooth`}
       suppressHydrationWarning
     >
       <link rel="apple-touch-icon" sizes="76x76" href="/static/favicons/apple-touch-icon.png" />
@@ -95,13 +98,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Header />
             </ClientSearchProvider>
 
-            {/* Body: identity panel (home only) + content */}
-            <div className="flex flex-1">
-              <IdentityPanel postCount={postCount} />
-              <div className="flex min-w-0 flex-1 flex-col">
-                <main className="flex-1">{children}</main>
-                <Footer />
-              </div>
+            <div className="flex min-w-0 flex-1 flex-col">
+              <main className="flex-1">{children}</main>
+              <Footer />
             </div>
           </div>
         </ThemeProviders>
