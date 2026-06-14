@@ -182,12 +182,19 @@ export default function ListLayoutWithTags({
                             {postTitle}
                           </h2>
                           {tags && tags.length > 0 && (
-                            <p className="mt-0.5 truncate text-xs text-gray-400 dark:text-gray-600">
-                              {tags.join(' · ')}
-                            </p>
+                            <div className="mt-1.5 flex flex-wrap gap-1">
+                              {tags.map((tag) => (
+                                <span
+                                  key={tag}
+                                  className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
                           )}
                           {summary && (
-                            <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-gray-400 dark:text-gray-600">
+                            <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-gray-400 dark:text-gray-600">
                               {summary}
                             </p>
                           )}
