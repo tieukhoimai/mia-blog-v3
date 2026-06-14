@@ -37,7 +37,7 @@ export default function Home({ posts }: { posts: Post[] }) {
           <p className="mb-6 text-2xs tracking-[0.13em] text-gray-400 dark:text-gray-600">
             — {siteMetadata.description}
           </p>
-          <h1 className="mb-6 font-serif text-4xl font-bold leading-[1.05] tracking-tight text-gray-900 dark:text-gray-100 sm:text-6xl lg:text-5xl">
+          <h1 className="mb-6 font-serif text-4xl font-bold leading-[1.05] tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl lg:text-6xl">
             Hi, I'm Mai
             <br />
             <span className="text-gray-400 dark:text-gray-600">
