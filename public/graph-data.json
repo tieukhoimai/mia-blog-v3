@@ -1,0 +1,105 @@
+{
+  "generated": "2026-06-14",
+  "nodes": [
+    {
+      "id": "data-engineering",
+      "label": "Data Engineering",
+      "weight": 10,
+      "href": "/tags/data-engineering"
+    },
+    {
+      "id": "data-warehouse",
+      "label": "Data Warehouse",
+      "weight": 8,
+      "href": "/tags/data-warehouse"
+    },
+    { "id": "database", "label": "Database", "weight": 8, "href": "/tags/database" },
+    { "id": "data-modeling", "label": "Data Modeling", "weight": 6, "href": "/tags/data-modeling" },
+    { "id": "llms", "label": "LLMs", "weight": 6, "href": "/tags/llms" },
+    { "id": "agentic-ai", "label": "Agentic AI", "weight": 4, "href": "/tags/agentic-ai" },
+    { "id": "normalization", "label": "Normalization", "weight": 3, "href": "/tags/database" },
+    {
+      "id": "dimensional-modeling",
+      "label": "Dimensional Modeling",
+      "weight": 2,
+      "href": "/tags/dimensional-modeling"
+    },
+    { "id": "fine-tuning", "label": "Fine-tuning", "weight": 2, "href": "/tags/fine-tuning" },
+    { "id": "rag", "label": "RAG", "weight": 2, "href": "/tags/rag" },
+    {
+      "id": "vector-databases",
+      "label": "Vector Databases",
+      "weight": 2,
+      "href": "/tags/vector-databases"
+    },
+    {
+      "id": "context-engineering",
+      "label": "Context Engineering",
+      "weight": 2,
+      "href": "/tags/context-engineering"
+    },
+    {
+      "id": "prompt-engineering",
+      "label": "Prompt Engineering",
+      "weight": 2,
+      "href": "/tags/prompt-engineering"
+    },
+    {
+      "id": "data-visualization",
+      "label": "Data Visualization",
+      "weight": 2,
+      "href": "/tags/data-visualization"
+    },
+    {
+      "id": "star-schema",
+      "label": "Star Schema",
+      "weight": 2,
+      "href": "/tags/dimensional-modeling"
+    },
+    {
+      "id": "slowly-changing-dimension",
+      "label": "SCD",
+      "weight": 2,
+      "href": "/tags/dimensional-modeling"
+    },
+    {
+      "id": "fact-table",
+      "label": "Fact Table",
+      "weight": 2,
+      "href": "/tags/dimensional-modeling"
+    },
+    { "id": "embeddings", "label": "Embeddings", "weight": 2, "href": "/tags/vector-databases" },
+    { "id": "transformer", "label": "Transformer", "weight": 2, "href": "/tags/llms" }
+  ],
+  "edges": [
+    { "source": "data-engineering", "target": "data-warehouse", "weight": 8 },
+    { "source": "data-engineering", "target": "database", "weight": 6 },
+    { "source": "database", "target": "data-modeling", "weight": 6 },
+    { "source": "data-warehouse", "target": "database", "weight": 5 },
+    { "source": "data-engineering", "target": "data-modeling", "weight": 5 },
+    { "source": "data-warehouse", "target": "data-modeling", "weight": 5 },
+    { "source": "llms", "target": "agentic-ai", "weight": 3 },
+    { "source": "normalization", "target": "database", "weight": 3 },
+    { "source": "normalization", "target": "data-modeling", "weight": 2 },
+    { "source": "data-engineering", "target": "dimensional-modeling", "weight": 2 },
+    { "source": "data-warehouse", "target": "dimensional-modeling", "weight": 2 },
+    { "source": "data-modeling", "target": "dimensional-modeling", "weight": 2 },
+    { "source": "star-schema", "target": "dimensional-modeling", "weight": 2 },
+    { "source": "star-schema", "target": "data-warehouse", "weight": 2 },
+    { "source": "fact-table", "target": "dimensional-modeling", "weight": 2 },
+    { "source": "fact-table", "target": "star-schema", "weight": 2 },
+    { "source": "slowly-changing-dimension", "target": "dimensional-modeling", "weight": 2 },
+    { "source": "slowly-changing-dimension", "target": "data-modeling", "weight": 1 },
+    { "source": "llms", "target": "fine-tuning", "weight": 2 },
+    { "source": "llms", "target": "rag", "weight": 2 },
+    { "source": "transformer", "target": "llms", "weight": 2 },
+    { "source": "transformer", "target": "fine-tuning", "weight": 1 },
+    { "source": "embeddings", "target": "vector-databases", "weight": 2 },
+    { "source": "embeddings", "target": "rag", "weight": 2 },
+    { "source": "rag", "target": "vector-databases", "weight": 1 },
+    { "source": "agentic-ai", "target": "context-engineering", "weight": 1 },
+    { "source": "agentic-ai", "target": "prompt-engineering", "weight": 1 },
+    { "source": "llms", "target": "prompt-engineering", "weight": 1 },
+    { "source": "database", "target": "vector-databases", "weight": 1 }
+  ]
+}

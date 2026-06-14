@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "input=$(cat 2>/dev/null || true); if echo \"$input\" | grep -q 'data/blog/'; then echo '📝 Blog post changed — run /generate-graph to update the knowledge graph' >&2; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
