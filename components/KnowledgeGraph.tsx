@@ -204,7 +204,7 @@ export default function KnowledgeGraph({ data, decorative = false, biasX = 0.5 }
 
     // Snapshot for first React render
     setInitPositions(Object.fromEntries(nodes.map((n) => [n.id, { x: n.x, y: n.y }])))
-  }, [dims, data])
+  }, [dims, data, biasX])
 
   // ── Animation loop ─────────────────────────────────────────────────────────
   const startAnimation = useCallback(() => {
@@ -243,7 +243,7 @@ export default function KnowledgeGraph({ data, decorative = false, biasX = 0.5 }
     }
 
     frameRef.current = requestAnimationFrame(tick)
-  }, [data])
+  }, [data, biasX])
 
   // Stop animation on unmount
   useEffect(() => () => cancelAnimationFrame(frameRef.current), [])

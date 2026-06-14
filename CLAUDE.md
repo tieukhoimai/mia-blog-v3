@@ -47,7 +47,7 @@ These JSON files are **auto-generated** — do not edit them directly.
 
 **Environment variables** (optional, for Giscus comments and Google Analytics):
 
-```
+```text
 NEXT_PUBLIC_GOOGLE_ANALYTICS=G-XXXXXXXXXX
 NEXT_PUBLIC_GISCUS_REPO=owner/repo
 NEXT_PUBLIC_GISCUS_REPOSITORY_ID=
