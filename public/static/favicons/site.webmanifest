@@ -1,7 +1,7 @@
 {
   "name": "mai",
   "short_name": "mai",
-  "description": "tieukhoimai.me — structuring queries about the world",
+  "description": "Personal website showcasing blog, projects, and resume — built with Next.js, MDX, and Tailwind CSS",
   "icons": [
     { "src": "/static/favicons/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/static/favicons/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }

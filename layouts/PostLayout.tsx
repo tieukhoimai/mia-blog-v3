@@ -28,7 +28,7 @@ interface LayoutProps {
 }
 
 export default function PostLayout({ content, next, prev, children }: LayoutProps) {
-  const { filePath, path, slug, date, title, tags, image, series } = content
+  const { filePath, path, slug, date, title, tags, image, series, summary } = content
   const basePath = path.split('/')[0]
   const readingTime = (content as CoreContent<Blog> & { readingTime?: { text: string } })
     .readingTime?.text
@@ -81,6 +81,13 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
                   <Tag key={tag} text={tag} variant="chip" />
                 ))}
               </div>
+            )}
+
+            {/* Standfirst */}
+            {summary && (
+              <p className="mt-5 text-sm font-light leading-relaxed text-gray-500 dark:text-gray-400">
+                {summary}
+              </p>
             )}
           </div>
 

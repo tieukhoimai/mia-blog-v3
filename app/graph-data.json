@@ -1,0 +1,198 @@
+{
+  "generated": "2026-06-15",
+  "nodes": [
+    {
+      "id": "data-engineering",
+      "label": "Data Engineering",
+      "weight": 10,
+      "href": "/tags/data-engineering"
+    },
+    {
+      "id": "data-warehouse",
+      "label": "Data Warehouse",
+      "weight": 8,
+      "href": "/tags/data-warehouse"
+    },
+    {
+      "id": "database",
+      "label": "Database",
+      "weight": 8,
+      "href": "/tags/database"
+    },
+    {
+      "id": "data-modeling",
+      "label": "Data Modeling",
+      "weight": 6,
+      "href": "/tags/data-modeling"
+    },
+    {
+      "id": "llms",
+      "label": "LLMs",
+      "weight": 6,
+      "href": "/tags/llms"
+    },
+    {
+      "id": "embeddings",
+      "label": "Embeddings",
+      "weight": 5,
+      "href": "/tags/llms"
+    },
+    {
+      "id": "agentic-ai",
+      "label": "Agentic AI",
+      "weight": 4,
+      "href": "/tags/agentic-ai"
+    },
+    {
+      "id": "normalization",
+      "label": "Normalization",
+      "weight": 3,
+      "href": "/tags/database"
+    },
+    {
+      "id": "fact-table",
+      "label": "Fact Table",
+      "weight": 3,
+      "href": "/tags/dimensional-modeling"
+    },
+    {
+      "id": "slowly-changing-dimension",
+      "label": "SCD",
+      "weight": 3,
+      "href": "/tags/dimensional-modeling"
+    },
+    {
+      "id": "dimensional-modeling",
+      "label": "Dimensional Modeling",
+      "weight": 2,
+      "href": "/tags/dimensional-modeling"
+    },
+    {
+      "id": "data-visualization",
+      "label": "Data Visualization",
+      "weight": 2,
+      "href": "/tags/data-visualization"
+    },
+    {
+      "id": "prompt-engineering",
+      "label": "Prompt Engineering",
+      "weight": 2,
+      "href": "/tags/prompt-engineering"
+    },
+    {
+      "id": "context-engineering",
+      "label": "Context Engineering",
+      "weight": 2,
+      "href": "/tags/context-engineering"
+    },
+    {
+      "id": "rag",
+      "label": "RAG",
+      "weight": 2,
+      "href": "/tags/rag"
+    },
+    {
+      "id": "fine-tuning",
+      "label": "Fine-tuning",
+      "weight": 2,
+      "href": "/tags/fine-tuning"
+    },
+    {
+      "id": "vector-databases",
+      "label": "Vector Databases",
+      "weight": 2,
+      "href": "/tags/vector-databases"
+    },
+    {
+      "id": "star-schema",
+      "label": "Star Schema",
+      "weight": 2,
+      "href": "/tags/dimensional-modeling"
+    },
+    {
+      "id": "olap",
+      "label": "OLAP",
+      "weight": 2,
+      "href": "/tags/data-warehouse"
+    },
+    {
+      "id": "multi-agent",
+      "label": "Multi-Agent",
+      "weight": 2,
+      "href": "/tags/agentic-ai"
+    }
+  ],
+  "edges": [
+    { "source": "data-engineering", "target": "data-warehouse", "weight": 8 },
+    { "source": "data-engineering", "target": "database", "weight": 6 },
+    { "source": "database", "target": "data-modeling", "weight": 6 },
+    { "source": "data-engineering", "target": "data-modeling", "weight": 5 },
+    { "source": "data-warehouse", "target": "database", "weight": 5 },
+    { "source": "data-warehouse", "target": "data-modeling", "weight": 5 },
+    { "source": "embeddings", "target": "llms", "weight": 4 },
+    { "source": "llms", "target": "agentic-ai", "weight": 3 },
+    { "source": "normalization", "target": "database", "weight": 3 },
+    { "source": "fact-table", "target": "data-warehouse", "weight": 3 },
+    { "source": "fact-table", "target": "database", "weight": 3 },
+    { "source": "fact-table", "target": "data-engineering", "weight": 3 },
+    { "source": "fact-table", "target": "data-modeling", "weight": 3 },
+    { "source": "slowly-changing-dimension", "target": "data-engineering", "weight": 3 },
+    { "source": "slowly-changing-dimension", "target": "data-warehouse", "weight": 3 },
+    { "source": "data-warehouse", "target": "dimensional-modeling", "weight": 2 },
+    { "source": "database", "target": "dimensional-modeling", "weight": 2 },
+    { "source": "data-engineering", "target": "dimensional-modeling", "weight": 2 },
+    { "source": "data-modeling", "target": "dimensional-modeling", "weight": 2 },
+    { "source": "llms", "target": "rag", "weight": 2 },
+    { "source": "llms", "target": "fine-tuning", "weight": 2 },
+    { "source": "embeddings", "target": "agentic-ai", "weight": 2 },
+    { "source": "embeddings", "target": "vector-databases", "weight": 2 },
+    { "source": "embeddings", "target": "rag", "weight": 2 },
+    { "source": "normalization", "target": "data-engineering", "weight": 2 },
+    { "source": "normalization", "target": "data-modeling", "weight": 2 },
+    { "source": "fact-table", "target": "dimensional-modeling", "weight": 2 },
+    { "source": "fact-table", "target": "star-schema", "weight": 2 },
+    { "source": "fact-table", "target": "slowly-changing-dimension", "weight": 2 },
+    { "source": "slowly-changing-dimension", "target": "database", "weight": 2 },
+    { "source": "slowly-changing-dimension", "target": "data-modeling", "weight": 2 },
+    { "source": "star-schema", "target": "data-engineering", "weight": 2 },
+    { "source": "star-schema", "target": "data-warehouse", "weight": 2 },
+    { "source": "star-schema", "target": "database", "weight": 2 },
+    { "source": "star-schema", "target": "data-modeling", "weight": 2 },
+    { "source": "olap", "target": "data-warehouse", "weight": 2 },
+    { "source": "olap", "target": "database", "weight": 2 },
+    { "source": "olap", "target": "data-modeling", "weight": 2 },
+    { "source": "olap", "target": "data-engineering", "weight": 2 },
+    { "source": "multi-agent", "target": "agentic-ai", "weight": 2 },
+    { "source": "database", "target": "vector-databases", "weight": 1 },
+    { "source": "llms", "target": "prompt-engineering", "weight": 1 },
+    { "source": "llms", "target": "context-engineering", "weight": 1 },
+    { "source": "llms", "target": "vector-databases", "weight": 1 },
+    { "source": "llms", "target": "multi-agent", "weight": 1 },
+    { "source": "agentic-ai", "target": "prompt-engineering", "weight": 1 },
+    { "source": "agentic-ai", "target": "context-engineering", "weight": 1 },
+    { "source": "prompt-engineering", "target": "context-engineering", "weight": 1 },
+    { "source": "prompt-engineering", "target": "rag", "weight": 1 },
+    { "source": "prompt-engineering", "target": "fine-tuning", "weight": 1 },
+    { "source": "context-engineering", "target": "rag", "weight": 1 },
+    { "source": "context-engineering", "target": "vector-databases", "weight": 1 },
+    { "source": "rag", "target": "fine-tuning", "weight": 1 },
+    { "source": "rag", "target": "vector-databases", "weight": 1 },
+    { "source": "embeddings", "target": "prompt-engineering", "weight": 1 },
+    { "source": "embeddings", "target": "fine-tuning", "weight": 1 },
+    { "source": "embeddings", "target": "context-engineering", "weight": 1 },
+    { "source": "embeddings", "target": "database", "weight": 1 },
+    { "source": "normalization", "target": "data-warehouse", "weight": 1 },
+    { "source": "normalization", "target": "dimensional-modeling", "weight": 1 },
+    { "source": "normalization", "target": "fact-table", "weight": 1 },
+    { "source": "normalization", "target": "star-schema", "weight": 1 },
+    { "source": "normalization", "target": "olap", "weight": 1 },
+    { "source": "fact-table", "target": "olap", "weight": 1 },
+    { "source": "slowly-changing-dimension", "target": "dimensional-modeling", "weight": 1 },
+    { "source": "slowly-changing-dimension", "target": "star-schema", "weight": 1 },
+    { "source": "star-schema", "target": "dimensional-modeling", "weight": 1 },
+    { "source": "star-schema", "target": "olap", "weight": 1 },
+    { "source": "olap", "target": "dimensional-modeling", "weight": 1 },
+    { "source": "multi-agent", "target": "prompt-engineering", "weight": 1 },
+    { "source": "multi-agent", "target": "context-engineering", "weight": 1 }
+  ]
+}
