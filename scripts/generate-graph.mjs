@@ -39,7 +39,7 @@ function generateGraph({ minWeight = 2, maxNodes = 20 } = {}) {
     try {
       const { data: fm } = matter(readFileSync(filePath, 'utf8'))
       if (isProduction && fm.draft === true) return
-      const tags = (fm.tags ?? []).map((t) => slug(t))
+      const tags = [...new Set((fm.tags ?? []).map((t) => slug(t)))]
       if (tags.length > 0) articles.push({ tags })
     } catch (err) {
       console.error(`❌ Error reading ${filePath}:`, err.message)
