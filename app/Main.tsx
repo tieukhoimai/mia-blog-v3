@@ -11,11 +11,11 @@ import graphData from 'app/graph-data.json'
 type Post = CoreContent<Blog> & { readingTime?: { text: string } }
 
 const pageLabels: Record<string, string> = {
-  '/blog': 'the source of my reflections',
-  '/series': 'thoughts connected over time',
-  '/learning': 'lessons in the open',
-  '/insights': 'patterns in the data',
-  '/about': 'life behind the titles',
+  '/blog': 'raw observations and ideas',
+  '/series': 'structured narratives',
+  '/learning': 'work in progress',
+  '/insights': 'reading between the rows',
+  '/about': 'the schema behind the data',
 }
 
 export default function Home({ posts }: { posts: Post[] }) {
@@ -45,8 +45,8 @@ export default function Home({ posts }: { posts: Post[] }) {
             </span>
           </h1>
           <p className="mb-10 max-w-md text-base font-light leading-relaxed text-gray-500 dark:text-gray-400">
-            The world is messy. Writing is how I structure queries about it — data, AI, and
-            everything in between, shared in the most naive way.
+            I've been writing and building here since 2022 - turning abstract concepts into clarity,
+            raw ideas into working software, and figuring it out, in the most naive way.
           </p>
           {/* Re-enable pointer events for links only */}
           <div className="pointer-events-auto flex gap-6">
@@ -96,7 +96,7 @@ export default function Home({ posts }: { posts: Post[] }) {
             {cardPosts.map((post) => (
               <article
                 key={post.slug}
-                className="flex flex-col rounded-xl bg-white p-6 shadow-sm dark:bg-gray-950"
+                className="flex flex-col rounded-xl bg-white p-6 shadow-sm transition-shadow hover:shadow-md dark:bg-gray-950 dark:hover:ring-1 dark:hover:ring-gray-700"
               >
                 <div className="mb-4 flex items-center justify-between">
                   <span className="font-mono text-2xs text-gray-400 dark:text-gray-600">
@@ -155,12 +155,12 @@ export default function Home({ posts }: { posts: Post[] }) {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="group flex items-baseline justify-between py-4 transition-colors hover:opacity-60"
+                  className="group flex items-baseline justify-between py-4 transition-colors"
                 >
-                  <span className="text-base font-semibold text-gray-900 dark:text-gray-100">
+                  <span className="text-base font-semibold text-gray-900 transition-colors group-hover:text-gray-500 dark:text-gray-100 dark:group-hover:text-gray-400">
                     {link.title}
                   </span>
-                  <span className="text-sm text-gray-400 dark:text-gray-600">
+                  <span className="text-sm text-gray-400 transition-colors group-hover:text-gray-700 dark:text-gray-600 dark:group-hover:text-gray-300">
                     {pageLabels[link.href] ?? ''}
                   </span>
                 </Link>
