@@ -19,7 +19,7 @@ export default async function Page() {
   return (
     <ResumeClient
       data={resumeData}
-      sections={['education', 'experience', 'projects', 'awards', 'publications']}
+      sections={['education', 'experience']}
       heroImage={{ src: '/static/images/avatar.png', alt: 'Mia' }}
     />
   )

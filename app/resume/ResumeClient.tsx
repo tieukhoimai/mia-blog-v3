@@ -461,7 +461,7 @@ export default function ResumeClient({
                     <ExperienceItem
                       key={idx}
                       item={item}
-                      expanded={expandedExp[idx] ?? false}
+                      expanded={expandedExp[idx] ?? true}
                       onToggle={() => toggleExperience(idx)}
                     />
                   ))}
