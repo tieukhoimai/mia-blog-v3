@@ -36,12 +36,6 @@ This article focuses on the **protocol layer**. It explains how MCP, A2A and ANP
 - **Tool use** — external tools and APIs make up for LLM weaknesses in mathematics, logic and knowledge outside the training data.
 - **Action execution** — acting on the environment through API calls, database queries or other external systems.
 
-The survey then reviews the field in three strands:
-
-- **Industry:** Microsoft's agent ecosystem, integrated with over 1,400 enterprise systems and several LLMs; IBM's distinction between simple function-calling systems and truly autonomous agents; low-code platforms such as Coze that let non-programmers build and deploy agents.
-- **Academia:** reasoning-focused ("o1-like") models for multi-step problems, and multi-agent architectures that spread the cognitive load across specialized agents.
-- **Frameworks:** LangChain and LangGraph for modular reasoning, planning and multi-agent coordination; Microsoft Semantic Kernel for adding agent features to existing enterprise software.
-
 An agent is not necessarily a separate model. It can be a service that combines a model, a workflow and some tools, and several agents can share one model while differing in role, context, permissions and tools. Once you have more than one, you have a multi-agent system, and the classic multi-agent problems return: how agents discover each other, divide work, exchange information and recover when something fails. Each of these is, at bottom, a communication problem, which is where protocols come in.
 
 ### 2.2 What a protocol is
