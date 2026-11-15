@@ -108,6 +108,9 @@ export default function SlideDeck({
     goTo(Math.round(fraction * (pages - 1)) + 1)
   }
 
+  // Thumb and fill use the same mapping that handleProgressClick inverts
+  const progress = pages > 1 ? (current - 1) / (pages - 1) : 1
+
   const iconButton =
     'flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-gray-500 transition-colors ' +
     'hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white'
@@ -137,10 +140,10 @@ export default function SlideDeck({
           role="region"
           aria-roledescription="carousel"
           aria-label={alt}
-          className={`flex snap-x snap-mandatory overflow-x-auto rounded-lg [scrollbar-width:none] focus:outline-none [&::-webkit-scrollbar]:hidden ${
+          className={`flex snap-x snap-mandatory overflow-x-auto rounded-lg [scrollbar-width:none] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 [&::-webkit-scrollbar]:hidden ${
             isFullscreen
               ? 'min-h-0 flex-1 gap-4 bg-transparent p-2 sm:p-4'
-              : 'gap-4 border border-gray-200 bg-gray-50 p-4 focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-gray-700 dark:bg-gray-900/50 sm:gap-6 sm:p-6'
+              : 'gap-4 border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900/50 sm:gap-6 sm:p-6'
           }`}
         >
           {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
@@ -300,12 +303,12 @@ export default function SlideDeck({
             <div className="absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 overflow-hidden rounded-full bg-gray-200 transition-colors group-hover/bar:bg-gray-300 dark:bg-gray-700 dark:group-hover/bar:bg-gray-600">
               <div
                 className="h-full rounded-full bg-primary-500 transition-[width] duration-300 ease-out"
-                style={{ width: `${(current / pages) * 100}%` }}
+                style={{ width: `${progress * 100}%` }}
               />
             </div>
             <div
               className="absolute top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-500 shadow transition-[left] duration-300 ease-out group-hover/bar:scale-125"
-              style={{ left: `${(current / pages) * 100}%` }}
+              style={{ left: `${progress * 100}%` }}
             />
             <span className="sr-only">{`Slide ${current} of ${pages}`}</span>
           </div>
