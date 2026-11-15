@@ -37,8 +37,12 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
       toc?: string | { value: string; url: string; depth: number }[]
     }
   ).toc
-  const toc: { value: string; url: string; depth: number }[] =
+  // Pliny collects every heading level, including H4s. The TOC only needs
+  // sections (H2) and subsections (H3); deeper headings stay anchored in the
+  // article without appearing in the list.
+  const toc: { value: string; url: string; depth: number }[] = (
     typeof rawToc === 'string' ? JSON.parse(rawToc) : rawToc ?? []
+  ).filter((item: { depth: number }) => item.depth <= 3)
 
   return (
     <div
@@ -168,7 +172,7 @@ export default function PostLayout({ content, next, prev, children }: LayoutProp
         {/* Sticky TOC — visible only on xl screens */}
         {toc.length > 0 && (
           <aside className="hidden xl:block xl:w-52 xl:shrink-0">
-            <div className="sticky top-24">
+            <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pb-6">
               <TableOfContents toc={toc} />
             </div>
           </aside>

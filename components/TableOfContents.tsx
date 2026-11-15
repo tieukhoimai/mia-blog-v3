@@ -14,6 +14,11 @@ interface Props {
   mobile?: boolean
 }
 
+interface Section {
+  item: TocItem & { id: string }
+  children: (TocItem & { id: string })[]
+}
+
 export default function TableOfContents({ toc, mobile = false }: Props) {
   const [activeId, setActiveId] = useState('')
   const [open, setOpen] = useState(false)
@@ -25,6 +30,28 @@ export default function TableOfContents({ toc, mobile = false }: Props) {
     const slugger = new GithubSlugger()
     return toc.map((item) => ({ ...item, id: slugger.slug(item.value) }))
   }, [toc])
+
+  // Group H3s under their preceding H2 so the list can show sections always
+  // and expand only the subsection list of the section currently in view.
+  const sections = useMemo<Section[]>(() => {
+    const grouped: Section[] = []
+    for (const item of items) {
+      if (item.depth <= 2 || grouped.length === 0) {
+        grouped.push({ item, children: [] })
+      } else {
+        grouped[grouped.length - 1].children.push(item)
+      }
+    }
+    return grouped
+  }, [items])
+
+  const activeSectionId = useMemo(() => {
+    const active = sections.find(
+      (section) =>
+        section.item.id === activeId || section.children.some((child) => child.id === activeId)
+    )
+    return active?.item.id ?? ''
+  }, [sections, activeId])
 
   useEffect(() => {
     if (!items.length) return
@@ -61,21 +88,39 @@ export default function TableOfContents({ toc, mobile = false }: Props) {
 
   if (!items.length) return null
 
+  const linkClass = (id: string) =>
+    `block text-xs leading-snug transition-colors ${
+      activeId === id
+        ? 'text-gray-900 dark:text-gray-100'
+        : 'text-gray-400 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-300'
+    }`
+
   const list = (
     <ul className="flex flex-col gap-1.5">
-      {items.map(({ value, id, depth }) => (
-        <li key={id} style={{ paddingLeft: depth > 2 ? `${(depth - 2) * 10}px` : 0 }}>
+      {sections.map(({ item, children }) => (
+        <li key={item.id}>
           <a
-            href={`#${id}`}
-            onClick={(e) => handleClick(e, id)}
-            className={`block text-xs leading-snug transition-colors ${
-              activeId === id
-                ? 'text-gray-900 dark:text-gray-100'
-                : 'text-gray-400 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-300'
-            }`}
+            href={`#${item.id}`}
+            onClick={(e) => handleClick(e, item.id)}
+            className={linkClass(item.id)}
           >
-            {value}
+            {item.value}
           </a>
+          {children.length > 0 && item.id === activeSectionId && (
+            <ul className="mt-1.5 flex flex-col gap-1.5 border-l border-gray-100 pl-2.5 dark:border-gray-800">
+              {children.map((child) => (
+                <li key={child.id}>
+                  <a
+                    href={`#${child.id}`}
+                    onClick={(e) => handleClick(e, child.id)}
+                    className={linkClass(child.id)}
+                  >
+                    {child.value}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </li>
       ))}
     </ul>
