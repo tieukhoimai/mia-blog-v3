@@ -1,0 +1,451 @@
+---
+title: 'Agent Protocols: How MCP, A2A and ANP Connect AI Agents'
+date: '2026-11-15'
+tags: ['Agentic AI', 'Protocols', 'MCP', 'A2A', 'ANP']
+draft: false
+summary: "How does an agent reach the tools it needs, hand work to another vendor's agent, and trust an agent it has never met? MCP, A2A and ANP each answer one of those questions — and a year and a half after the first survey of the field, all three are versioned, governed, and substantially changed."
+image: '/static/images/resource/agent-protocols/thumbnail.png'
+---
+
+## 1. Introduction: The Agent Ecosystem
+
+A language model on its own takes information in and generates a response. An **AI agent** does more: it can plan a sequence of actions, use tools, inspect results and continue working toward a goal. That ability to act creates a set of communication problems. An agent may need to access a database, ask another agent to perform a specialist task, or find a service operated by an organization it has never interacted with.
+
+An agent therefore needs more than a capable model. It needs reliable ways to communicate with the tools, services and other agents around it. To understand where that communication happens, it helps to begin with a simple architectural model of the agent ecosystem was suggested in the 2025 _A Survey of AI Agent Protocols_ of agent protocols[^survey].
+
+1. **Application layer — where agents deliver value.** This is the layer people and businesses interact with: assistants, agent platforms, creation tools, entertainment services and e-commerce applications. It is where a user expresses a goal, such as planning a trip, researching a topic or resolving a customer issue.
+2. **Protocol layer — how agents and capabilities communicate.** This layer defines shared rules for discovering capabilities, exchanging messages, delegating tasks and interacting across applications or organizations. MCP, A2A and ANP are examples of protocols at this layer, each addressing a different communication need.
+3. **Infrastructure layer — what supports communication and execution.** This includes the underlying networking and computing foundations: HTTP and REST APIs, cloud services, GPUs, storage, databases and data centres. These resources carry communications and provide the compute and data that applications depend on.
+
+![The survey's layered Agent Internet Ecosystem](/static/images/resource/agent-protocols/svg/fig01-agent-internet-ecosystem.svg)
+_Figure 1. The survey's Agent Internet Ecosystem (revised from the survey[^survey])._
+
+The layers have different responsibilities, but they work together. An application expresses a goal and coordinates the user experience; protocols define how the required agents, tools and services interact; infrastructure transports the messages and provides the resources needed to execute the work. This is a conceptual architecture, not a rigid networking stack. For example, HTTP is itself a protocol in networking terms, but in this model it is part of the underlying infrastructure that agent-specific protocols build upon.
+
+This article focuses on the **protocol layer**. It explains how MCP, A2A and ANP enable different forms of agent communication, how they can work together in one application, and what additional engineering is needed to make the overall system dependable.
+
+## 2. Background
+
+### 2.1 Agents and multi-agent systems
+
+**What an LLM agent is.** LLM agents combine an LLM's language abilities with autonomous decision-making: they reason over several steps, plan ahead, remember past interactions and use external tools to adapt their responses. What separates them from a plain LLM is that they are built to act autonomously in real environments, not only to generate text from a prompt. The survey names five core components:
+
+- **Foundation model** — an LLM or multimodal model that provides reasoning, language understanding and interpretation of multimodal input.
+- **Memory** — short-term memory keeps a conversation coherent; long-term memory stores knowledge for later use.
+- **Planning** — breaks complex tasks into manageable subtasks, which also makes the agent's decisions easier to interpret.
+- **Tool use** — external tools and APIs make up for LLM weaknesses in mathematics, logic and knowledge outside the training data.
+- **Action execution** — acting on the environment through API calls, database queries or other external systems.
+
+The survey then reviews the field in three strands:
+
+- **Industry:** Microsoft's agent ecosystem, integrated with over 1,400 enterprise systems and several LLMs; IBM's distinction between simple function-calling systems and truly autonomous agents; low-code platforms such as Coze that let non-programmers build and deploy agents.
+- **Academia:** reasoning-focused ("o1-like") models for multi-step problems, and multi-agent architectures that spread the cognitive load across specialized agents.
+- **Frameworks:** LangChain and LangGraph for modular reasoning, planning and multi-agent coordination; Microsoft Semantic Kernel for adding agent features to existing enterprise software.
+
+An agent is not necessarily a separate model. It can be a service that combines a model, a workflow and some tools, and several agents can share one model while differing in role, context, permissions and tools. Once you have more than one, you have a multi-agent system, and the classic multi-agent problems return: how agents discover each other, divide work, exchange information and recover when something fails. Each of these is, at bottom, a communication problem, which is where protocols come in.
+
+### 2.2 What a protocol is
+
+The survey defines agent protocols as standardized rules, formats and procedures for structured communication among agents, and between agents and external systems. Concretely, a protocol settles:
+
+- how endpoints and participants are identified;
+- how connections and authentication are set up;
+- the structure and meaning of messages, fields and states;
+- how errors, timeouts and versions are handled;
+- how the protocol can be extended without breaking older systems.
+
+What a protocol does **not** decide is how an agent reasons, which model it uses or which workflow is best. A2A, for example, standardizes how a request is sent and how a result comes back; it does not care whether the remote agent uses a particular framework or prompting strategy.
+
+### 2.3 Why not just use APIs, browser automation or GUIs?
+
+If agents can already call APIs, why do they need protocols? The survey answers by comparing four ways an agent can interact with the world: plain APIs, graphical interfaces, browser automation through HTML, and protocols (Table 1).
+
+| Manner   | Typical scenario             | Efficiency | Operation range | Standardized | AI-native |
+| -------- | ---------------------------- | ---------- | --------------- | ------------ | --------- |
+| API      | Server-to-server integration | ✓✓         | ✗               | ✗            | ✗         |
+| GUI      | Computer and mobile use      | ✗          | ✓               | ✓            | ✗         |
+| XML      | Browser use                  | ✗          | ✓               | ✗            | ✗         |
+| Protocol | Agent interaction            | ✓✓         | ✓✓              | ✓✓           | ✓✓        |
+
+_Adapted from Yang et al. (2025). The ratings are the survey authors' qualitative assessment, not the result of a measured benchmark._[^survey]
+
+APIs remain efficient, but every provider can expose a different interface. Browser automation and GUIs can reach many systems, but they make agents interpret interfaces designed primarily for people. Agent protocols aim to provide a common, machine-readable contract for describing capabilities and exchanging requests and results.
+
+A useful way to think about a protocol is as **an agreed communication contract**. It standardizes not just the message format, but also the meaning of that message and the interaction around it. This can reduce the number of one-off integrations between models and services.
+
+It is also useful to distinguish four related terms:
+
+- A **protocol** defines communication rules, such as MCP, A2A or ANP.
+- A **framework** is a software library for building agents and may implement one or more protocols.
+- A **runtime** is the environment or process in which an agent executes.
+- A **harness** is the surrounding control and engineering environment: policies, state management, tests, monitoring and recovery mechanisms.
+
+## 3. Taxonomy of Agent Protocols
+
+The three-layer model explains where protocols sit. The next question is what problems this middle layer must solve. Rather than starting with protocol names, start with three practical questions:
+
+1. **How does an agent access tools and data?**
+2. **How does one agent delegate work to another agent?**
+3. **How does an agent discover and identify an agent outside its own organization?**
+
+MCP, A2A and ANP address these different needs.
+
+| Protocol | Main relationship                     | Main responsibility                                 | Typical interaction                                   |
+| -------- | ------------------------------------- | --------------------------------------------------- | ----------------------------------------------------- |
+| **MCP**  | AI application ↔ capability provider | Access tools, resources and prompts                 | Tool call, resource read or prompt retrieval          |
+| **A2A**  | Agent ↔ agent                        | Delegate and coordinate work                        | Message or Task, with results returned as Artifacts   |
+| **ANP**  | Agent ↔ open agent network           | Identity, discovery and interoperable communication | Find, describe and verify an agent before interacting |
+
+The distinction is important: a **tool is not automatically an agent**, a remote agent is not simply a tool endpoint, and discovering an agent does not automatically make it trustworthy.
+
+With those terms in place, we can turn to the survey's core contribution: a two-by-two map of the field (Figure 3). The first question is _who the agent talks to_: **context-oriented** protocols connect an agent to tools, data and services, while **inter-agent** protocols connect agents to each other. The second is _how broad the use is_: **general-purpose** protocols aim at any application, **domain-specific** ones at one setting.
+
+![The survey's taxonomy of agent protocols: object orientation by application scenario](/static/images/resource/agent-protocols/svg/fig03-protocol-taxonomy.svg)
+_Figure 3. The survey's taxonomy: who the agent talks to (rows) by how broad the intended use is (columns)._
+
+- **Context-oriented protocols** connect an agent to tools, data and services. MCP is a general-purpose example. The survey also discusses agents.json, which focuses on how websites declare interfaces for agents.
+- **Inter-agent protocols** connect agents to other agents. A2A and ANP are general-purpose examples. Other proposals focus on particular domains, such as human-agent interaction, robots or specialized agent systems.
+
+This taxonomy is a guide rather than a strict partition. The survey notes that the boundary between tools and agents can blur. A tool can be viewed as a low-autonomy capability, while an agent can be viewed as a more autonomous service. For this article, the useful distinction is the job each protocol standardizes: **MCP provides capability access, A2A provides agent-to-agent task interaction, and ANP provides identity and discovery across an open network.**
+
+## 4. How MCP, A2A and ANP Work
+
+### 4.1 MCP: connecting agents to tools and context
+
+#### What is MCP for?
+
+The **Model Context Protocol (MCP)**, released by Anthropic in November 2024, provides a common way for an AI application to connect to external tools, data and reusable prompts. It addresses the problem of building a separate integration for every model and every tool provider.
+
+MCP is primarily about **capability access**. It standardizes how an AI application discovers and invokes capabilities exposed by a server. It is not primarily a protocol for independent agents to delegate tasks to one another; that is the role A2A is designed to address.
+
+#### Core components
+
+MCP has three main roles:
+
+| Component      | Responsibility                                                                                                                                     |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Host**       | The AI application containing the model and agent experience. It manages context, user interaction and policy over which capabilities may be used. |
+| **MCP Client** | A component inside the host. The host typically creates one client for each MCP server it connects to.                                             |
+| **MCP Server** | Exposes capabilities through MCP, either locally or remotely, and connects to the underlying systems.                                              |
+
+An MCP server can expose three kinds of capability. It does not have to expose all three:
+
+- **Tools** are actions the host can ask the server to perform. Examples include `search_papers(query)` or `create_ticket(title, description)`. A tool includes a name, a description and an input schema.
+- **Resources** are data that the client can read and provide as context, such as files, database records or policy documents.
+- **Prompts** are reusable templates or workflow suggestions offered by the server.
+
+A simple way to remember the distinction: **tools do things, resources provide information, and prompts provide reusable guidance.**
+
+#### How an MCP interaction works
+
+Consider an agent that needs to search academic papers. The interaction follows this general sequence:
+
+1. The AI application (the **Host**) connects to an MCP server through an MCP Client.
+2. The client discovers the server's supported protocol version and capabilities.
+3. The client lists available tools, resources and prompts, such as `tools/list` and corresponding resource and prompt methods.
+4. The host makes relevant capability descriptions available to the model, subject to its own policy and context limits.
+5. The model selects a suitable tool. The host asks the client to send a `tools/call` request with the tool name and arguments.
+6. The server executes the request and returns a result or an error. When more input is required, the interaction can pause and continue after that input is supplied.
+7. The host validates and uses the result, then either continues with another action or responds to the user.
+
+![MCP's components, with the survey's three phases mapped onto the 2026-07-28 messages](/static/images/resource/agent-protocols/svg/fig04-mcp-components-flow.svg)
+_Figure 4. MCP's components and a typical interaction, from discovery to invocation and result handling._
+
+The model does not connect directly to the MCP server. The host and its client manage the connection, authentication, policy and invocation. This separation is important because the application—not the model alone—must decide which capabilities are available and whether a proposed action is permitted.
+
+#### Implementation notes
+
+MCP messages use **JSON-RPC 2.0**. The two transports described here are:
+
+- **stdio**, commonly used when the host launches a local MCP server as a subprocess; and
+- **Streamable HTTP**, used for communication with remote servers.
+
+The 2026-07-28 specification introduced several changes to the protocol's core (Figure 5):
+
+- **Stateless operation:** the core no longer relies on protocol sessions or `Mcp-Session-Id`; requests carry version and capability information in `_meta`.
+- **Multi-round-trip requests:** a server can return `input_required` when it needs additional information, after which the client can retry with the required input.
+- **Explicit handles:** state that must persist between calls is represented by values passed explicitly.
+- **Header-based routing:** `Mcp-Method` and `Mcp-Name` allow gateways to route or meter requests without first reading the message body.
+- **Cacheable lists and extensions:** list results can carry caching information, and long-running tasks are handled through the `io.modelcontextprotocol/tasks` extension.
+- **Trace context:** OpenTelemetry trace context can be carried in request metadata.
+
+Authorization has also evolved through several stages: the initial release did not define an authorization framework; OAuth 2.1 was introduced for remote servers in March 2025; later changes addressed resource-server tokens, client identity and issuer validation.[^mcp-spec]
+
+![What changed in MCP's 2026-07-28 release, and how authorization evolved](/static/images/resource/agent-protocols/svg/fig05-mcp-under-the-hood.svg)
+_Figure 5. Selected changes in the 2026-07-28 specification and the evolution of MCP authorization._
+
+A simplified tool definition returned by a `tools/list` request might look like this:
+
+```json
+{
+  "name": "search_papers",
+  "description": "Search academic papers by query",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "query": { "type": "string" },
+      "limit": { "type": "integer", "minimum": 1, "maximum": 20 }
+    },
+    "required": ["query"]
+  }
+}
+```
+
+**What to remember:** MCP standardizes how an application discovers and invokes capabilities. It does not decide whether a tool should be exposed to a particular task, whether a side-effecting action needs user approval, or whether the returned information is correct. Those decisions belong to the application and its surrounding controls. Also, a new specification does not mean every existing client, server or SDK has implemented it.
+
+### 4.2 A2A: enabling agent-to-agent collaboration
+
+#### What is A2A for?
+
+The **Agent2Agent protocol (A2A)**, announced by Google in April 2025, allows independent agents to discover one another, exchange messages and delegate work. For example, a research agent might ask a statistical-analysis agent to review a dataset, or a customer-support agent might ask an order-management agent to inspect a transaction.
+
+A2A is designed around **opaque execution**. The calling agent does not need to know the remote agent's model, prompts, memory, tools or internal reasoning. It needs to know what the remote agent says it can do, how to send it a request and how to receive progress and results. This allows agents built with different frameworks, languages or vendors to cooperate while remaining independently implemented.
+
+#### Core components
+
+A2A uses five central concepts (Figure 6):
+
+| Component      | Responsibility                                                                                                                                                                                                             |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Agent Card** | A published description of an agent's identity, skills, supported interfaces and security requirements. A common location is `/.well-known/agent-card.json`. It is an advertisement of capabilities, not proof of quality. |
+| **Message**    | A communication turn between the participants.                                                                                                                                                                             |
+| **Part**       | A content unit within a message or artifact, such as text, raw bytes, a URL or structured data.                                                                                                                            |
+| **Task**       | An identifiable unit of work with a lifecycle, particularly useful for asynchronous or long-running work.                                                                                                                  |
+| **Artifact**   | The output of a task, such as a report, file, analysis or structured result.                                                                                                                                               |
+
+![A2A's core components: Agent Card, Message, Task, Artifact, and the shared Part type](/static/images/resource/agent-protocols/svg/fig06-a2a-core-components.svg)
+_Figure 6. A2A's core objects and their main fields._
+
+The most important distinction is between a **Message** and a **Task**. A message represents communication. A task represents work that may continue over time, report status, request more input or end in a terminal state. An Artifact is one of the outputs produced by that work.
+
+#### How agents collaborate with A2A
+
+A typical A2A interaction follows this sequence:
+
+1. The calling agent obtains the remote agent's **Agent Card**, either from its well-known location or from a registry provided by the surrounding system.
+2. It checks the remote agent's advertised skills, interfaces and security requirements against the task it wants to delegate.
+3. It sends a **Message** with the request and the necessary context, using `SendMessage` or `SendStreamingMessage` when streaming updates are needed.
+4. The remote agent may reply directly, create a **Task**, or reject the request.
+5. If a task is created, the caller follows its status. The remote agent may request additional input or authorization, and the caller may cancel the task.
+6. The task reaches a terminal state and returns any resulting **Artifacts**.
+7. The calling agent validates the artifacts before using them.
+
+![An A2A task works, may pause for input or authorization, then ends in one terminal state](/static/images/resource/agent-protocols/svg/fig07-a2a-task-lifecycle.svg)
+_Figure 7. The A2A task lifecycle: work may pause for input or authorization before reaching a terminal state._
+
+#### Implementation notes
+
+A2A separates its data model from the operations and the protocol bindings used to carry them. Its operations include `SendMessage`, `SendStreamingMessage`, `GetTask`, `ListTasks`, `CancelTask` and `SubscribeToTask`. The protocol can use JSON-RPC 2.0, gRPC or HTTP+JSON bindings. A task can be followed through server-sent events, polling with `GetTask`, or a push-notification webhook. The Agent Card can declare security schemes such as OAuth 2.0 and mutual TLS.
+
+Version 1.0, released in 2026, changed several details from earlier releases: operation names changed (for example, `message/send` became `SendMessage`), the Part model was consolidated, task state names were updated, and an Agent Card can advertise multiple interfaces with their own versions. Older examples may therefore need adjustment when used with 1.0.[^a2a-v1]
+
+A2A governance also consolidated: IBM's Agent Communication Protocol merged into A2A in August 2025, and A2A joined the Linux Foundation's Agentic AI Foundation in August 2026.
+
+**What to remember:** A2A standardizes the interaction between agents, not the quality of their decisions. The caller still has to select an appropriate agent, share only the context it needs, set timeouts and budgets, and assess the returned artifacts. A timeout does not prove that the remote agent did nothing, so safe retries require deduplication or idempotent operations.
+
+### 4.3 ANP: enabling open agent networks
+
+#### What is ANP for?
+
+The **Agent Network Protocol (ANP)**, developed by an open-source community since 2024, addresses a different situation: an agent needs to find and communicate with another agent whose endpoint or operator may not already be known. ANP aims to support an open network in which agents can be identified, described, discovered and contacted across platforms and organizations.
+
+In this environment, knowing an endpoint is not enough. An agent also needs to understand what the other agent offers and establish who controls the identity associated with it. ANP uses decentralized identity mechanisms so that this process does not depend on one central authority trusted by every participant.
+
+#### Core components
+
+| Component                         | Responsibility                                                                                                                                                    |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Decentralized identity**        | An agent has a DID, using ANP's `did:wba` method. Resolving the DID produces a DID Document containing public keys, authentication methods and service endpoints. |
+| **Agent Description (ANP-07)**    | A machine-readable description of an agent's skills, interfaces, endpoints and security requirements.                                                             |
+| **Discovery (ANP-08)**            | Mechanisms for finding agents from descriptions, such as a `.well-known` location or search agents.                                                               |
+| **Authentication and messaging**  | DID-based authentication over HTTP and JSON (ANP-02), together with messaging profiles (ANP-09).                                                                  |
+| **Meta-protocol (ANP-06, draft)** | An optional mechanism for negotiating a mutually supported protocol, version, schema or security profile.                                                         |
+
+#### How an ANP interaction works
+
+A simplified ANP interaction can be understood as five steps (Figure 8):
+
+1. **Find:** discover a candidate agent through a `.well-known` location or a search agent.
+2. **Describe:** read its Agent Description to understand its skills, interfaces and security requirements.
+3. **Resolve:** resolve its DID to obtain the DID Document and associated public keys.
+4. **Verify:** check signatures or authentication challenges according to the supported profile.
+5. **Interact:** exchange application messages through the described interface and an agreed security profile.
+
+Where both sides implement ANP's draft meta-protocol, they may also negotiate which interface and profile to use. This is optional and should not be assumed to be universally available.
+
+![How an ANP agent finds, verifies and talks to another agent](/static/images/resource/agent-protocols/svg/fig08-anp-interaction.svg)
+_Figure 8. How an ANP agent finds, verifies and interacts with another agent._
+
+A conceptual agent description—not the normative ANP schema—might look like this:
+
+```json
+{
+  "agent": "Research Analyst",
+  "description": "Analyzes scientific papers",
+  "skills": ["methodology_review", "statistical_analysis"],
+  "interfaces": [{ "protocol": "A2A", "version": "1.0" }]
+}
+```
+
+#### Implementation notes and specification status
+
+The survey described ANP as having three layers: identity, a meta-protocol and application protocols. The released 1.2 architecture has two main layers: identity and encrypted communication, and application protocols for description, discovery and interaction. The meta-protocol remains a draft outside the released architecture (Figure 9).
+
+![ANP's released architecture, with the draft meta-protocol shown dashed](/static/images/resource/agent-protocols/svg/fig09-anp-architecture.svg)
+_Figure 9. ANP's released 1.2 architecture; the draft meta-protocol is shown separately._
+
+| Document       | Topic                                       | Status in the 1.2 specification set                        |
+| -------------- | ------------------------------------------- | ---------------------------------------------------------- |
+| ANP-02, ANP-03 | DID authentication and the `did:wba` method | Released                                                   |
+| ANP-04         | WNS naming and resolution                   | Released                                                   |
+| ANP-07, ANP-08 | Agent description and discovery             | Released                                                   |
+| ANP-09         | Messaging profiles                          | Published; group end-to-end encryption remains a candidate |
+| ANP-06         | Meta-protocol negotiation                   | Draft                                                      |
+| ANP-10         | Payment adaptation                          | Independently versioned draft                              |
+
+**What to remember:** “1.2” refers to a specification set, not one universal wire-protocol version; individual profiles have their own identifiers. A published specification also does not mean that every SDK or product implements it. Most importantly, a DID helps establish control of an identity key. It does **not** prove that an agent is trustworthy, competent or authorized to access a dataset. Open discovery can expose systems to impersonation, spam and false capability claims, so deployments still need partner policies, allow-lists, rate limits, data-sharing rules and result validation.[^anp-12]
+
+### 4.4 How the protocols fit together
+
+Seen one at a time, the three protocols can look like rivals. They are not: each covers a different boundary (Figure 10). In a cross-organization job, ANP helps the coordinator find a specialist it has never worked with and verify who runs it; A2A carries the task to that specialist and brings the artifact back; and inside each organization, MCP connects the agents to their own tools and data.
+
+![Each protocol covers one boundary in a cross-organization task](/static/images/resource/agent-protocols/svg/fig10-protocols-fit-together.svg)
+_Figure 10. Each protocol covers one boundary in a cross-organization task._
+
+This layering is a pattern, not something the standards require. Most systems use only part of it:
+
+- **MCP alone** — one agent and its tools, the most common case.
+- **A2A between known agents** — a few agents inside one company whose endpoints are already configured.
+- **ANP, then A2A** — discovery and identity across organizations, followed by task delegation.
+- **MCP inside every agent** — whichever protocol connects the agents to each other.
+
+## 5. Use Case: Planning a Trip with All Three Protocols
+
+A practical example makes the different roles easier to see. Imagine a traveler asks an AI assistant:
+
+> Plan a five-day trip from Beijing to New York, stay within my budget, and include indoor alternatives in case of rain.
+
+The original survey compares three ways to organize this travel-planning task (Figure 11):
+
+![The survey's trip example under three protocols](/static/images/resource/agent-protocols/svg/fig12-trip-three-designs.svg)
+_Figure 11. Three ways to organize the trip-planning task, simplified from the survey's example._
+
+### MCP: a central agent connected to tools.
+
+One travel-planning agent calls separate MCP servers for flights, hotels and weather. Each server exposes capabilities, such as `get_flights()`, `get_hotels()` or `get_weather()`. The servers do not need to communicate with one another; the central agent collects the information and assembles the itinerary.
+
+This design is simple to control, but the central agent must know about each service. It can become a bottleneck as the number of services and tasks grows.
+
+### A2A: a team of specialist agents.
+
+The travel coordinator delegates work to specialist agents: one searches for flights, another compares hotels, another checks weather, and another plans activities. The specialists can exchange information when their tasks depend on one another. The coordinator collects their results and combines them into an itinerary.
+
+This design distributes work across agents and can be more flexible, but it requires clear task boundaries, coordination and result validation.
+
+### ANP: agents across organizational boundaries.
+
+The travel system may need to contact agents operated by independent organizations, such as an airline, hotel chain or local activity provider. ANP can help the coordinator discover an external agent, inspect its description and verify its identity before interacting with it.
+
+This design is useful when agents belong to different organizations and operate under different security and data-sharing policies.
+
+### Combining all three protocols in one workflow
+
+In a real deployment, the three protocols can cover different parts of the same request. Figure 12 illustrates one possible combined architecture. This is an illustrative design, not a requirement imposed by the standards.
+
+![One trip, three protocols: A2A carries the tasks, MCP reaches the travel data, ANP reaches a partner's agent](/static/images/resource/agent-protocols/svg/fig13-trip-all-three-protocols.svg)
+_Figure 12. One trip, three protocols: A2A coordinates specialist agents, MCP connects them to tools and data, and ANP supports discovery of an external agent._
+
+The workflow could look like this:
+
+1. **The coordinator receives the request** and breaks it into tasks: find flights, compare hotels, check the forecast, plan activities and review the itinerary.
+2. **A2A delegates the work** to specialist agents. Each agent receives the task and the context needed to complete it.
+3. **MCP connects the specialists to their own services.** The flight agent queries flight data; the hotel agent checks room availability; the weather agent accesses a forecast service.
+4. **ANP is used when an external agent is needed.** For example, the coordinator discovers and verifies a partner airline's agent before sending it a request through a supported agent-to-agent interface.
+5. **The specialist results return to the coordinator.** It checks the options against the traveler's budget, reconciles conflicts and drafts the itinerary.
+6. **The traveler reviews and approves the plan** before any booking or payment takes place.
+
+The key idea is that each protocol solves a different communication problem. MCP provides access to capabilities, A2A carries delegated work between agents, and ANP helps agents discover and identify partners beyond their own organization.
+
+## 6. Academic Outlook
+
+The trip example shows what today's protocols can and cannot do. The survey closes by asking what comes next, sketching three horizons — short, mid and long term — each with its own research trends, challenges and visions (Figure 14).
+
+![The survey's short-, mid- and long-term outlook](/static/images/resource/agent-protocols/svg/fig14-academic-outlook.svg)
+_Figure 13. The survey's three horizons for agent protocols._
+
+### 6.1 Short term: from static to evolvable protocols
+
+Today's protocols define schemas, capabilities and interaction patterns, but agent environments change continuously. Models are updated, tools are added or removed, organizational policies shift and new implementations appear. The short-term challenge is to make protocols evolve without breaking interoperability.
+
+- **Evolvable protocols:** explicit versioning, compatibility rules, extension mechanisms, capability discovery, deprecation paths and conformance tests. Agents should be able to determine which versions, schemas and security profiles a peer supports rather than assume compatibility.
+- **Privacy-preserving protocols:** role- or task-based access, selective disclosure, data minimization and sharing of aggregated or anonymized results instead of raw records wherever possible. A task-specific summary is often safer than sending an entire conversation or memory store.
+- **Agent mesh:** group coordination with shared history, closer to a group conversation than a sequence of isolated pairwise calls. A practical mesh does not mean every agent must connect directly to every other; registries, brokers and policy-aware routing may be needed.
+- **Benchmarks:** shared testbeds to compare discovery overhead, end-to-end latency, message and token overhead, throughput, cross-implementation compatibility, failure recovery, adversarial robustness and privacy leakage. Benchmarks should separate protocol overhead from model inference and tool execution.
+
+The 2026 protocol releases point toward evolvability in different ways: MCP formalizes extensions and carries version information in requests, A2A supports multiple interfaces with version information, and ANP versions its profiles separately. These are related design approaches, not one identical negotiation mechanism shared by all three.[^mcp-spec] [^a2a-v1] [^anp-12]
+
+### 6.2 Mid term: from rules to protocol ecosystems
+
+The mid-term horizon moves beyond individual specifications toward an ecosystem in which agents can understand, select and combine multiple protocols.
+
+- **Built-in protocol knowledge:** models may learn how protocols work and how to use them without lengthy instructions. However, knowledge stored in model weights can become outdated. A more robust approach combines model knowledge with machine-readable registries, verified adapters, schemas and runtime compatibility checks.
+- **Layered architectures:** rather than expecting one protocol to handle everything, systems can separate application policy, agent collaboration, identity and discovery, capability access, transport and runtime concerns.
+
+One illustrative layered architecture is:
+
+1. Application and agent experience
+2. Policy, state and observability (the harness)
+3. Agent collaboration (A2A or another task protocol)
+4. Identity and discovery (ANP or a compatible mechanism)
+5. Tool and context integration (MCP)
+6. Transport, security primitives, storage and runtime
+
+This is a conceptual model, not a mandatory stack. A deployment may omit, combine or replace layers depending on its needs.
+
+A mature protocol ecosystem also needs governance: version and extension policies, conformance tests, security disclosure and patching, capability registries, deprecation procedures and cross-vendor interoperability testing. The move of MCP and A2A into the Linux Foundation's Agentic AI Foundation is one step toward this kind of coordination.
+
+### 6.3 Long term: from protocols to collective-intelligence infrastructure
+
+The long-term vision is not merely to exchange messages, but to build infrastructure in which distributed agents can produce capabilities that no single agent has alone.
+
+- **Collective intelligence and scaling laws:** the survey asks how system performance changes as the number and diversity of agents grow. This remains an open research question, not an established scaling law. More agents may increase coverage and parallelism, but they can also create duplicated work, conflicting outputs, latency, failure modes and a larger attack surface. Research is needed on task allocation, evidence reconciliation, contribution measurement, shared state and verification of collective outputs.
+- **Agent data networks:** the survey imagines a network for machine-oriented data, such as task states, memory snapshots and context logs. Such a network would need discovery, provenance, permission-aware access, semantic interoperability and quality signals. It need not centralize all data; federation and local control may be preferable where privacy or data-sovereignty requirements apply.
+
+Harness engineering remains important across all three horizons. Systems need to pin and test versions, validate schemas at boundaries, apply privacy policies before data crosses trust boundaries, trace discovery and tool calls, and roll out new capabilities gradually. At larger scales, those controls must themselves avoid becoming a single point of failure.
+
+## 7. Takeaway
+
+The central message is simple:
+
+- **MCP** standardizes how an agent reaches tools and data.
+- **A2A** standardizes how independent agents delegate and track work.
+- **ANP** helps agents identify and discover one another across open networks.
+
+These protocols make interoperability possible. They do not, by themselves, guarantee that an agent is safe, that a task is completed correctly or that the result should be trusted. Building dependable agent systems requires the engineering, governance and evaluation around the protocols as well.
+
+---
+
+## Presentation Slides
+
+This article grew out of a term presentation. The slide deck is embedded below — scroll sideways through it, view it fullscreen, or download the PDF using the controls.
+
+<SlideDeck
+  pages={19}
+  basePath="/static/images/resource/agent-protocols/slides"
+  pdfUrl="/static/images/resource/agent-protocols/agent-protocols-slides.pdf"
+  alt="Agent Protocols term presentation slides"
+/>
+
+---
+
+## References
+
+[^survey]: Yang, Y., Chai, H., Song, Y., Qi, S., Wen, M., Li, N., Liao, J., Hu, H., Lin, J., Chang, G., Liu, W., Wen, Y., Yu, Y. and Zhang, W. (2025). _A Survey of AI Agent Protocols_. [arXiv:2504.16736](https://arxiv.org/abs/2504.16736) (v3, June 2025).
+
+[^mcp-spec]: Model Context Protocol maintainers (28 July 2026). [The 2026-07-28 Specification](https://blog.modelcontextprotocol.io/posts/2026-07-28/). Specification and changelog at [modelcontextprotocol.io](https://modelcontextprotocol.io/).
+
+[^a2a-v1]: A2A Project. [Agent2Agent Protocol: What's new in v1.0](https://a2a-protocol.org/latest/whats-new-v1/) and specification.
+
+[^anp-12]: Agent Network Protocol project. [ANP 1.2 release](https://github.com/agent-network-protocol/AgentNetworkProtocol/releases/tag/v1.2) and [specification repository](https://github.com/agent-network-protocol/AgentNetworkProtocol).
+
+[^harness]: Lopopolo, R. (11 February 2026). [Harness engineering: leveraging Codex in an agent-first world](https://openai.com/en/index/harness-engineering/). OpenAI.
