@@ -324,25 +324,25 @@ The original survey compares three ways to organize this travel-planning task:
 ![The survey's trip example under three protocols](/static/images/resource/agent-protocols/svg/fig12-trip-three-designs.svg)
 _Three ways to organize the trip-planning task, simplified from the survey's example._
 
-### MCP: a central agent connected to tools.
+### 5.1 MCP: a central agent connected to tools
 
 One travel-planning agent calls separate MCP servers for flights, hotels and weather. Each server exposes capabilities, such as `get_flights()`, `get_hotels()` or `get_weather()`. The servers do not need to communicate with one another; the central agent collects the information and assembles the itinerary.
 
 This design is simple to control, but the central agent must know about each service. It can become a bottleneck as the number of services and tasks grows.
 
-### A2A: a team of specialist agents.
+### 5.2 A2A: a team of specialist agents
 
 The travel coordinator delegates work to specialist agents: one searches for flights, another compares hotels, another checks weather, and another plans activities. The specialists can exchange information when their tasks depend on one another. The coordinator collects their results and combines them into an itinerary.
 
 This design distributes work across agents and can be more flexible, but it requires clear task boundaries, coordination and result validation.
 
-### ANP: agents across organizational boundaries.
+### 5.3 ANP: agents across organizational boundaries
 
 The travel system may need to contact agents operated by independent organizations, such as an airline, hotel chain or local activity provider. ANP can help the coordinator discover an external agent, inspect its description and verify its identity before interacting with it.
 
 This design is useful when agents belong to different organizations and operate under different security and data-sharing policies.
 
-### Combining all three protocols in one workflow
+### 5.4 Combining all three protocols in one workflow
 
 In a real deployment, the three protocols can cover different parts of the same request. The figure below illustrates one possible combined architecture. This is an illustrative design, not a requirement imposed by the standards.
 
